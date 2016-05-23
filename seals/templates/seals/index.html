@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
+	</head>
+	<body>
+		<div class='container'>
+			<h1>Seals</h1>
+			<ul>
+			{% for seal in seals %}
+				<li>
+					{{ seal }} ({{ seal.installedInVessel }}) 
+				</li>
+			{% endfor %}
+		 	</ul>
+		 </div>
+
+	 	<!--Import jQuery before materialize.js-->
+    	{% block footer %}
+        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
+    	{% endblock %}
+	</body>
+</html>
