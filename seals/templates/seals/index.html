@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load render_table from django_tables2 %}
 <html>
 	<head>
 		<style>
@@ -10,13 +11,7 @@
 	<body>
 		<div class='container'>
 			<h1>Seals</h1>
-			<ul>
-			{% for seal in seals %}
-				<li>
-					{{ seal }} ({{ seal.installedInVessel }}) 
-				</li>
-			{% endfor %}
-		 	</ul>
+			{% render_table table %}
 		 </div>
 
 	 	<!--Import jQuery before materialize.js-->

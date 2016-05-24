@@ -43,7 +43,7 @@ class Vessel(models.Model):
 
 class Seal(models.Model):
 	serial_number = models.CharField(max_length=10)
-	size= models.IntegerField(max_length=4)
+	size= models.IntegerField(verbose_name = 'Seal size')
 	installedInVessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
 
 	def __str__(self):

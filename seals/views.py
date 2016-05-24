@@ -1,7 +1,8 @@
 from django.shortcuts import render
-
+from django_tables2 import RequestConfig
 from seals.models import Company, Seal, contactPerson, Vessel
 from django.contrib.auth.models import User
+from seals.tables import SealTable
 
 
 # Create your views here.
@@ -9,5 +10,7 @@ from django.contrib.auth.models import User
 
 def index(request):
 
-	seals = Seal.objects.all()
-	return render(request, 'seals/index.html', { 'seals' : seals })
+	table = SealTable(Seal.objects.all())
+	RequestConfig(request).configure(table)
+	return render(request, 'seals/index.html', { 'table' : table })
+

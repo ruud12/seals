@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'seals',
     'django_countries',
     'materialize',
+    'django_tables2',
+    'django_filters',
+    'crispy_forms',
 ]
 
 MIDDLEWARE_CLASSES = [
