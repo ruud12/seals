@@ -12,7 +12,7 @@ from django_countries.fields import CountryField
 class Company(models.Model):
 	name = models.CharField(max_length=100, verbose_name='Name')
 	street = models.CharField(max_length=100, verbose_name ='Street name')
-	streetNumber = models.IntegerField(max_length=3, verbose_name='Street number')
+	streetNumber = models.IntegerField(verbose_name='Street number')
 	city = models.CharField(max_length=100)
 	country = CountryField()
 

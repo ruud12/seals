@@ -14,3 +14,5 @@ def index(request):
 	RequestConfig(request).configure(table)
 	return render(request, 'seals/index.html', { 'table' : table })
 
+def detail(request, primary_key):
+	return render(request, 'seals/detail.html', {})
