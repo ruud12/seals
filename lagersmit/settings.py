@@ -39,10 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'seals',
     'django_countries',
-    'materialize',
     'django_tables2',
     'django_filters',
     'crispy_forms',
+    'materialize',
 ]
 
 MIDDLEWARE_CLASSES = [
