@@ -11,6 +11,13 @@
 	<body>
 		<div class='container'>
 			<h1>Seals</h1>
+			{% block content %}
+			    <form action="" method="get">
+			        {{ filter.form.as_p }}
+			        <input type="submit" />
+			    </form>
+			{% endblock %}
+			
 			{% render_table table %}
 		 </div>
 
