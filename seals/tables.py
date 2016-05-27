@@ -10,6 +10,7 @@ class SealTable(tables.Table):
 	installedInVessel = tables.URLColumn()
 	contact = tables.Column(empty_values=())
 	company = tables.Column(empty_values=())
+	id = tables.LinkColumn()
 
 	def render_company(self,record):
 		return record.installedInVessel.company

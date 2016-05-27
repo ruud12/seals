@@ -7,14 +7,21 @@
 		</style>
 		<!--Import materialize.css-->
     	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
+    	<link type="text/css" rel="stylesheet" href="{% static 'css/seals.css' %}">
 	</head>
 	<body>
 		<div class='container'>
 			<h1>Seals</h1>
 			{% block content %}
 			    <form action="" method="get">
-			        {{ filter.form.as_p }}
-			        <input type="submit" />
+			        {% for field in filter.form %}
+			        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
+			        		{{ field.errors }}
+			        		{{ field.label_tag }}: {{ field }}
+			        	</div>
+			        {% endfor %}
+			        <input type="submit" value='Search' />
+			        <a href='{{ request.path }}'>Reset</a>
 			    </form>
 			{% endblock %}
 			
