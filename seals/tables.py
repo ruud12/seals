@@ -7,23 +7,33 @@ from django_tables2.utils import A
 class SealTable(tables.Table):
 
 	size = tables.Column()
-	installedInVessel = tables.URLColumn()
 	contact = tables.Column(empty_values=())
-	company = tables.Column(empty_values=())
+	company = tables.LinkColumn('seals:company', args=[A('installedinvessel.company.id')], accessor='installedinvessel.company')
+	serial_number = tables.LinkColumn('seals:detail', args=[A('pk')])
 
-	def render_company(self,record):
-		return record.installedInVessel.company
+
+	# def render_company(self,record):
+		# return record.installedinvessel.company
 
 	def render_contact(self, record):
-		return record.installedInVessel.contactPerson
+		contacts = record.installedinvessel.contact.all()
 
-	def render_installedInVessel(self, record):
-		return str('{name} ({id})').format(name=record.installedInVessel, id=record.installedInVessel.id)
+		text = []
+
+		for contact in contacts:
+			text.append(str("{user} ({position})").format(user=contact,position=contact.position))
+
+		return ", ".join(text)
+
+
+
+
 
 	def render_size(self, record):
 		return str('{size} mm').format(size=record.size) 
 
 	class Meta:
 		model = Seal
-		sequence = ('...','contact','company')
+		sequence = ('serial_number','...')
+		fields= ('serial_number', 'size', 'installedinvessel','company', 'contact')
 
