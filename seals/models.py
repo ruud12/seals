@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django import forms
 
 from django_countries.fields import CountryField
 # Create your models here.
@@ -54,3 +55,16 @@ class Seal(models.Model):
 
 	def __str__(self):
 		return self.serial_number
+
+
+
+
+class CreateReport(models.Model):
+	title = models.CharField(max_length=300,verbose_name='Title')
+	remarks = models.CharField(max_length=1000,verbose_name='Remarks')
+
+
+class Action(models.Model):
+	date = models.DateTimeField(verbose_name='Action date')
+	actiontype = models.ForeignKey(CreateReport, verbose_name='Action type')
+	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
