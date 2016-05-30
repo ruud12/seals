@@ -1,0 +1,25 @@
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
+    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
+	</head>
+  
+ 	<body>
+    	{% block footer %}
+        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
+        	<script type='text/javascript'>
+        		$(document).ready(function() {
+    				$('select').material_select();
+				});
+			</script>
+    	{% endblock %}
+
+ 	</body>
+</html>

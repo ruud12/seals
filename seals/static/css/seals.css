@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 form p {
 	width:30%;
 }
@@ -6,12 +7,17 @@ form p {
 	display:none
 }
 
+=======
+>>>>>>> origin/master
 form .fieldWrapper {
 	width:10em;
 	float:left;
 	margin-right:1em;
+<<<<<<< HEAD
 }
 
 form #id_installedInVessel {
 	display:none;
+=======
+>>>>>>> origin/master
 }

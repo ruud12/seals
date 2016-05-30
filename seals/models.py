@@ -27,14 +27,19 @@ class contactPerson(models.Model):
 
 
 	def __str__(self):
-		return self.user.first_name + self.user.last_name or self.user.username
+		if(self.user.first_name or self.user.last_name):
+			user_text = str("{first_name} {last_name}").format(first_name=self.user.first_name, last_name=self.user.last_name)
+		else:
+			user_text = self.user.username
+
+		return user_text
 
 
 class Vessel(models.Model):
 	name = models.CharField(max_length=100)
 	imo_number = models.CharField(max_length=10)
-	contactPerson = models.ForeignKey(contactPerson, on_delete=models.CASCADE, related_name='vessel_contactperson')
 	company = models.ForeignKey(Company, on_delete=models.CASCADE)
+	contact = models.ManyToManyField(contactPerson)
 
 
 
@@ -42,9 +47,10 @@ class Vessel(models.Model):
 		return self.name
 
 class Seal(models.Model):
+	created = models.DateField(default=timezone.now(), verbose_name='Created')
 	serial_number = models.CharField(max_length=10)
 	size= models.IntegerField(verbose_name = 'Seal size')
-	installedInVessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
+	installedinvessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.serial_number
