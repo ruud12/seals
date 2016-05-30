@@ -39,7 +39,7 @@ class Vessel(models.Model):
 	name = models.CharField(max_length=100)
 	imo_number = models.CharField(max_length=10)
 	company = models.ForeignKey(Company, on_delete=models.CASCADE)
-	contact = models.ManyToManyField(contactPerson)
+	contact = models.ManyToManyField(contactPerson, verbose_name="Contact person(s)")
 
 
 
@@ -47,8 +47,8 @@ class Vessel(models.Model):
 		return self.name
 
 class Seal(models.Model):
-	created = models.DateField(default=timezone.now(), verbose_name='Created')
-	serial_number = models.CharField(max_length=10)
+	created = models.DateField(verbose_name='Created')
+	serial_number = models.CharField(max_length=10, verbose_name='Serial number')
 	size= models.IntegerField(verbose_name = 'Seal size')
 	installedinvessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
 

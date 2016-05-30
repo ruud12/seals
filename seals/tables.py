@@ -7,10 +7,11 @@ from django_tables2.utils import A
 class SealTable(tables.Table):
 
 	size = tables.Column()
-	contact = tables.Column(empty_values=())
+	contact = tables.Column(empty_values=(), verbose_name='Contact person(s)')
 
 
-	company = tables.LinkColumn('seals:company', args=[A('installedinvessel.company.id')], accessor='installedinvessel.company')
+	company = tables.LinkColumn('seals:company', args=[A('installedinvessel.company.id')], accessor='installedinvessel.company', verbose_name='Company')
+	installedinvessel = tables.LinkColumn('seals:vessel_detail', args=[A('installedinvessel.id')], accessor='installedinvessel')
 	serial_number = tables.LinkColumn('seals:detail', args=[A('pk')])
 
 	def render_contact(self, record):
@@ -31,4 +32,6 @@ class SealTable(tables.Table):
 		model = Seal
 		sequence = ('serial_number','...')
 		fields= ('serial_number', 'size', 'installedinvessel','company', 'contact')
+		attrs = {'class': 'bordered striped'}
+
 

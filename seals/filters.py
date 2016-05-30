@@ -25,7 +25,7 @@ class SealFilter(django_filters.FilterSet):
 			|
 			Q(installedinvessel__contact__user__username__icontains = value)
 			)	
-			return distinct(results)
+			return results
 		else:
 			return queryset
 

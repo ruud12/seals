@@ -29,9 +29,6 @@ def company(request, primary_key):
 	return render(request, 'seals/company.html', { 'company':company, 'vessels':vessels })
 
 
-def vessel(request, company_id, vessel_id):
-
-	vessels = Vessel.objects.filter(company=company_id).filter(pk=vessel_id)
-
-	company = get_object_or_404(Company, pk=company_id)
-	return render(request, 'seals/company.html', { 'company':company, 'vessels':vessels })
+def vessel_detail(request, vessel_id):
+	vessel = get_object_or_404(Vessel, pk=vessel_id)
+	return render(request, 'seals/vessel_detail.html', { 'vessel': vessel })

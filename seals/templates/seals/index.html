@@ -14,17 +14,24 @@
 		<div class='container'>
 			<h1>Seals</h1>
 			{% block content %}
-			    <form action="" method="get">
-			    	{% csrf_token %}
-			        {% for field in filter.form %}
-			        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
-			        		{{ field.errors }}
-			        		{{ field.label_tag }}: {{ field }}
-			        	</div>
-			        {% endfor %}
-			        <input type="submit" value='Search' />
-			        <a href='{{ request.path }}'>Reset</a>
-			    </form>
+				<ul class='collapsible' data-collapsible='accordion'>
+					<li>
+						<div class='collapsible-header'>Search in seals</div>
+						<div class='collapsible-body container'>
+						    <form action="" method="get">
+						    	{% csrf_token %}
+						        {% for field in filter.form %}
+						        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
+						        		{{ field.errors }}
+						        		{{ field.label_tag }}: {{ field }}
+						        	</div>
+						        {% endfor %}
+						        <input type="submit" value='Search' />
+						        <a href='{{ request.path }}'>Reset</a>
+						    </form>
+						</div>
+					</li>
+				</ul>
 			{% endblock %}
 			
 			{% render_table table %}
@@ -37,6 +44,9 @@
         	<script type='text/javascript'>
         		$(document).ready(function() {
    		 			$('select').material_select();
+   		 			$('.collapsible').collapsible({
+      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+    				});
 				});
 			</script>
     	{% endblock %}
