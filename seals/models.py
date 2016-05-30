@@ -60,26 +60,21 @@ class Seal(models.Model):
 
 
 
-
-class ActionType(models.Model):
-	name = models.CharField(max_length=30)
-
-	def __str__(self):
-		return self.name
-
-
-class Action(models.Model):
-	date = models.DateTimeField(verbose_name='Action date')
-	action = models.ForeignKey(ActionType, verbose_name='Action type')
-	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
-
-	def __str__(self):
-		return str("{action} ({date})").format(action=self.action.name, date= self.date)
-
 class Report(models.Model):
 	title = models.CharField(max_length=300,verbose_name='Title')
 	remarks = models.CharField(max_length=1000,verbose_name='Remarks')
-	relatedtoaction = models.ForeignKey(Action, verbose_name='Related to action')
+	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
+	created = models.DateTimeField(verbose_name='Created', default=timezone.now)
 
 	def __str__(self):
 		return self.title
+
+class Action(models.Model):
+	name = models.CharField(max_length=100)
+	execute_date = models.DateField()
+	remarks = models.CharField(max_length=1000, verbose_name='Remarks')
+	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
+	relatedtoreport = models.ForeignKey(Report, verbose_name='Related to report')
+
+	def __str__(self):
+		return self.name

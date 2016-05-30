@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django_tables2 import RequestConfig
-from seals.models import Company, Seal, contactPerson, Vessel
+from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
+from seals.forms import AddAction
 
 # Create your views here.
 
@@ -19,6 +20,8 @@ def index(request):
 
 def detail(request, primary_key):
 
+
+
 	seal = get_object_or_404(Seal, pk=primary_key)	
 	return render(request, 'seals/detail.html', {'seal': seal})	
 
@@ -32,3 +35,23 @@ def company(request, primary_key):
 def vessel_detail(request, vessel_id):
 	vessel = get_object_or_404(Vessel, pk=vessel_id)
 	return render(request, 'seals/vessel_detail.html', { 'vessel': vessel })
+
+
+def add_action(request, seal_id, report_id):
+
+
+	if request.method == "POST":
+		form = AddAction(request.POST)
+		if form.is_valid():
+			new_action = form.save(commit=False)
+			new_action.relatedtoseal = get_object_or_404(Seal, pk=seal_id)
+			new_action.relatedtoreport = get_object_or_404(Report, pk=report_id)
+			new_action.save()
+			return redirect('seals:detail', primary_key=seal_id)
+	else:
+		form = AddAction()
+
+	report = get_object_or_404(Report, pk=report_id)
+	seal = get_object_or_404(Seal, pk=seal_id)
+
+	return render(request, 'seals/add_action.html', {'seal': seal, 'report': report, 'form':form})

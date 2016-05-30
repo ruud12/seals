@@ -18,7 +18,7 @@
 					<li>
 						<div class='collapsible-header'>Search in seals</div>
 						<div class='collapsible-body container'>
-						    <form action="" method="get">
+						    <form class='search-seals' action="" method="get">
 						    	{% csrf_token %}
 						        {% for field in filter.form %}
 						        	<div class='fieldWrapper' id='{{ field.auto_id }}'>

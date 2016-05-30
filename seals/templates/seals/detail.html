@@ -28,20 +28,28 @@
 							</div>
 						</div>
 
-						{% for action in seal.action_set.all %}
+
+						{% for report in seal.report_set.all %}
 						<div class='col s12'>
 							<div class="card blue-grey lighten-1">
 								<div class="card-content white-text">
-									<span class="card-title">{{ action }}</span>
-									{% for report in action.report_set.all %}
-										<p>{{ report }}</p>
-									{% endfor %}
+									<span class="card-title">{{ report }}</span>
+										<p>Created: {{ report.created }}</p>
+										<p>Remarks: {{ report.remarks }}</p>
+										<br>
+										<ul class='collection blue-grey'>
+										{% for action in report.action_set.all %}
+											<li class='collection-item'>{{ action.name }} (before {{ action.execute_date }})
+										{% endfor %}
+										</ul>
+										<a href="{% url 'seals:add_action' seal.id report.id %}">Add action</a>
 								</div>
 							</div>
 						</div>	
 						{% endfor %}
 
 
+						
 						
 					</div>
 				</div>
