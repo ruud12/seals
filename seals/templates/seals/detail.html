@@ -27,6 +27,22 @@
 								</div>
 							</div>
 						</div>
+
+						{% for action in seal.action_set.all %}
+						<div class='col s12'>
+							<div class="card blue-grey lighten-1">
+								<div class="card-content white-text">
+									<span class="card-title">{{ action }}</span>
+									{% for report in action.report_set.all %}
+										<p>{{ report }}</p>
+									{% endfor %}
+								</div>
+							</div>
+						</div>	
+						{% endfor %}
+
+
+						
 					</div>
 				</div>
 				<div class='col s6'>
