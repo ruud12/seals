@@ -8,17 +8,10 @@ class SealTable(tables.Table):
 
 	size = tables.Column()
 	contact = tables.Column(empty_values=())
-<<<<<<< HEAD
-	company = tables.Column(empty_values=())
-	id = tables.LinkColumn()
-=======
+
+
 	company = tables.LinkColumn('seals:company', args=[A('installedinvessel.company.id')], accessor='installedinvessel.company')
 	serial_number = tables.LinkColumn('seals:detail', args=[A('pk')])
->>>>>>> origin/master
-
-
-	# def render_company(self,record):
-		# return record.installedinvessel.company
 
 	def render_contact(self, record):
 		contacts = record.installedinvessel.contact.all()
@@ -29,9 +22,6 @@ class SealTable(tables.Table):
 			text.append(str("{user} ({position})").format(user=contact,position=contact.position))
 
 		return ", ".join(text)
-
-
-
 
 
 	def render_size(self, record):

@@ -7,18 +7,15 @@
 		</style>
 		<!--Import materialize.css-->
     	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
-<<<<<<< HEAD
     	<link type="text/css" rel="stylesheet" href="{% static 'css/seals.css' %}">
-=======
     	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
->>>>>>> origin/master
 	</head>
 	<body>
 		<div class='container'>
 			<h1>Seals</h1>
 			{% block content %}
 			    <form action="" method="get">
-<<<<<<< HEAD
+			    	{% csrf_token %}
 			        {% for field in filter.form %}
 			        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
 			        		{{ field.errors }}
@@ -27,17 +24,6 @@
 			        {% endfor %}
 			        <input type="submit" value='Search' />
 			        <a href='{{ request.path }}'>Reset</a>
-=======
-			    	{% csrf_token %}
-			        {% for field in filter.form %}
-			        	<div id='{{ field.id_for_label }}' class='fieldWrapper'>
-			        		{{ field.error_messages }}
-			        		{{ field.label_tag }} {{ field }}
-			        	</div>
-			        {% endfor %}
-			        <input type="submit" />
-			        <a href="{% url 'seals:index' %}">Reset</a>
->>>>>>> origin/master
 			    </form>
 			{% endblock %}
 			
