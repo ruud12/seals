@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django_tables2 import RequestConfig
 from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
 from seals.forms import AddAction
+from formtools.wizard.views import SessionWizardView
 
 # Create your views here.
 
@@ -48,6 +49,7 @@ def add_action(request, seal_id, report_id):
 			new_action.relatedtoreport = get_object_or_404(Report, pk=report_id)
 			new_action.save()
 			return redirect('seals:detail', primary_key=seal_id)
+
 	else:
 		form = AddAction()
 
@@ -55,3 +57,10 @@ def add_action(request, seal_id, report_id):
 	seal = get_object_or_404(Seal, pk=seal_id)
 
 	return render(request, 'seals/add_action.html', {'seal': seal, 'report': report, 'form':form})
+
+def home(request):
+	return render(request, 'seals/home.html')
+
+
+
+

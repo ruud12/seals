@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from seals import views as seals_views
 
 urlpatterns = [
+	url(r'^$', seals_views.home, name='home'),
     url(r'^admin/', admin.site.urls),
     url(r'^seals/', include('seals.urls')),
+    url(r'^sealadvisor/', include('sealadvisor.urls')),
 ]

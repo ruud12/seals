@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django_filters',
     'crispy_forms',
     'materialize',
+    'sealadvisor',
+    'formtools',
 ]
 
 MIDDLEWARE_CLASSES = [

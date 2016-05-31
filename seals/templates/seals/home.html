@@ -1,0 +1,28 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
+    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
+	</head>
+	<body>
+		<div class='container'>
+			<h1>{{ Lagersmit }} </h1>
+			<div class='row'>
+				<div class='col s6'>
+					<a class='btn-large waves-effect waves-light' href="/seals">Seals</a>
+					<a class='btn-large waves-effect waves-light' href='/sealadvisor'>Seal advisor</a>
+				</div>				
+			</div>
+		 </div>
+
+	 	<!--Import jQuery before materialize.js-->
+    	{% block footer %}
+        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
+    	{% endblock %}
+	</body>
+</html>

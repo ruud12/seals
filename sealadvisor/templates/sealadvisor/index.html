@@ -1,0 +1,33 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
+    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
+	</head>
+	<body>
+		<div class='container'>
+			<h1>Sealadvisor</h1>
+			<a class='btn waves-effect waves-light' href="/">Home</a>
+			<div class='row'>
+				<div class='col s6'>
+					{{ form }}
+				</div>
+			</div>
+		 </div>
+
+	 	<!--Import jQuery before materialize.js-->
+    	{% block footer %}
+        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
+        	<script type='text/javascript'>
+        		$(document).ready(function() {
+    				$('select').material_select();
+				});
+			</script>
+    	{% endblock %}
+	</body>
+</html>
