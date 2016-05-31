@@ -26,17 +26,24 @@ def sterntube_chosen(wizard):
 	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
 
 	if cleaned_data.get('application') == 'sterntube':
-		return True
-	else: 
 		return False
+	else: 
+		return True
+
+
+
+
+
+
 
 
 class ContactWizard(SessionWizardView):
 
-	def get_template_names(self):
-		return ['sealadvisor/sealadvisor_template.html']
+	template_name = "sealadvisor/sealadvisor_template.html"
 
 	def done(self, form_list, **kwargs):
 		return render_to_response('sealadvisor/done.html', {
 			'form_data': [form.cleaned_data for form in form_list],
 		})
+
+

@@ -12,14 +12,29 @@ class Application(models.Model):
 	def __str__(self):
 		return self.name
 
+
 class Advise(models.Model):
 	application = models.ForeignKey(Application)
-	shaft_size_aft = models.IntegerField(verbose_name='Shaft diameter aft')
-	shaft_size_forward = models.IntegerField(verbose_name='Shaft diameter forward')
+	shaft_size = models.IntegerField(verbose_name='Shaft diameter (mm)')
 	rpm = models.IntegerField(verbose_name = 'Shaft rotational speed (RPM)')
-	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught')
-	eal = models.BooleanField(default=False, verbose_name='EAL oil used')
+	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
+	eal = models.BooleanField(default=False, verbose_name='EAL oil used?')
 	forwardseal = models.BooleanField(default=False, verbose_name='Forward seal needed')
 	aftseal = models.BooleanField(default=False, verbose_name='Aft seal needed')
 
+	draught_shaft_min = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught max (m)')
+	draught_shaft_max = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught min (m)')
 
+
+	CENTERING_CHOICES = (
+		('hub', 'Hub'),
+		('shaft', 'Shaft'),
+	)
+
+	YES_NO = (
+		('yes', 'Yes'),
+		('no', 'No'),
+	)
+
+	liner_centering = models.CharField(max_length=20,choices=CENTERING_CHOICES, default='')
+	oring = models.CharField(max_length=10, choices=YES_NO, default='', verbose_name='O-ring between shaft & liner (O-ring commonly used for FPP)')

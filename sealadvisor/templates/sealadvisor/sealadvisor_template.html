@@ -1,6 +1,5 @@
 {% load staticfiles %}
-
-
+{% load sealadvisor_extras %}
 
 <html>
 	<head>
@@ -27,21 +26,34 @@
 								{% if wizard.form.forms %}
 								    {{ wizard.form.management_form }}
 								    {% for form in wizard.form.forms %}
-								        
-									    {% for field in form %}
-							        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
-						        			{{ field.errors }}
-							        		{{ field }} {{ field.label_tag }}
-							        	</div>
-							        	{% endfor %}
+								    	{{ form.error_message }}
+									    {% for field in wizard.form %}
+									    	{% if field|field_type:'checkboxinput' %}
+									    		<p>{{ field }} {{ field.label_tag }}</p>
+									    	{% else %}
+									    		<p>{{ field.label_tag }} {{ field }}</p>
+									    	{% endif %}
+								    	{% endfor %}  
 								    {% endfor %}
 								{% else %}
-								    {{ wizard.form }}
+								    {% for field in wizard.form %}
+								    	{% if field.errors %}
+								    		<p class='error' style='border:1px solid red'>
+								    	{% else %}
+								    		<p>
+										    	{% endif %}
+										    	{% if field|field_type:'checkboxinput' %}
+										    		{{ field }} {{ field.label_tag }}
+										    	{% else %}
+										    		{{ field.label_tag }} {{ field }}
+										    	{% endif %}
+								    		</p>
+								    {% endfor %}
 								{% endif %}
 							</table>
 							{% if wizard.steps.prev %}
 								<button name="wizard_goto_step" type="submit" class='btn' value="{{ wizard.steps.first }}">First step</button>
-								<button name="wizard_goto_step" type="submit" class='btn' value="{{ wizard.steps.prev }}">Prev step</button>
+								<button name="wizard_goto_step" type="submit" class='btn' value="{{ wizard.steps.prev }}">Previous step</button>
 							{% endif %}
 
 							{% if wizard.steps.next %}

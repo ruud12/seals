@@ -2,6 +2,9 @@ import django_filters
 from seals.models import Seal
 from django.db.models import Q
 
+
+
+
 class SealFilter(django_filters.FilterSet):
 	installedinvessel__name = django_filters.CharFilter(lookup_expr='icontains', label='Vessel name')
 	size__gt = django_filters.NumberFilter(name='size',lookup_expr='gt', label='size greater than')
@@ -28,6 +31,8 @@ class SealFilter(django_filters.FilterSet):
 			return results
 		else:
 			return queryset
+
+
 
 
 
