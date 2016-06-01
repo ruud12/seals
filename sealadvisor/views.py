@@ -1,6 +1,6 @@
 from django.shortcuts import render, render_to_response
 from sealadvisor.models import Advise, Application
-from sealadvisor.forms import AddAdvise1, AddAdvise2, AddAdvise3
+from sealadvisor.forms import AddAdvise1, AddAdvise2, AddAdvise3, AddAdvise4, AddAdvise5, AddAdvise6
 from formtools.wizard.views import SessionWizardView
 
 
@@ -30,10 +30,26 @@ def sterntube_chosen(wizard):
 	else: 
 		return True
 
+def ventus(wizard):
+	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
 
+	if cleaned_data:
+		if cleaned_data.get('draught_shaft') > 4:
+			return True
+		else:
+			return False
+	else:
+		return False
 
-
-
+def athmos(wizard):
+	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+	if cleaned_data:
+		if cleaned_data.get('draught_shaft') > 4:
+			return False
+		else:
+			return True
+	else:
+		return False
 
 
 
@@ -42,8 +58,19 @@ class ContactWizard(SessionWizardView):
 	template_name = "sealadvisor/sealadvisor_template.html"
 
 	def done(self, form_list, **kwargs):
+
+		data = {}
+
+		for form in form_list:
+			data.update(form.cleaned_data)
+			
+
+		
+
+
+
 		return render_to_response('sealadvisor/done.html', {
-			'form_data': [form.cleaned_data for form in form_list],
+			'data': data,
 		})
 
 

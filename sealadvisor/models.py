@@ -13,6 +13,8 @@ class Application(models.Model):
 		return self.name
 
 
+
+
 class Advise(models.Model):
 	application = models.ForeignKey(Application)
 	shaft_size = models.IntegerField(verbose_name='Shaft diameter (mm)')
@@ -36,5 +38,19 @@ class Advise(models.Model):
 		('no', 'No'),
 	)
 
+	WIREWINDERS = (
+		('clockwise', 'Clockwise'),
+		('counterclockwise', 'Counterclockwise'),
+		('two', 'Two of each on one seal'),
+	)
+
 	liner_centering = models.CharField(max_length=20,choices=CENTERING_CHOICES, default='')
-	oring = models.CharField(max_length=10, choices=YES_NO, default='', verbose_name='O-ring between shaft & liner (O-ring commonly used for FPP)')
+	oring = models.CharField(max_length=10, choices=YES_NO, default='yes', verbose_name='O-ring between shaft & liner (O-ring commonly used for FPP)')
+	sandy = models.CharField(max_length=10, choices=YES_NO, default='no', verbose_name='Will the seal be applied in a sandy/dirty environment?')
+
+	ventus = models.BooleanField(default=False, verbose_name='Include SUPREME Ventus?')
+	athmos = models.BooleanField(default=False, verbose_name='Include SUPREME Athmos?')
+	anode = models.BooleanField(default=False, verbose_name='Protection against corrosion using cathodic protection?')
+
+	wirewinder = models.BooleanField(default=False, verbose_name='Protection against wires (wire-winder)?')
+	netcutters = models.CharField(max_length=30, choices=WIREWINDERS, default='')

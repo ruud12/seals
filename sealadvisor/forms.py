@@ -21,7 +21,23 @@ class AddAdvise3(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('eal','liner_centering','oring')
+		fields = ('anode', 'eal','liner_centering','oring')
 
 
+class AddAdvise4(forms.ModelForm):
 
+	class Meta:
+		model = Advise
+		fields = ('ventus',)
+
+class AddAdvise5(forms.ModelForm):
+
+	class Meta:
+		model = Advise
+		fields = ('athmos',)
+
+class AddAdvise6(forms.ModelForm):
+
+	class Meta:
+		model = Advise
+		fields = ('wirewinder', 'netcutters')
