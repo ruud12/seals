@@ -4,9 +4,10 @@ from sealadvisor.models import Advise, Application
 
 class AddAdvise1(forms.ModelForm):
 	error_css_class = 'error'
-
+	application = forms.RadioSelect()
 	class Meta:
 		model = Advise
+
 		fields = ('application', 'shaft_size', 'rpm', 'draught_shaft')
 
 		
