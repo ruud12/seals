@@ -28,8 +28,11 @@
 								    {% for form in wizard.form.forms %}
 								    	{{ form.error_message }}
 									    {% for field in wizard.form %}
+									    	{{ this_field_type }}
 									    	{% if field|field_type:'checkboxinput' %}
 									    		<p>{{ field }} {{ field.label_tag }}</p>
+									    	{% elif field|field_type:'radioinput' %}
+									    		<p>{{ field }} {{ field.label_tag }} test
 									    	{% else %}
 									    		<p>{{ field.label_tag }} {{ field }}</p>
 									    	{% endif %}
@@ -75,9 +78,6 @@
         		$(document).ready(function() {
     				$('select').material_select();
 				});
-				$(document).ready(function() {
-   					 $('select').material_select();
-  				});
        
 			</script>
     	{% endblock %}

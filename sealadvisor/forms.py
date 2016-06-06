@@ -4,12 +4,19 @@ from sealadvisor.models import Advise, Application
 
 class AddAdvise1(forms.ModelForm):
 	error_css_class = 'error'
-	CHOICES = Application.objects.all()
-	application = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect())
+	application = forms.ModelChoiceField(queryset=Application.objects.all(), widget=forms.RadioSelect)
+
 	class Meta:
 		model = Advise
+		CHOICES = [(l.id, l.name) for l in Application.objects.all()]
+		# application = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 
 		fields = ('application', 'shaft_size', 'rpm', 'draught_shaft')
+
+
+
+
+
 
 		
 class AddAdvise2(forms.ModelForm):
