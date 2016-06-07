@@ -4,7 +4,7 @@ from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
-from seals.forms import AddAction
+from seals.forms import AddAction, AddReport
 from formtools.wizard.views import SessionWizardView
 
 # Create your views here.
@@ -57,6 +57,25 @@ def add_action(request, seal_id, report_id):
 	seal = get_object_or_404(Seal, pk=seal_id)
 
 	return render(request, 'seals/add_action.html', {'seal': seal, 'report': report, 'form':form})
+
+
+def add_report(request, seal_id):
+	seal = get_object_or_404(Seal, pk=seal_id)
+
+
+	if request.method == "POST":
+		form = AddReport(request.POST)
+		if form.is_valid():
+			new_report = form.save(commit=False)
+			new_report.relatedtoseal = get_object_or_404(Seal, pk=seal_id)
+			new_report.save()
+			return redirect('seals:detail', primary_key=seal_id)
+
+	else:
+		form = AddReport()
+
+
+	return render(request, 'seals/add_report.html', {'seal':seal, 'form':form})
 
 def home(request):
 	return render(request, 'seals/home.html')

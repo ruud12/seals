@@ -65,10 +65,6 @@ class ContactWizard(SessionWizardView):
 			data.update(form.cleaned_data)
 			
 
-		
-
-
-
 		return render_to_response('sealadvisor/done.html', {
 			'data': data,
 		})

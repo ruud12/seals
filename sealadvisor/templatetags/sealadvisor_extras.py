@@ -19,3 +19,4 @@ def set_this_field_type(context, field):
     """
     context["this_field_type"] = field.field.__class__.__name__
     return ''
+

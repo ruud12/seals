@@ -71,7 +71,7 @@ class Report(models.Model):
 
 class Action(models.Model):
 	name = models.CharField(max_length=100)
-	execute_date = models.DateField()
+	execute_date = models.DateField(default=timezone.now)
 	remarks = models.CharField(max_length=1000, verbose_name='Remarks')
 	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
 	relatedtoreport = models.ForeignKey(Report, verbose_name='Related to report')

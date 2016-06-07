@@ -32,7 +32,7 @@
 							<div class='card blue lighten-1'>
 								<div class='card-content'>
 									<span class="card-title">Add report</span>
-									<p><a href=''>Add report</a></p>
+									<p><a href="{% url 'seals:add_report' seal.id %}">Add report</a></p>
 								</div>
 							</div>
 						</div>
@@ -47,7 +47,7 @@
 										<br>
 										<ul class='collection blue-grey'>
 										{% for action in report.action_set.all %}
-											<li class='collection-item'>{{ action.name }} (before {{ action.execute_date }})
+											<li class='collection-item'>{{ action.name }} (before {{ action.execute_date }}): <i>{{ action.remarks }}</i>
 										{% endfor %}
 										</ul>
 										<a href="{% url 'seals:add_action' seal.id report.id %}">Add action</a>
