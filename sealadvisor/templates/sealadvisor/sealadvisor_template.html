@@ -12,6 +12,8 @@
 		<!--Import materialize.css-->
     	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
     	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
+
+
 	</head>
 	<body>
 		<div class='container'>
@@ -28,11 +30,9 @@
 								    {% for form in wizard.form.forms %}
 								    	{{ form.error_message }}
 									    {% for field in wizard.form %}
-									    	{{ this_field_type }}
+
 									    	{% if field|field_type:'checkboxinput' %}
 									    		<p>{{ field }} {{ field.label_tag }}</p>
-									    	{% elif field|field_type:'radioinput' %}
-									    		<p>{{ field }} {{ field.label_tag }} test
 									    	{% else %}
 									    		<p>{{ field.label_tag }} {{ field }}</p>
 									    	{% endif %}
@@ -40,17 +40,20 @@
 								    {% endfor %}
 								{% else %}
 								    {% for field in wizard.form %}
+
 								    	{% if field.errors %}
 								    		<p class='error' style='border:1px solid red'>
 								    	{% else %}
 								    		<p>
 										    	{% endif %}
 										    	{% if field|field_type:'checkboxinput' %}
-										    		{{ field }} {{ field.label_tag }}
+										    		<p>{{ field }} {{ field.label_tag }}</p>
+										    	
 										    	{% else %}
-										    		{{ field.label_tag }} {{ field }}
+										    		<p>{{ field.label_tag }} {{ field }}</p>
 										    	{% endif %}
 								    		</p>
+
 								    {% endfor %}
 								{% endif %}
 							</table>
