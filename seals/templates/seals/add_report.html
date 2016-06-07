@@ -8,7 +8,8 @@
     	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
     	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
 
-        <script type='text/javascript' href="{% static 'js/pickadate/lib/compressed/picker.js' %}"></script>
+        <script type='text/javascript' href="{% static 'js/pickadate/lib/compressed/picker.date.js' %}"></script>
+        <script type='text/javascript' href="{% static 'js/pickadate/lib/compressed/picker.js' %}?{% now "U" %}"></script>
 	</head>
   
  	<body>
@@ -63,9 +64,11 @@
     				$('select').material_select();
 				});
 
-                $('#id_created').pickadate({
-                    format: 'yyyy-n-dd hh:mm:ss',
-                })
+                $('#id_created_0').pickadate({
+                    format: 'yyyy-mm-dd',
+                });
+
+                $('#id_created_1').pickatime();
 			</script>
     	{% endblock %}
 

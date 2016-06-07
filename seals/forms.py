@@ -20,11 +20,12 @@ class AddAction(forms.ModelForm):
 
 class AddReport(forms.ModelForm):
 
+	created = forms.DateTimeField(widget=forms.SplitDateTimeWidget())
+	remarks = forms.CharField(widget=forms.Textarea)
+
 	class Meta:
 		model = Report
 
-		remarks = forms.CharField(widget=forms.Textarea)
-		created = forms.DateTimeField(widget=forms.SplitDateTimeWidget())
 		fields = ('title', 'relatedtoseal', 'remarks', 'created')
 
 		exclude = ('relatedtoseal',)
