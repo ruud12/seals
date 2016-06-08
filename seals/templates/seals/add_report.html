@@ -7,9 +7,9 @@
 		<!--Import materialize.css-->
     	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
     	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
+        <link type='text/css' rel='stylesheet' href="{% static 'js/pickadate/lib/themes/default.css' %}" />
+        <link type='text/css' rel='stylesheet' href="{% static 'js/pickadate/lib/themes/default.time.css' %}" />
 
-        <script type='text/javascript' href="{% static 'js/pickadate/lib/compressed/picker.date.js' %}"></script>
-        <script type='text/javascript' href="{% static 'js/pickadate/lib/compressed/picker.js' %}?{% now "U" %}"></script>
 	</head>
   
  	<body>
@@ -27,6 +27,7 @@
                                     {% block content %}
                                         <form method="POST" class="post-form">{% csrf_token %}
                                             {{ form.as_p }}
+                                            <br>
                                             <button type="submit" class="save btn btn-default">Save</button>
                                         </form>
                                     {% endblock %}
@@ -59,16 +60,21 @@
     	{% block footer %}
         	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
         	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
+        <script type='text/javascript' src="{% static 'js/pickadate/lib/picker.js' %}"></script>
+        <script type='text/javascript' src="{% static 'js/pickadate/lib/picker.time.js' %}"></script>
         	<script type='text/javascript'>
         		$(document).ready(function() {
     				$('select').material_select();
 				});
 
+
                 $('#id_created_0').pickadate({
                     format: 'yyyy-mm-dd',
                 });
 
-                $('#id_created_1').pickatime();
+                $('#id_created_1').pickatime({
+                    format: 'hh:i',
+                });
 			</script>
     	{% endblock %}
 

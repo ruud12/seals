@@ -6,6 +6,7 @@ from seals.tables import SealTable
 from seals.filters import SealFilter
 from seals.forms import AddAction, AddReport
 from formtools.wizard.views import SessionWizardView
+from django.utils import timezone
 
 # Create your views here.
 
@@ -60,11 +61,12 @@ def add_action(request, seal_id, report_id):
 
 
 def add_report(request, seal_id):
+
 	seal = get_object_or_404(Seal, pk=seal_id)
 
 
 	if request.method == "POST":
-		form = AddReport(request.POST)
+		form = AddReport(request.POST, initial={'created':timezone.now})
 		if form.is_valid():
 			new_report = form.save(commit=False)
 			new_report.relatedtoseal = get_object_or_404(Seal, pk=seal_id)
