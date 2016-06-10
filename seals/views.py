@@ -63,10 +63,10 @@ def add_action(request, seal_id, report_id):
 def add_report(request, seal_id):
 
 	seal = get_object_or_404(Seal, pk=seal_id)
-
+	contact_choices = [[contact.id, contact] for contact in contactPerson.objects.filter(company =seal.installedinvessel.company)]
 
 	if request.method == "POST":
-		form = AddReport(request.POST, initial={'created':timezone.now})
+		form = AddReport(request.POST)
 		if form.is_valid():
 			new_report = form.save(commit=False)
 			new_report.relatedtoseal = get_object_or_404(Seal, pk=seal_id)
@@ -74,7 +74,7 @@ def add_report(request, seal_id):
 			return redirect('seals:detail', primary_key=seal_id)
 
 	else:
-		form = AddReport()
+		form = AddReport(choices=contact_choices)
 
 
 	return render(request, 'seals/add_report.html', {'seal':seal, 'form':form})

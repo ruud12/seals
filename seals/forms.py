@@ -1,7 +1,8 @@
 from django import forms
-from seals.models import Action, Report
+from seals.models import Action, Report, contactPerson
 from django.forms.extras.widgets import SelectDateWidget
 from django.utils import timezone
+
 
 class AddAction(forms.ModelForm):
 
@@ -20,14 +21,26 @@ class AddAction(forms.ModelForm):
 
 
 class AddReport(forms.ModelForm):
+	def __init__(self, *args, **kwargs):
+		choices = kwargs.pop('choices')
+		super(AddReport, self).__init__(*args, **kwargs)
+		self.fields['mechanics'] = forms.MultipleChoiceField(
+			choices = choices
+		)
 
 	# created = forms.DateTimeField(widget=forms.SplitDateTimeWidget(), initial=timezone.now())
-	# created = forms.DateTimeField(initial=timezone.now())
 	remarks = forms.CharField(widget=forms.Textarea)
+
+
 
 	class Meta:
 		model = Report
 
 		fields = ('title', 'relatedtoseal', 'remarks', 'created')
 
-		exclude = ('relatedtoseal','created')
+		exclude = ('relatedtoseal',)
+
+
+
+
+

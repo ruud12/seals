@@ -15,7 +15,7 @@
  	<body>
 
         <div class='container'>
-            <h1>Add report for seal {{seal }}</h1>
+            <h1>Add report for seal {{ seal }}</h1>
 
             <div class='row'>
                 <div class='col s6'>
@@ -27,6 +27,7 @@
                                     {% block content %}
                                         <form method="POST" class="post-form">{% csrf_token %}
                                             {{ form.as_p }}
+
                                             <br>
                                             <button type="submit" class="save btn btn-default">Save</button>
                                         </form>
@@ -68,13 +69,9 @@
 				});
 
 
-                $('#id_created_0').pickadate({
-                    format: 'yyyy-mm-dd',
-                });
+                $('#id_created').pickadate();
 
-                $('#id_created_1').pickatime({
-                    format: 'hh:i',
-                });
+
 			</script>
     	{% endblock %}
 
