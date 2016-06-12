@@ -1,17 +1,6 @@
-{% load staticfiles %}
-<html>
-	<head>
-		<style>
+{% extends 'seals/base.html' %}
 
-		</style>
-		<!--Import materialize.css-->
-    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
-    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
-	</head>
-  
- 	<body>
-
-        <div class='container'>
+{% block content %}
             <h1>{{vessel.name}}</h1>
 
             <a class='waves-effect waves-light btn' href="{% url 'seals:index' %}">Back to overview</a>
@@ -59,21 +48,8 @@
                     </div>
                 </div>
             </div>
-
+{% endblock %}  
 
                 
                 
-            </div>
-         </div>
-    	{% block footer %}
-        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
-        	<script type='text/javascript'>
-        		$(document).ready(function() {
-    				$('select').material_select();
-				});
-			</script>
-    	{% endblock %}
-
- 	</body>
-</html>
+            

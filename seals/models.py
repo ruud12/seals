@@ -45,7 +45,7 @@ class Vessel(models.Model):
 		return self.name
 
 class Seal(models.Model):
-	created = models.DateField(verbose_name='Created')
+	created = models.DateTimeField(verbose_name='Created')
 	serial_number = models.CharField(max_length=10, verbose_name='Serial number')
 	size= models.IntegerField(verbose_name = 'Seal size')
 	installedinvessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)

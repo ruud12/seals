@@ -1,0 +1,24 @@
+{% extends 'seals/base.html' %}
+{% load material_form %} 		
+
+{% block content %}
+	<h1>Add Seal</h1>
+
+	<div class='row'>
+		<div class='col s12'>
+			<div class='card blue lighten-5'>
+				<div class='card-content'>
+					<span class='card-title black-text'>Seal information</span>
+
+					<form method="POST" class="post-form">
+						{% csrf_token %}
+						{% form form=form %} {% endform %}
+						<button type="submit" class="save btn btn-default">Save</button>
+						<a class='waves-effect btn' href="{% url 'seals:index' %}">Cancel</a>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}	 

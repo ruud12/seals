@@ -1,5 +1,5 @@
 from django import forms
-from seals.models import Action, Report, contactPerson
+from seals.models import Action, Report, contactPerson,Seal
 from django.forms.extras.widgets import SelectDateWidget
 from django.utils import timezone
 
@@ -42,5 +42,16 @@ class AddReport(forms.ModelForm):
 
 
 
+class AddSeal(forms.ModelForm):
+
+	class Meta:
+		model=Seal
+		fields = ('serial_number','size','installedinvessel')
 
 
+class DeleteSeal(forms.ModelForm):
+	confirmation = forms.BooleanField(initial=False, required=False)
+
+	class Meta:
+		model = Seal
+		fields = ('confirmation',)		
