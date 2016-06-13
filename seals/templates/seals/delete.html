@@ -11,14 +11,14 @@
                         <div class='col s12'> 
                             <div class='card blue lighten-4'>
                                 <div class='card-content'>
-                                    <span class='card-title black-text'>Delete seal</span>
+                                    <span class='card-title black-text'>Are you sure you want to delete seal {{ seal }}?</span>
                                         <form method="POST" class="post-form">
                                             {% csrf_token %}
                                             {% form form=form %} {% endform %}
 
                                             <br>
                                             <button type="submit" class="red save btn btn-default">Delete</button>
-                                            <a class='wave-effect btn' href="{% url 'seals:detail' seal.id %}">Cancel</a>
+                                            <a class='wave-effect btn' href="{% url 'seals:detail' seal.id %}">Go back</a>
                                         </form>
                                 </div>
                             </div>
@@ -34,6 +34,7 @@
                                     <p>Created: {{ seal.created }}</p>
                                     <p>Serial number: {{ seal.serial_number }}</p>
                                     <p>Size: {{ seal.size }}</p>
+                                    <p>Installed in vessel: {{ seal.installedinvessel }}</p>
                                 </div>
                             </div>
                         </div>

@@ -1,16 +1,5 @@
-{% load staticfiles %}
-{% load render_table from django_tables2 %}
-<html>
-	<head>
-		<style>
-
-		</style>
-		<!--Import materialize.css-->
-    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
-    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
-	</head>
-	<body>
-		<div class='container'>
+{% extends 'seals/base.html' %}
+{% block content %}
 			<h1>{{ company.name }} </h1>
 			<a class='waves-effect waves-light btn' href="{% url 'seals:index' %}">Back to overview</a>
 			<div class='row'>
@@ -32,13 +21,12 @@
 						<div class='col s12'>
 							<div class="card blue-grey darken-2">
 								<div class="card-content white-text">
-									<span class="card-title">{{ vessel.name }}</span>
+									<span class="card-title"><a href="{% url 'seals:vessel_detail' vessel.id %}">{{ vessel.name }}</a></span>
 										<p>IMO number: {{ vessel.imo_number }}</p>
 										<p>
-											<ul class='collection with-header blue-grey darken-1'>
-												<li class='collection-header'><h6>Seals</h6></li>
+											<ul class='collection blue-grey darken-1'>
 												{% for seal in vessel.seal_set.all %}
-													<li class='collection-item'><b><a href="{% url 'seals:detail' seal.id %}">{{ seal.serial_number }}</a>:</b> size {{ seal.size }}mm, created {{ seal.created }}</li>
+													<li class='collection-item black-text'><b><a href="{% url 'seals:detail' seal.id %}">Seal {{ seal.serial_number }}</a></b> (size {{ seal.size }}mm, created {{ seal.created }})</li>
 												{% endfor %}
 											</ul>
 										</p>
@@ -65,17 +53,6 @@
 					</div>
 				</div>
 			</div>
-
+{% endblock %}	
 
 				
-				
-			</div>
-		 </div>
-
-	 	<!--Import jQuery before materialize.js-->
-    	{% block footer %}
-        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
-    	{% endblock %}
-	</body>
-</html>

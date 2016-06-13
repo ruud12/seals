@@ -17,30 +17,25 @@
 							<p>Created: {{ seal.created }}</p>
 							<p>Serial number: {{ seal.serial_number }}</p>
 							<p>Size: {{ seal.size }}</p>
-						</div>
-					</div>
-				</div>
-
-				<div class='col s12'>
-					<div class='card blue lighten-1'>
-						<div class='card-content'>
-							<span class="card-title">Add report</span>
 							<p><a href="{% url 'seals:add_report' seal.id %}">Add report</a></p>
 						</div>
 					</div>
 				</div>
 
+
+
 				{% for report in seal.report_set.all %}
 				<div class='col s12'>
-					<div class="card blue-grey lighten-1">
-						<div class="card-content white-text">
+					<div class="card blue-grey lighten-4">
+						<div class="card-content ">
 							<span class="card-title">{{ report }}</span>
 								<p>Created: {{ report.created }}</p>
 								<p>Remarks: {{ report.remarks }}</p>
 								<br>
-								<ul class='collection blue-grey'>
+								<ul class='collection with-header blue-grey'>
+									<li class='collection-header'>Actions</li>
 								{% for action in report.action_set.all %}
-									<li class='collection-item'>{{ action.name }} (before {{ action.execute_date }}): <i>{{ action.remarks }}</i>
+									<li class='black-text collection-item'>before {{ action.execute_date }}: {{ action.name }} <i>({{ action.remarks }})</i>
 								{% endfor %}
 								</ul>
 								<a href="{% url 'seals:add_action' seal.id report.id %}">Add action</a>
@@ -66,6 +61,7 @@
 						<p>Company: 
 								<a href="{% url 'seals:company' seal.installedinvessel.company.id %}">{{ seal.installedinvessel.company }}</a>
 						</p>
+						
 					</div>
 				</div>
 			</div>

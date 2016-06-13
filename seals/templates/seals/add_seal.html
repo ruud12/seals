@@ -13,6 +13,8 @@
 					<form method="POST" class="post-form">
 						{% csrf_token %}
 						{% form form=form %} {% endform %}
+						<div class='right-align'><a class='waves-effect btn red lighten-2'>Add vessel</a></div>
+						
 						<button type="submit" class="save btn btn-default">Save</button>
 						<a class='waves-effect btn' href="{% url 'seals:index' %}">Cancel</a>
 					</form>

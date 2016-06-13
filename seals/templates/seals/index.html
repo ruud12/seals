@@ -4,6 +4,8 @@
 
 {% block content %}
 	<h1>Seals</h1>
+
+	{% if message %}<div class='card teal lighten-2'>{{ message }}</div>{% endif %}
 	<a class='waves-effect waves-light btn' href="/">Home</a>
 	<a class='waves-effect waves-light btn' href="{% url 'seals:add_seal' %}">Add seal</a>
 

@@ -49,9 +49,11 @@ class AddSeal(forms.ModelForm):
 		fields = ('serial_number','size','installedinvessel')
 
 
+	
 class DeleteSeal(forms.ModelForm):
-	confirmation = forms.BooleanField(initial=False, required=False)
+
+	confirmation = forms.BooleanField(initial=False,label='I really want to delete this seal.')
 
 	class Meta:
 		model = Seal
-		fields = ('confirmation',)		
+		fields = ('confirmation',)

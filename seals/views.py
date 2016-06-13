@@ -96,8 +96,11 @@ def delete(request, seal_id):
 		form = DeleteSeal(request.POST, seal)
 
 		if form.is_valid():
-			form.delete()
-			return redirect(request, 'seals/index.html')
+			seal.delete()
+			return redirect('seals:index')
+
+	else:
+		form = DeleteSeal()
 
 
-	return render(request, 'seals/delete.html', { 'seal':seal})
+	return render(request, 'seals/delete.html', { 'seal':seal, 'form':form })
