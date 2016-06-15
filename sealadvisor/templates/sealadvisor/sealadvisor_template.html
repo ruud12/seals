@@ -20,6 +20,8 @@
 			<div class='row'>
 				<div class='col s6'>
 					<h1>Sealadvisor</h1>
+					We have selected our best advisor to seal your deal: <br>
+					<img height='200px' src="{% static 'images/eric.jpg' %}">
 					{% block content %}
 						<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 						<form action="" method="post">{% csrf_token %}
