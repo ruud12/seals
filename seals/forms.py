@@ -43,11 +43,9 @@ class AddReport(forms.ModelForm):
 
 
 class AddSeal(forms.ModelForm):
-
 	class Meta:
 		model=Seal
 		fields = ('serial_number','size','installedinvessel')
-
 
 	
 class DeleteSeal(forms.ModelForm):
@@ -57,3 +55,9 @@ class DeleteSeal(forms.ModelForm):
 	class Meta:
 		model = Seal
 		fields = ('confirmation',)
+
+class EditSeal(forms.ModelForm):
+	class Meta:
+		model = Seal
+		fields = ('serial_number','size','installedinvessel', 'status')
+

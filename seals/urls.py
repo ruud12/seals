@@ -5,6 +5,7 @@ app_name = 'seals'
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^seal/(?P<seal_id>[0-9]+)/delete/$', views.delete, name='delete'),
+	url(r'^seal/(?P<seal_id>[0-9]+)/edit/$', views.edit, name='edit'),
 	url(r'^add_seal/$', views.add_seal, name='add_seal'),
 	url(r'^seal/(?P<primary_key>[0-9]+)/$', views.detail, name='detail'),
 	url(r'^company/(?P<primary_key>[0-9]+)/$', views.company, name='company'),

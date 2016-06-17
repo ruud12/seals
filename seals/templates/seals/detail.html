@@ -6,6 +6,8 @@
 	<h1>Seal: {{ seal.serial_number }} </h1>
 	<a class='waves-effect waves-light btn' href="{% url 'seals:index' %}">Back to overview</a>
 	<a class='waves-effect waves-light btn red' href="{% url 'seals:delete' seal.id %}">Delete seal</a>
+	<a class='waves-effect waves-light btn orange' href="{% url 'seals:edit' seal.id %}">Edit seal</a>
+	<br><br>
 	<div class='row'>
 		<div class='col s6'>
 			<!-- vessel and action information -->
@@ -17,6 +19,7 @@
 							<p>Created: {{ seal.created }}</p>
 							<p>Serial number: {{ seal.serial_number }}</p>
 							<p>Size: {{ seal.size }}</p>
+							<p>Status: {{ seal.status }}<p>
 							<p><a href="{% url 'seals:add_report' seal.id %}">Add report</a></p>
 						</div>
 					</div>

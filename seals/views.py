@@ -4,7 +4,7 @@ from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
-from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal
+from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal, EditSeal
 from formtools.wizard.views import SessionWizardView
 from django.utils import timezone
 from datetime import datetime
@@ -80,7 +80,7 @@ def add_seal(request):
 		if form.is_valid():
 			new_seal = form.save(commit=False)
 			new_seal.created = datetime.now()
-			new_seal = form.save()
+			new_seal.save()
 			return redirect('seals:detail', primary_key=new_seal.id)
 
 	else:
@@ -89,18 +89,30 @@ def add_seal(request):
 	return render(request, 'seals/add_seal.html', {'form':form})
 
 def delete(request, seal_id):
-
 	seal = get_object_or_404(Seal, pk=seal_id)
-	
 	if request.method == "POST":
 		form = DeleteSeal(request.POST, seal)
-
 		if form.is_valid():
 			seal.delete()
 			return redirect('seals:index')
-
 	else:
 		form = DeleteSeal()
-
-
 	return render(request, 'seals/delete.html', { 'seal':seal, 'form':form })
+
+def edit(request, seal_id):
+	seal = get_object_or_404(Seal, pk=seal_id)
+
+	if request.method == "POST":
+		form = EditSeal(request.POST, seal)
+		if form.is_valid():
+			edit_seal = form.save(commit=False)
+			edit_seal.created = seal.created
+			edit_seal.id = seal.id
+
+			edit_seal.save()
+			return redirect('seals:detail', primary_key=seal.id)
+	else:
+		form = EditSeal(initial={'serial_number': seal.serial_number, 'size': seal.size, 'installedinvessel': seal.installedinvessel.pk, 'status': seal.status.pk})
+
+
+	return render(request,'seals/edit.html', {'seal':seal, 'form':form})

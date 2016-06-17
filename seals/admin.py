@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from seals.models import Company, Seal, Vessel, contactPerson, Report, Action
+from seals.models import Company, Seal, Vessel, contactPerson, Report, Action, Sealstatus
 from django.contrib.auth.models import User
 
 admin.site.register(Company)
@@ -10,3 +10,4 @@ admin.site.register(Vessel)
 admin.site.register(contactPerson)
 admin.site.register(Report)
 admin.site.register(Action)
+admin.site.register(Sealstatus)

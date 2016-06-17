@@ -44,11 +44,21 @@ class Vessel(models.Model):
 	def __str__(self):
 		return self.name
 
+
+class Sealstatus(models.Model):
+	name = models.CharField(max_length=100)
+	number = models.IntegerField()
+
+	def __str__(self):
+		return str("{number} - {name}").format(number=self.number, name=self.name)
+
+
 class Seal(models.Model):
 	created = models.DateTimeField(verbose_name='Created')
 	serial_number = models.CharField(max_length=10, verbose_name='Serial number')
 	size= models.IntegerField(verbose_name = 'Seal size')
 	installedinvessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
+	status = models.ForeignKey(Sealstatus, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return self.serial_number
