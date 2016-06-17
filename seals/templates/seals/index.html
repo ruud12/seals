@@ -1,55 +1,33 @@
-{% load staticfiles %}
+{% extends 'seals/base.html' %}
 {% load render_table from django_tables2 %}
-<html>
-	<head>
-		<style>
+{% load material_form %} 		
 
-		</style>
-		<!--Import materialize.css-->
-    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
-    	<link type="text/css" rel="stylesheet" href="{% static 'css/seals.css' %}">
-    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
-	</head>
-	<body>
-		<div class='container'>
-			<h1>Seals</h1>
-			<a class='waves-effect waves-light btn' href="/">Home</a>
-			{% block content %}
-				<ul class='collapsible' data-collapsible='accordion'>
-					<li>
-						<div class='collapsible-header'>Search in seals</div>
-						<div class='collapsible-body container'>
-						    <form class='search-seals' action="" method="get">
-						    	{% csrf_token %}
-						        {% for field in filter.form %}
-						        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
-						        		{{ field.errors }}
-						        		{{ field.label_tag }}: {{ field }}
-						        	</div>
-						        {% endfor %}
-						        <input type="submit" value='Search' />
-						        <a href='{{ request.path }}'>Reset</a>
-						    </form>
-						</div>
-					</li>
-				</ul>
-			{% endblock %}
-			
-			{% render_table table %}
-		 </div>
+{% block content %}
+	<h1>Seals</h1>
 
-	 	<!--Import jQuery before materialize.js-->
-    	{% block footer %}
-        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
-        	<script type='text/javascript'>
-        		$(document).ready(function() {
-   		 			$('select').material_select();
-   		 			$('.collapsible').collapsible({
-      accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-    				});
-				});
-			</script>
-    	{% endblock %}
-	</body>
-</html>
+	{% if message %}<div class='card teal lighten-2'>{{ message }}</div>{% endif %}
+	<a class='waves-effect waves-light btn' href="/">Home</a>
+	<a class='waves-effect waves-light btn' href="{% url 'seals:add_seal' %}">Add seal</a>
+
+
+		<ul class='collapsible' data-collapsible='accordion'>
+			<li>
+				<div class='collapsible-header'>Search in seals</div>
+				<div class='collapsible-body container'>
+				    <form class='search-seals' action="" method="get">
+				    	{% csrf_token %}
+				        {% for field in filter.form %}
+				        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
+				        		{{ field.errors }}
+				        		{{ field.label_tag }}: {{ field }}
+				        	</div>
+				        {% endfor %}
+				        <input type="submit" value='Search' />
+				        <a href='{{ request.path }}'>Reset</a>
+				    </form>
+				</div>
+			</li>
+		</ul>
+
+	{% render_table table %}
+{% endblock %}	 

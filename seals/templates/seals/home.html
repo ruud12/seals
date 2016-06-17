@@ -1,14 +1,7 @@
-{% load staticfiles %}
-<html>
-	<head>
-		<style>
+{% extends 'seals/base.html' %}
+{% load material_form %} 
 
-		</style>
-		<!--Import materialize.css-->
-    	<link type="text/css" rel="stylesheet" href="{% static 'materialize/bin/materialize.css' %}"  media="screen,projection"/>
-    	<link type='text/css' rel='stylesheet' href="{% static 'css/seals.css' %}?{% now "U" %}" />
-	</head>
-	<body>
+{% block content %}
 		<div class='container'>
 			<h1>{{ Lagersmit }} </h1>
 			<div class='row'>
@@ -19,10 +12,4 @@
 			</div>
 		 </div>
 
-	 	<!--Import jQuery before materialize.js-->
-    	{% block footer %}
-        	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-        	<script type="text/javascript" src="{% static 'materialize/bin/materialize.js' %}"></script>
-    	{% endblock %}
-	</body>
-</html>
+{% endblock %}	

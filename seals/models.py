@@ -21,19 +21,16 @@ class Company(models.Model):
 		return self.name
 
 class contactPerson(models.Model):
+	first_name = models.CharField(max_length=100)
+	last_name = models.CharField(max_length=100)
 	company = models.ForeignKey(Company, on_delete=models.CASCADE)
-	user = models.OneToOneField(User,on_delete=models.CASCADE)
+	user = models.OneToOneField(User,on_delete=models.CASCADE, blank=True, null=True)
 	position = models.CharField(max_length=100)
 	phone_number = models.CharField(max_length=15)
 
 
 	def __str__(self):
-		if(self.user.first_name or self.user.last_name):
-			user_text = str("{first_name} {last_name}").format(first_name=self.user.first_name, last_name=self.user.last_name)
-		else:
-			user_text = self.user.username
-
-		return user_text
+		return str('{first_name} {last_name}').format(first_name=self.first_name, last_name=self.last_name)
 
 
 class Vessel(models.Model):
@@ -48,7 +45,7 @@ class Vessel(models.Model):
 		return self.name
 
 class Seal(models.Model):
-	created = models.DateField(verbose_name='Created')
+	created = models.DateTimeField(verbose_name='Created')
 	serial_number = models.CharField(max_length=10, verbose_name='Serial number')
 	size= models.IntegerField(verbose_name = 'Seal size')
 	installedinvessel = models.ForeignKey(Vessel, verbose_name='Installed in vessel',on_delete=models.CASCADE)
@@ -64,7 +61,7 @@ class Report(models.Model):
 	title = models.CharField(max_length=300,verbose_name='Title')
 	remarks = models.CharField(max_length=1000,verbose_name='Remarks')
 	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
-	created = models.DateTimeField(verbose_name='Created', default=timezone.now)
+	created = models.DateField(verbose_name='Created', default=timezone.now)
 
 	def __str__(self):
 		return self.title
@@ -75,6 +72,7 @@ class Action(models.Model):
 	remarks = models.CharField(max_length=1000, verbose_name='Remarks')
 	relatedtoseal = models.ForeignKey(Seal, verbose_name='Related to seal')
 	relatedtoreport = models.ForeignKey(Report, verbose_name='Related to report')
+
 
 	def __str__(self):
 		return self.name

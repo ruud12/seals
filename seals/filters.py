@@ -15,7 +15,8 @@ class SealFilter(django_filters.FilterSet):
 
 	class Meta:
 		model = Seal
-		sequence = ('installedinvessel__name','size', 'size__st', 'size__gt','installedinvessel__company__name', 'installedinvessel__contact')
+		sequence = ('installedinvessel__name','size', 'size__st', 'size__gt','installedinvessel__company__name',)
+		exclude = ('created',)
 
 	def custom_contact_filter(self, queryset, value):
 		if value != "":
