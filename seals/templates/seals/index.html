@@ -4,30 +4,31 @@
 
 {% block content %}
 	<h1>Seals</h1>
-
 	{% if message %}<div class='card teal lighten-2'>{{ message }}</div>{% endif %}
-	<a class='waves-effect waves-light btn' href="/">Home</a>
-	<a class='waves-effect waves-light btn' href="{% url 'seals:add_seal' %}">Add seal</a>
+
+	<div class='row'>
+		<div class='col s3'>
+		    <form class='search-seals' action="" method="get">
+		    	{% csrf_token %}
+		        <input class='btn' type="submit" value='Search' />
+		        <a class='btn orange' href='{{ request.path }}'>Reset</a>
+		        <br><br>
+		        {% for field in filter.form %}
+		        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
+		        		{{ field.errors }}
+		        		{{ field.label_tag }}: {{ field }}
+		        	</div>
+		        {% endfor %}
+		        <input class='btn' type="submit" value='Search' />
+		        <a class='btn orange' href='{{ request.path }}'>Reset</a>
+		    </form>
+		</div>
+		<div class='col s9'>
+			<a class='waves-effect waves-light btn' href="/">Home</a>
+			<a class='waves-effect waves-light btn' href="{% url 'seals:add_seal' %}">Add seal</a>
+			{% render_table table %}
+		</div>
+	</div>
 
 
-		<ul class='collapsible' data-collapsible='accordion'>
-			<li>
-				<div class='collapsible-header'>Search in seals</div>
-				<div class='collapsible-body container'>
-				    <form class='search-seals' action="" method="get">
-				    	{% csrf_token %}
-				        {% for field in filter.form %}
-				        	<div class='fieldWrapper' id='{{ field.auto_id }}'>
-				        		{{ field.errors }}
-				        		{{ field.label_tag }}: {{ field }}
-				        	</div>
-				        {% endfor %}
-				        <input type="submit" value='Search' />
-				        <a href='{{ request.path }}'>Reset</a>
-				    </form>
-				</div>
-			</li>
-		</ul>
-
-	{% render_table table %}
 {% endblock %}	 

@@ -4,7 +4,7 @@ from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
-from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal, EditSeal
+from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal, EditSeal, EditVessel, EditCompany
 from formtools.wizard.views import SessionWizardView
 from django.utils import timezone
 from datetime import datetime
@@ -23,9 +23,9 @@ def detail(request, primary_key):
 	seal = get_object_or_404(Seal, pk=primary_key)	
 	return render(request, 'seals/detail.html', {'seal': seal})	
 
-def company(request, primary_key):
-	company = get_object_or_404(Company, pk=primary_key)
-	vessels = Vessel.objects.filter(company=primary_key)
+def company(request, company_id):
+	company = get_object_or_404(Company, pk=company_id)
+	vessels = Vessel.objects.filter(company=company_id)
 	return render(request, 'seals/company.html', { 'company':company, 'vessels':vessels })
 
 
@@ -116,3 +116,41 @@ def edit(request, seal_id):
 
 
 	return render(request,'seals/edit.html', {'seal':seal, 'form':form})
+
+
+def editVessel(request, vessel_id):
+	vessel = get_object_or_404(Vessel, pk=vessel_id)
+
+	if request.method == "POST":
+		form = EditVessel(request.POST, vessel)
+		if form.is_valid():
+			edit_vessel = form.save(commit=False)
+			# edit_vessel.created = seal.created
+			edit_vessel.id = vessel.id
+			edit_vessel.save()
+
+			return redirect('seals:vessel_detail', vessel_id=vessel.id)
+	else:
+		form = EditVessel(initial={'name':vessel.name, 'imo_number':vessel.imo_number,'company':vessel.company.pk, 'contact' : [c.pk for c in vessel.contact.all()]})
+
+
+	return render(request,'seals/edit_vessel.html', {'vessel':vessel, 'form':form})
+
+
+def editCompany(request, company_id):
+	company = get_object_or_404(Company, pk=company_id)
+
+	if request.method == "POST":
+		form = EditCompany(request.POST, company)
+		if form.is_valid():
+			edit_company = form.save(commit=False)
+			# edit_vessel.created = seal.created
+			edit_company.id = company.id
+			edit_company.save()
+
+			return redirect('seals:company', company_id=company.id)
+	else:
+		form = EditCompany(initial={'name':company.name,'street':company.street,'streetNumber':company.streetNumber,'city':company.city,'country':company.country.code})
+
+
+	return render(request,'seals/edit_company.html', {'company':company, 'form':form})
