@@ -1,5 +1,5 @@
 from django import forms
-from seals.models import Action, Report, contactPerson,Seal, Vessel, Company
+from seals.models import Action, Report, contactPerson,Seal, Vessel, Company, contactPerson
 from django.forms.extras.widgets import SelectDateWidget
 from django.utils import timezone
 
@@ -47,6 +47,16 @@ class AddSeal(forms.ModelForm):
 		model=Seal
 		fields = ('serial_number','size','installedinvessel')
 
+
+class AddContact(forms.ModelForm):
+	class Meta:
+		model = contactPerson
+		fields = ('first_name','last_name','position','phone_number')
+
+class EditContact(forms.ModelForm):
+	class Meta:
+		model = contactPerson
+		fields = ('first_name','last_name','position','phone_number','company')
 	
 class DeleteSeal(forms.ModelForm):
 

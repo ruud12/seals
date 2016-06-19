@@ -4,7 +4,7 @@ from seals.models import Company, Seal, contactPerson, Vessel, Report
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
-from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal, EditSeal, EditVessel, EditCompany
+from seals.forms import AddAction, AddReport, AddSeal, DeleteSeal, EditSeal, EditVessel, EditCompany, AddContact, EditContact
 from formtools.wizard.views import SessionWizardView
 from django.utils import timezone
 from datetime import datetime
@@ -99,11 +99,15 @@ def delete(request, seal_id):
 		form = DeleteSeal()
 	return render(request, 'seals/delete.html', { 'seal':seal, 'form':form })
 
+
+
+
+
 def edit(request, seal_id):
 	seal = get_object_or_404(Seal, pk=seal_id)
 
 	if request.method == "POST":
-		form = EditSeal(request.POST, seal)
+		form = EditSeal(request.POST, instance=seal)
 		if form.is_valid():
 			edit_seal = form.save(commit=False)
 			edit_seal.created = seal.created
@@ -122,7 +126,7 @@ def editVessel(request, vessel_id):
 	vessel = get_object_or_404(Vessel, pk=vessel_id)
 
 	if request.method == "POST":
-		form = EditVessel(request.POST, vessel)
+		form = EditVessel(request.POST, instance=vessel)
 		if form.is_valid():
 			edit_vessel = form.save(commit=False)
 			# edit_vessel.created = seal.created
@@ -141,7 +145,7 @@ def editCompany(request, company_id):
 	company = get_object_or_404(Company, pk=company_id)
 
 	if request.method == "POST":
-		form = EditCompany(request.POST, company)
+		form = EditCompany(request.POST, instance=company)
 		if form.is_valid():
 			edit_company = form.save(commit=False)
 			# edit_vessel.created = seal.created
@@ -154,3 +158,50 @@ def editCompany(request, company_id):
 
 
 	return render(request,'seals/edit_company.html', {'company':company, 'form':form})
+
+
+def addContact(request, company_id):
+	company = get_object_or_404(Company, pk=company_id)
+
+	
+	if request.method == "POST":
+		form = AddContact(request.POST)
+
+		if form.is_valid():
+			new_contact = form.save(commit=False)
+			new_contact.company = company
+			new_contact.save()
+
+			return redirect('seals:company', company_id=company.id)
+
+	else:
+		form = AddContact()
+
+
+	return render(request, 'seals/add_contact.html', {'company':company, 'form':form})
+
+
+def editContact(request, contact_id, company_id):
+	contact = get_object_or_404(contactPerson, pk=contact_id)
+	company = get_object_or_404(Company, pk=company_id)
+
+	if request.method == "POST":
+		form = EditContact(request.POST, instance=contact)
+
+		if form.is_valid():
+			updated_contact = form.save()
+
+		return redirect('seals:company', company_id=company.id)
+
+	else:
+		form = EditContact(initial={'first_name':contact.first_name,'last_name':contact.last_name, 'position':contact.position,'phone_number':contact.phone_number,'company':contact.company.pk})
+
+		return render(request, 'seals/edit_contact.html', {'contact':contact,'form':form})
+
+def deleteContact(request, contact_id, ):
+	contact = get_object_or_404(contactPerson, pk=contact_id)
+	company_id = contact.company.id
+	contact.delete()
+
+	return redirect('seals:company', company_id=company_id)
+
