@@ -45,7 +45,7 @@ class AddReport(forms.ModelForm):
 class AddSeal(forms.ModelForm):
 	class Meta:
 		model=Seal
-		fields = ('serial_number','size','installedinvessel')
+		fields = ('serial_number','size','installedinvessel','sealtype')
 
 
 class AddContact(forms.ModelForm):
@@ -69,7 +69,7 @@ class DeleteSeal(forms.ModelForm):
 class EditSeal(forms.ModelForm):
 	class Meta:
 		model = Seal
-		fields = ('serial_number','size','installedinvessel', 'status')
+		fields = ('serial_number','size','installedinvessel', 'status','sealtype')
 
 class EditVessel(forms.ModelForm):
 	class Meta:

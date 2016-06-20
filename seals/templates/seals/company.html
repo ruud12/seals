@@ -38,7 +38,7 @@
 											<ul class='collection blue-grey darken-1 with-header'>
 												<li class='collection-header'>Seal(s)</li>
 												{% for seal in vessel.seal_set.all %}
-													<li class='collection-item black-text'><b><a href="{% url 'seals:detail' seal.id %}">Seal {{ seal.serial_number }}</a></b> (size {{ seal.size }}mm, created {{ seal.created }})</li>
+													<li class='collection-item black-text'><b><a href="{% url 'seals:detail' seal.id %}">Seal {{ seal.serial_number }}</a></b> (size {{ seal.size }}mm, type {{ seal.sealtype }}, created {{ seal.created }})</li>
 												{% endfor %}
 											</ul>
 										</p>

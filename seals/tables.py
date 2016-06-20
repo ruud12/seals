@@ -31,7 +31,7 @@ class SealTable(tables.Table):
 	class Meta:
 		model = Seal
 		sequence = ('serial_number','...')
-		fields= ('serial_number', 'size', 'installedinvessel','company', 'contact')
+		fields= ('serial_number', 'size', 'sealtype', 'installedinvessel','company', 'contact')
 		attrs = {'class': 'bordered striped'}
 
 

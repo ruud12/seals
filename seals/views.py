@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django_tables2 import RequestConfig
-from seals.models import Company, Seal, contactPerson, Vessel, Report
+from seals.models import Company, Seal, contactPerson, Vessel, Report, Type
 from django.contrib.auth.models import User
 from seals.tables import SealTable
 from seals.filters import SealFilter
@@ -116,7 +116,7 @@ def edit(request, seal_id):
 			edit_seal.save()
 			return redirect('seals:detail', primary_key=seal.id)
 	else:
-		form = EditSeal(initial={'serial_number': seal.serial_number, 'size': seal.size, 'installedinvessel': seal.installedinvessel.pk, 'status': seal.status.pk})
+		form = EditSeal(initial={'serial_number': seal.serial_number, 'size': seal.size, 'installedinvessel': seal.installedinvessel.pk, 'status': seal.status.pk,'sealtype':seal.sealtype.pk})
 
 
 	return render(request,'seals/edit.html', {'seal':seal, 'form':form})
