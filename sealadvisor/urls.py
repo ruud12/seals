@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^$', views.ContactWizard.as_view(
 		advisor_forms, 
 		condition_dict={
+
 			'1': views.sterntube_chosen, 
 			'3': views.ventus,
 			'4': views.athmos,

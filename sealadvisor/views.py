@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from sealadvisor.models import Advise, Application
 from sealadvisor.forms import AddAdvise1, AddAdvise2, AddAdvise3, AddAdvise4, AddAdvise5, AddAdvise6
+from seals.models import Company
 from formtools.wizard.views import SessionWizardView
 
 
@@ -22,8 +23,17 @@ from formtools.wizard.views import SessionWizardView
 
 # 	return render(request, 'sealadvisor/index.html', { 'form': form })
 
-def sterntube_chosen(wizard):
+def existing_company(wizard):
 	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+
+	if cleaned_data.get('existing_company') == 'yes':
+		return False
+	else: 
+		return True
+
+
+def sterntube_chosen(wizard):
+	cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
 
 	if cleaned_data.get('application') == 'sterntube':
 		return False
@@ -31,7 +41,7 @@ def sterntube_chosen(wizard):
 		return True
 
 def ventus(wizard):
-	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+	cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
 
 	if cleaned_data:
 		if cleaned_data.get('draught_shaft') > 4:
@@ -42,7 +52,7 @@ def ventus(wizard):
 		return False
 
 def athmos(wizard):
-	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
+	cleaned_data = wizard.get_cleaned_data_for_step('1') or {}
 	if cleaned_data:
 		if cleaned_data.get('draught_shaft') > 4:
 			return False
@@ -56,6 +66,18 @@ def athmos(wizard):
 class ContactWizard(SessionWizardView):
 
 	template_name = "sealadvisor/sealadvisor_template.html"
+
+	def parse_params(self, request, *args, **kwargs):
+		current_step = self.determine_step(request, *args, **kwargs)
+		if request.method == 'POST' and current_step == 0:
+			form = self.get_form(current_step, request.POST)
+			if form.is_valid():
+				self.initial[(current_step + 1)] = {
+					'forwardseal' : True,
+					# 'name': form.cleaned_data['name'],
+					# 'address': form.cleaned_data['address'],
+					# 'city': form.cleaned_data['city'],
+				}
 
 	def done(self, form_list, **kwargs):
 

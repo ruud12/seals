@@ -7,8 +7,12 @@
 
 {% block content %}
 					<h1>Sealadvisor</h1>
-					We have selected our best advisor to seal your deal: <br>
-					<img height='200px' src="{% static 'images/eric.jpg' %}">
+
+
+					{% if not wizard.steps.prev %}
+						We have selected our best advisor to seal your deal: <br>
+						<img height='200px' src="{% static 'images/eric.jpg' %}">
+					{% endif %}
 
 						<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 						<form action="" method="post">{% csrf_token %}
@@ -17,15 +21,7 @@
 								{% if wizard.form.forms %}
 								    {{ wizard.form.management_form }}
 								    {% for form in wizard.form.forms %}
-								    	{{ form.error_message }}
-									    {% for field in wizard.form %}
-
-									    	{% if field|field_type:'checkboxinput' %}
-									    		<p>{{ field }} {{ field.label_tag }}</p>
-									    	{% else %}
-									    		<p>{{ field.label_tag }} {{ field }}</p>
-									    	{% endif %}
-								    	{% endfor %}  
+									    {{ form }}
 								    {% endfor %}
 								{% else %}
 								    {% for field in wizard.form %}
@@ -46,15 +42,18 @@
 								    {% endfor %}
 								{% endif %}
 							</table>
-							{% if wizard.steps.prev %}
-								<button name="wizard_goto_step" type="submit" class='btn' value="{{ wizard.steps.first }}">First step</button>
-								<button name="wizard_goto_step" type="submit" class='btn' value="{{ wizard.steps.prev }}">Previous step</button>
-							{% endif %}
+					
+						
 
 							{% if wizard.steps.next %}
 								<input type="submit" class='btn' value="Next"/>
 							{% else %}
 								<input type="submit" class='btn' value="Submit"/>
+							{% endif %}
+
+							{% if wizard.steps.prev %}
+								<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.first }}">First step</button>
+								<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.prev }}">Previous step</button>
 							{% endif %}
 						</form>
 
