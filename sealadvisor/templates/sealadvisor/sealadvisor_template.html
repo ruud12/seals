@@ -6,55 +6,60 @@
 			
 
 {% block content %}
-					<h1>Sealadvisor</h1>
+	<p>
+		<a href="{% url 'sealadvisor:index' %}"	class='btn orange'>Home</a>
+		<a href="{% url 'sealadvisor:supreme_advisor' %}"	class='btn orange'>Reset form</a>
+	</p>
+	<h1>Sealadvisor</h1>
 
+	{% if not wizard.steps.prev %}
+		We have selected our best advisor to seal your deal: <br>
+		<img height='200px' src="{% static 'images/willem.jpg' %}"><br>
+		Price is non-negotiable!
+	{% endif %}
 
-					{% if not wizard.steps.prev %}
-						We have selected our best advisor to seal your deal: <br>
-						<img height='200px' src="{% static 'images/eric.jpg' %}">
-					{% endif %}
+		<form action="" method="post">{% csrf_token %}
+			<table>
+				{{ wizard.management_form }}
+				{% if wizard.form.forms %}
+				    {{ wizard.form.management_form }}
+				    {% for form in wizard.form.forms %}
+					    {{ form }}
+				    {% endfor %}
+				{% else %}
+				    {% for field in wizard.form %}
 
-						<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-						<form action="" method="post">{% csrf_token %}
-							<table>
-								{{ wizard.management_form }}
-								{% if wizard.form.forms %}
-								    {{ wizard.form.management_form }}
-								    {% for form in wizard.form.forms %}
-									    {{ form }}
-								    {% endfor %}
-								{% else %}
-								    {% for field in wizard.form %}
+				    	{% if field.errors %}
+				    		<p class='error' style='border:1px solid red'>
+				    	{% else %}
+				    		<p>
+						    	{% endif %}
+						    	{% if field|field_type:'checkboxinput' %}
+						    		<p>{{ field }} {{ field.label_tag }}</p>
+						    	
+						    	{% else %}
+						    		<p>{{ field.label_tag }} {{ field }}</p>
+						    	{% endif %}
+				    		</p>
 
-								    	{% if field.errors %}
-								    		<p class='error' style='border:1px solid red'>
-								    	{% else %}
-								    		<p>
-										    	{% endif %}
-										    	{% if field|field_type:'checkboxinput' %}
-										    		<p>{{ field }} {{ field.label_tag }}</p>
-										    	
-										    	{% else %}
-										    		<p>{{ field.label_tag }} {{ field }}</p>
-										    	{% endif %}
-								    		</p>
+				    {% endfor %}
+				{% endif %}
+			</table>
+	
+		
 
-								    {% endfor %}
-								{% endif %}
-							</table>
-					
-						
+			{% if wizard.steps.next %}
+				<input type="submit" class='btn' value="Next"/>
+			{% else %}
+				<input type="submit" class='btn' value="Submit"/>
+			{% endif %}
 
-							{% if wizard.steps.next %}
-								<input type="submit" class='btn' value="Next"/>
-							{% else %}
-								<input type="submit" class='btn' value="Submit"/>
-							{% endif %}
+			{% if wizard.steps.prev %}
+				<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.first }}">First step</button>
+				<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.prev }}">Previous step</button>
+			{% endif %}
+		</form>
+		
+		<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 
-							{% if wizard.steps.prev %}
-								<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.first }}">First step</button>
-								<button name="wizard_goto_step" type="submit" class='btn teal lighten-2' value="{{ wizard.steps.prev }}">Previous step</button>
-							{% endif %}
-						</form>
-
-				{% endblock %}	 
+{% endblock %}	 

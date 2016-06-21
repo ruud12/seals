@@ -7,56 +7,53 @@ from seals.models import Company
 
 
 
-
-
-
-
-
-class AddAdvise1(forms.ModelForm):
+class Advise0(forms.ModelForm):
 	error_css_class = 'error'
-	# application = forms.ModelChoiceField(queryset=Application.objects.all(), widget=forms.RadioSelect)
-	# CHOICES = [(l.id, l.name) for l in Company.objects.all()]
-	company = forms.ModelChoiceField(Company.objects.all())
 
 	class Meta:
 		model = Advise
-		# application = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-
-		fields = ('company','application', 'shaft_size', 'rpm', 'draught_shaft')
+		fields = ('application', 'cpp_fpp')
 
 
+class Advise1(forms.ModelForm):
 
+	class Meta:
+		model = Advise
+		fields = ('shaft_size', 'rpm', 'draught_shaft')
 
-
+	def __init__(self, *args, **kwargs):
+		super(Advise1, self).__init__(*args, **kwargs)
 
 		
-class AddAdvise2(forms.ModelForm):
+
+	
+class Advise2(forms.ModelForm):
 
 	class Meta:
 		model = Advise
 		fields = ('forwardseal', 'aftseal')		
 
 
-class AddAdvise3(forms.ModelForm):
+class Advise3(forms.ModelForm):
 
 	class Meta:
 		model = Advise
 		fields = ('anode', 'eal','liner_centering','oring')
 
 
-class AddAdvise4(forms.ModelForm):
+class Advise4(forms.ModelForm):
 
 	class Meta:
 		model = Advise
 		fields = ('ventus',)
 
-class AddAdvise5(forms.ModelForm):
+class Advise5(forms.ModelForm):
 
 	class Meta:
 		model = Advise
 		fields = ('athmos',)
 
-class AddAdvise6(forms.ModelForm):
+class Advise6(forms.ModelForm):
 
 	class Meta:
 		model = Advise

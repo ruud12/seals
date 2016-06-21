@@ -1,21 +1,21 @@
 from django.conf.urls import url
 from sealadvisor import views
-from sealadvisor.forms import AddAdvise1, AddAdvise2, AddAdvise3, AddAdvise4, AddAdvise5, AddAdvise6
+from sealadvisor.forms import Advise0, Advise1, Advise2, Advise3, Advise4, Advise5, Advise6
 
 
 app_name = 'sealadvisor'
 
-advisor_forms = [AddAdvise1, AddAdvise2, AddAdvise3, AddAdvise4, AddAdvise5, AddAdvise6]
+advisor_forms = [Advise0, Advise1, Advise2, Advise3, Advise4,Advise5, Advise6]
 
 urlpatterns = [
 	# url(r'^$', views.index, name='index'),
-	url(r'^$', views.ContactWizard.as_view(
+	url(r'^$', views.index, name='index'),
+	url(r'^supreme/$', views.ContactWizard.as_view(
 		advisor_forms, 
 		condition_dict={
-
-			'1': views.sterntube_chosen, 
-			'3': views.ventus,
-			'4': views.athmos,
+			'2': views.sterntube_chosen, 
+			'4': views.ventus,
+			'5': views.athmos,
 		}
-	)),
+	), name='supreme_advisor'),
 ]

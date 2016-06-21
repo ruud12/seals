@@ -16,7 +16,18 @@ class Application(models.Model):
 
 
 class Advise(models.Model):
+
+
+
+
 	application = models.ForeignKey(Application)
+
+	CHOICES = (
+		('fpp', 'Fixed pitch'),
+		('cpp', 'Controllable pitch')
+	)
+
+	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor')
 	shaft_size = models.IntegerField(verbose_name='Shaft diameter (mm)')
 	rpm = models.IntegerField(verbose_name = 'Shaft rotational speed (RPM)')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
