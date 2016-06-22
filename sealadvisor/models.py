@@ -29,6 +29,7 @@ class Advise(models.Model):
 
 	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor')
 	shaft_size = models.IntegerField(verbose_name='Shaft diameter (mm)')
+	shaft_size_forward = models.IntegerField(verbose_name='Forward shaft diameter (mm)')
 	rpm = models.IntegerField(verbose_name = 'Shaft rotational speed (RPM)')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
 	eal = models.BooleanField(default=False, verbose_name='EAL oil used?')
