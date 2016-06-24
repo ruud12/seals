@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^seals/', include('seals.urls')),
     url(r'^sealadvisor/', include('sealadvisor.urls')),
+    url(r'^sealadvisor2/', include('sealadvisor2.urls')),
 ]

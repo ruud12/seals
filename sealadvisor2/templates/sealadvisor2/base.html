@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+
+        {% include 'material/includes/material_css.html' %}
+        <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+        {% include 'material/includes/material_js.html' %}
+        {% load material_form %} 
+
+	</head>
+  
+ 	<body>
+
+        <div class="content container">
+                {% block content %}
+                {% endblock %}
+        </div>
+
+ 	</body>
+</html>
