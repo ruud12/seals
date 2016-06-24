@@ -12,49 +12,67 @@ class Advise0(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('application', 'cpp_fpp')
+		fields = ('application', 'cpp_fpp','rpm','draught_shaft','liner_centering')
 
 
 class Advise1(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('shaft_size', 'shaft_size_forward', 'rpm', 'draught_shaft')
+		fields = ('forwardseal', 'aftseal')		
 
-	def __init__(self, *args, **kwargs):
-		super(Advise1, self).__init__(*args, **kwargs)
-
-		
-
-	
 class Advise2(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('forwardseal', 'aftseal')		
+		fields = ('shaft_size','aft_built_in_length','aft_pcd_liner', 'aft_liner_centering_edge', 'aft_pcd_flange', 'aft_pcd_centering')
+
+
+class AftOptions(forms.ModelForm):
+	class Meta:
+		model = Advise
+		fields = ('eal','wirewinder', 'netcutters', 'sandy', 'anode','hml_forward' )
 
 
 class Advise3(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('anode', 'eal','liner_centering','oring')
+		fields = ('shaft_size_forward','forward_pcd_flange', 'forward_pcd_centering')
+
+
+class ForwardOptions(forms.ModelForm):
+	class Meta:
+		model = Advise
+		fields = ('ocr','fkm_forward','hml_forward')
 
 
 class Advise4(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('ventus',)
+		fields = ('oring',)
+
 
 class Advise5(forms.ModelForm):
 
 	class Meta:
 		model = Advise
-		fields = ('athmos',)
+		fields = ('ventus',)
 
 class Advise6(forms.ModelForm):
 
 	class Meta:
 		model = Advise
+		fields = ('athmos',)
+
+class Advise7(forms.ModelForm):
+
+	class Meta:
+		model = Advise
 		fields = ('wirewinder', 'netcutters')
+
+class Other(forms.ModelForm):
+	class Meta:
+		model = Advise
+		fields = ('type_approval','vgp')

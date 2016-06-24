@@ -3,7 +3,7 @@ from sealadvisor.models import Advise, Application
 from sealadvisor.forms import Advise0, Advise1, Advise2, Advise3, Advise4,Advise5, Advise6
 from seals.models import Company
 from formtools.wizard.views import SessionWizardView
-
+import sys
 
 # Create your views here.
 
@@ -29,15 +29,38 @@ def index(request):
 
 
 def sterntube_chosen(wizard):
-	cleaned_data = wizard.get_cleaned_data_for_step('2') or {}
+	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
 
-	if cleaned_data.get('application') == 'sterntube':
+	try:
+		return cleaned_data.get('application', 'None').key =='sterntube'
+	except Exception:
 		return False
-	else: 
-		return True
+
+
+
+def aft(wizard):
+	step0 = wizard.get_cleaned_data_for_step('0') or {}
+	step1 = wizard.get_cleaned_data_for_step('1') or {}
+
+	try:
+		return step0.get('application', 'None').key != 'sterntube' or (step0.get('application', 'None').key == 'sterntube' and step1.get('aftseal', 'None') == True)
+	except Exception:
+		return False
+
+
+def forward(wizard):
+	step0 = wizard.get_cleaned_data_for_step('0') or {}
+	step1 = wizard.get_cleaned_data_for_step('1') or {}
+
+	try:
+		return (step0.get('application', 'None').key == 'sterntube' and step1.get('forwardseal', 'None') == True)
+	except Exception:
+		return False
+
+
 
 def ventus(wizard):
-	cleaned_data = wizard.get_cleaned_data_for_step('2') or {}
+	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
 
 	if cleaned_data:
 		if cleaned_data.get('draught_shaft') > 4:
@@ -48,7 +71,7 @@ def ventus(wizard):
 		return False
 
 def athmos(wizard):
-	cleaned_data = wizard.get_cleaned_data_for_step('2') or {}
+	cleaned_data = wizard.get_cleaned_data_for_step('0') or {}
 	if cleaned_data:
 		if cleaned_data.get('draught_shaft') > 4:
 			return False

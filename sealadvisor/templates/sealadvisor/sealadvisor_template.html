@@ -33,7 +33,7 @@
 				    		<p class='error' style='border:1px solid red'>
 				    	{% else %}
 				    		<p>
-						    	{% endif %}
+						{% endif %}
 						    	{% if field|field_type:'checkboxinput' %}
 						    		<p>{{ field }} {{ field.label_tag }}</p>
 						    	
@@ -61,5 +61,27 @@
 		</form>
 		
 		<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+
+<script type='text/javascript'>
+(function($) {
+    $(function() {
+        var selectField = $('#id_0-application'),
+            verified = $('#id_0-shaft_size_forward');
+
+        function toggleVerified(value) {
+            value == '1' ? verified.parent().show() : verified.parent().hide();
+        }
+
+        // show/hide on load based on pervious value of selectField
+        toggleVerified(selectField.val());
+
+        // show/hide on change
+        selectField.change(function() {
+            toggleVerified($(this).val());
+        });
+    });
+})(jQuery);
+
+</script>
 
 {% endblock %}	 
