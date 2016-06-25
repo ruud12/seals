@@ -1,5 +1,5 @@
 from django import forms
-from sealadvisor2.models import sealApplication, supremeAdvise, supremeAftShaftInformation, supremeFwdShaftInformation
+from sealadvisor2.models import sealApplication, supremeAdvise, supremeAftShaftInformation, supremeFwdShaftInformation, environmentalInformation
 from seals.models import Company
 
 
@@ -28,3 +28,7 @@ class supremeAftForm(forms.ModelForm):
 
 
 
+class supremeEnvironmentalForm(forms.ModelForm):
+	class Meta:
+		model= environmentalInformation
+		fields = ('eal','vgp','zero_leakage')

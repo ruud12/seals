@@ -13,6 +13,19 @@ class sealApplication(models.Model):
 		return self.name
 
 
+class environmentalInformation(models.Model):
+	eal = models.BooleanField(default=False, verbose_name='EAL oil used?')
+	vgp = models.BooleanField(default=False, verbose_name= 'Compliance with VGP (American waters)')
+	zero_leakage = models.BooleanField(default=False, verbose_name= 'Zero leakage (ventus/athmos)')
+
+	CHOICES = (
+		('ventus', 'Ventus'),
+		('athmos', 'Athmos'),
+	)
+
+	zero_leakage_type = models.CharField(max_length=20, choices=CHOICES, verbose_name="Zero leakage system",blank=True)
+
+
 class supremeAftShaftInformation(models.Model):
 
 	aft_shaft_size = models.IntegerField(verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
@@ -53,8 +66,10 @@ class supremeAdvise(models.Model):
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
 
 
-	fwd_seal_information = models.OneToOneField(supremeFwdShaftInformation, null=True, blank=True)
-	aft_seal_information = models.OneToOneField(supremeAftShaftInformation, null=True, blank=True)
+	fwd_shaft_information = models.OneToOneField(supremeFwdShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
+	aft_shaft_information = models.OneToOneField(supremeAftShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
+
+	environmental = models.OneToOneField(environmentalInformation, null=True, blank=True, on_delete=models.CASCADE)
 
 	def __str__(self):
 		return str("Advise {id} - {application}").format(id=self.id, application=self.application)
