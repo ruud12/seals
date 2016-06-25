@@ -1,13 +1,23 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from sealadvisor2 import forms
 from sealadvisor2.models import supremeAdvise, supremeFwdShaftInformation, supremeAftShaftInformation, environmentalInformation
-
+import bisect, decimal
 # Create your views here.
 
 
 
 def whichAirType(draught):
 	return 'ventus' if draught > 4 else 'athmos'
+
+
+def findCorrectSize(shaft_diameter):
+	# check for the closest liner value taking into account a 1 cm liner thickness
+
+	available_sizes = [110,125,155,175,200,225,260,330,355,440,600,720,800,900,1000]
+	n = bisect.bisect_left(available_sizes,shaft_diameter+10)
+	return available_sizes[n]
+
+
 
 
 
@@ -47,7 +57,16 @@ def supreme(request):
 def supremeDetail(request, supreme_id):
 	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
 
-	return render(request,'sealadvisor2/supreme.html', {'advise':supreme})
+	# start calculating advise if enough data is provided:
+	if supreme.aft_shaft_information:
+		advisedSize = findCorrectSize(supreme.aft_shaft_information.aft_shaft_size)
+		pv_value = (supreme.aft_shaft_information.aft_shaft_size*decimal.Decimal(3.14)*supreme.rpm/(1000*60))*supreme.draught_shaft/10
+		conclusion = str("Based on the data provided on this page, the advise is to offer the following aft liner size: {size} mm. The PV-value is equal to {pv:.2f}").format(size=advisedSize,pv=pv_value)
+	else:
+		conclusion= ''
+
+
+	return render(request,'sealadvisor2/supreme.html', {'advise':supreme,'conclusion':conclusion})
 
 def supremeEdit(request, supreme_id):
 	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)

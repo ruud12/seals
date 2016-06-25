@@ -28,14 +28,14 @@ class environmentalInformation(models.Model):
 
 class supremeAftShaftInformation(models.Model):
 
-	aft_shaft_size = models.IntegerField(verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
+	aft_shaft_size = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)')
 	aft_pcd_liner = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal liner PCD [mm]')
 	aft_pcd_flange = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal flange ring PCD [mm]')
 	aft_centering_edge = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal flange ring centering edge [mm]')
 
 
 class supremeFwdShaftInformation(models.Model):
-	fwd_shaft_size = models.IntegerField(verbose_name='Forward shaft diameter (mm)', blank=True, null=True)
+	fwd_shaft_size = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)')
 	fwd_pcd_liner = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal liner PCD [mm]')
 	fwd_pcd_flange = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal flange PCD [mm]')
 	fwd_centering_edge = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal centering edge [mm]')
@@ -62,7 +62,7 @@ class supremeAdvise(models.Model):
 	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal required?')
 
 
-	rpm = models.IntegerField(verbose_name = 'Shaft rotational speed (RPM)')
+	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Shaft rotational speed (RPM)')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
 
 

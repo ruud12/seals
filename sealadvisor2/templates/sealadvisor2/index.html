@@ -37,7 +37,7 @@
 				<div class='card blue lighten-4'>
 					<div class='card-content'>
 						<span class='card-title'>
-							<a href="{% url 'sealadvisor2:supremeEdit' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a>
+							<a href="{% url 'sealadvisor2:supremeDetail' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a>
 						</span>
 						<p>{{ advise.get_cpp_fpp_display }}</p>
 						{% if advise.company %}
