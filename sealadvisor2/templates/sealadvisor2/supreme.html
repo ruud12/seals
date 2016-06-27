@@ -26,6 +26,7 @@
                 <p>Aft seal required: {% if advise.aft_seal %}<b>yes</b>{% else %}no{% endif %}</p>
                 <p>Forward seal required: {% if advise.fwd_seal %}<b>yes</b>{% else %}no{% endif %}</p>
                 {% endif %}
+                <p>Type approval: {{ advise.typeApproval }}</p>
 			</div>
 		</div>
         {% if advise.environmental %}
@@ -53,11 +54,15 @@
         <div class='card orange lighten-4'>
             <div class='card-content'>
                 <span class='card-title black-text'>Advise</span>
-                {% if conclusion %}
-                <p> {{ conclusion }}</p>
+                {% if aft_conclusion %}
+                <p><b>Aft seal</b></p>
+                <p> {{ aft_conclusion }}</p>
                 {% endif %}
                 <br>
-                <p>To give a more accurate advise, any open data below should be filled in.</p>
+                {% if fwd_conclusion %}
+                <p><b>Fwd seal</b></p>
+                <p> {{ fwd_conclusion }}</p>
+                {% endif %}
                 <br>
                 {% if advise.fwd_seal and not advise.fwd_shaft_information %}
                 <p><a class='wave-effect btn' href="{% url 'sealadvisor2:supremeFwd' advise.id %}">Add forward seal information</a></p>

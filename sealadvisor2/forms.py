@@ -12,7 +12,7 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('company', 'application','cpp_fpp','fwd_seal','aft_seal','rpm', 'draught_shaft')
+		fields = ('company', 'application','cpp_fpp','aft_seal','fwd_seal','rpm', 'draught_shaft','typeApproval')
 
 class supremeFwdForm(forms.ModelForm):
 

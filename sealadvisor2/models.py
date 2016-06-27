@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from seals.models import Company
 
+
 # Create your models here.
 
 class sealApplication(models.Model):
@@ -41,6 +42,16 @@ class supremeFwdShaftInformation(models.Model):
 	fwd_centering_edge = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal centering edge [mm]')
 
 
+class Class(models.Model):
+	key = models.CharField(max_length=10)
+
+	className = models.CharField(max_length=100, verbose_name='Class')
+	certificateNo = models.CharField(max_length=100, verbose_name='Certificate No.')
+
+
+
+	def __str__(self):
+		return str("{className} - {certificateNo}").format(className=self.className, certificateNo=self.certificateNo)
 
 class supremeAdvise(models.Model):
 
@@ -70,6 +81,8 @@ class supremeAdvise(models.Model):
 	aft_shaft_information = models.OneToOneField(supremeAftShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
 
 	environmental = models.OneToOneField(environmentalInformation, null=True, blank=True, on_delete=models.CASCADE)
+
+	typeApproval = models.ForeignKey(Class, verbose_name='Type approval required (specify which or leave blank)', blank=True, null=True)
 
 	def __str__(self):
 		return str("Advise {id} - {application}").format(id=self.id, application=self.application)

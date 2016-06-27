@@ -33,28 +33,8 @@
 	</div>
 	<div class='col s8'>
 		{% for advise in supreme %}
-			<div class='col s4'>
-				<div class='card blue lighten-4'>
-					<div class='card-content'>
-						<span class='card-title'>
-							<a href="{% url 'sealadvisor2:supremeDetail' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a>
-						</span>
-						<p>{{ advise.get_cpp_fpp_display }}</p>
-						{% if advise.company %}
-							<p>{{ advise.company }}</p>
-						{% endif %}
-
-						{% if advise.aft_seal %}
-							<p>Aft seal</p>
-						{% endif %}
-						{% if advise.fwd_seal %}
-							<p>Forward seal</p>
-						{% endif %}
-						<p>RPM: {{ advise.rpm }}</p>
-						<p>Draught shaft: {{ advise.draught_shaft }}m</p>
-					</div>
-				</div>
-			</div>
+										<p><a href="{% url 'sealadvisor2:supremeDetail' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
+						
 		{% endfor %}
 	</div>
 </div>
