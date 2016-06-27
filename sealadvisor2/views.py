@@ -68,6 +68,8 @@ def supremeDetail(request, supreme_id):
 
 		if (supreme.draught_shaft/10 > 1.8 or rotational_speed > 5.5 or pv_value > 6):
 			rubber = "PV-value too high, contact T&P"
+		elif supreme.environmental.eal:
+			rubber = "FKM-EAL"
 		elif (pv_value < 3.5 and rotational_speed < 3.5):
 			rubber = "NBR"
 		else:
@@ -85,6 +87,8 @@ def supremeDetail(request, supreme_id):
 
 		if (supreme.draught_shaft/10 > 1.8 or rotational_speed > 5.5 or pv_value > 6):
 			rubber = "PV-value too high, contact T&P"
+		elif supreme.environmental.eal:
+			rubber = "FKM-EAL"
 		elif (pv_value < 3.5 and rotational_speed < 3.5):
 			rubber = "NBR"
 		else:

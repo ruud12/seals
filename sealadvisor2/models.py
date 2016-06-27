@@ -15,7 +15,7 @@ class sealApplication(models.Model):
 
 
 class environmentalInformation(models.Model):
-	eal = models.BooleanField(default=False, verbose_name='EAL oil used?')
+	eal = models.BooleanField(default=False, verbose_name='EAL oil used (in case of retrofit)?')
 	vgp = models.BooleanField(default=False, verbose_name= 'Compliance with VGP (American waters)')
 	zero_leakage = models.BooleanField(default=False, verbose_name= 'Zero leakage (ventus/athmos)')
 
@@ -24,7 +24,7 @@ class environmentalInformation(models.Model):
 		('athmos', 'Athmos'),
 	)
 
-	zero_leakage_type = models.CharField(max_length=20, choices=CHOICES, verbose_name="Zero leakage system",blank=True)
+	zero_leakage_type = models.CharField(max_length=20, choices=CHOICES, verbose_name="Zero leakage system (Athmos/Ventus)",blank=True)
 
 
 class supremeAftShaftInformation(models.Model):
