@@ -15,7 +15,6 @@
                 <div style='float:right;'>
                     <a class="btn-floating wave-effect waves-light teal" href="{% url 'sealadvisor2:supremeEdit' advise.id %}"><i class="material-icons">edit</i></a>
                 </div>
-				<p>Company: {{ advise.company }}</p>
                 <p>Application: {{ advise.application }}</p>
                 <br>
                 <p>{{ advise.get_cpp_fpp_display }} propellor</p>
@@ -26,6 +25,7 @@
                 <p>Aft seal required: {% if advise.aft_seal %}<b>yes</b>{% else %}no{% endif %}</p>
                 <p>Forward seal required: {% if advise.fwd_seal %}<b>yes</b>{% else %}no{% endif %}</p>
                 {% endif %}
+                <p>Used in sandy environment: <b>{% if advise.sandy %}yes{% else %}no{% endif %}</b></p>
                 <p>Type approval: {{ advise.typeApproval }}</p>
 			</div>
 		</div>

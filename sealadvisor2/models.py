@@ -1,7 +1,6 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
-from seals.models import Company
 
 
 # Create your models here.
@@ -57,7 +56,6 @@ class supremeAdvise(models.Model):
 
 	# first ask for general information 
 
-	company = models.ForeignKey(Company, verbose_name='Company (or leave blank)', null=True, blank=True)
 	application = models.ForeignKey(sealApplication)
 
 	CHOICES = (
@@ -65,24 +63,28 @@ class supremeAdvise(models.Model):
 		('cpp', 'Controllable pitch')
 	)
 
-	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor')
+	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor', blank=True, null=True)
 
 	# in case that application is equal to 'sterntube', are both the forward and/or aft seal required?
 
 	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal required?')
 	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal required?')
 
+	aftSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)', blank=True)
+	fwdSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)', blank=True)
 
-	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Shaft rotational speed (RPM)')
-	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft centerline draught (m)')
+	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Shaft revolutions per minute [RPM]')
+	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft draught (aft) [m]')
 
 
 	fwd_shaft_information = models.OneToOneField(supremeFwdShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
 	aft_shaft_information = models.OneToOneField(supremeAftShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
 
+
 	environmental = models.OneToOneField(environmentalInformation, null=True, blank=True, on_delete=models.CASCADE)
 
 	typeApproval = models.ForeignKey(Class, verbose_name='Type approval required (specify which or leave blank)', blank=True, null=True)
+
 
 	def __str__(self):
 		return str("Advise {id} - {application}").format(id=self.id, application=self.application)

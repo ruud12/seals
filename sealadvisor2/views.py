@@ -75,7 +75,12 @@ def supremeDetail(request, supreme_id):
 		else:
 			rubber = "FKM"
 
-		aft_conclusion = str("Based on the data provided on this page, the advise is to offer the following aft liner size: {size} mm. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}." ).format(size=advisedSize,pv=pv_value, seal=number,rubber=rubber)
+		if supreme.sandy or (rotational_speed > 4 or supreme.draught_shaft > 8):
+			hml = "required"
+		else:
+			hml = "not required"
+
+		aft_conclusion = str("Based on the data provided on this page, the advise is to offer the following aft liner size: {size} mm and a Hard Metal Layer (HML) is {hml}. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}." ).format(hml=hml, size=advisedSize,pv=pv_value, seal=number,rubber=rubber)
 	else:
 		aft_conclusion= 'To give a more accurate aft seal advise, any open data below should be filled in.'
 
@@ -94,7 +99,12 @@ def supremeDetail(request, supreme_id):
 		else:
 			rubber = "FKM"
 
-		fwd_conclusion = str("Based on the data provided on this page, the advise is to offer the following fwd liner size: {size} mm. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}.").format(size=advisedSize,pv=pv_value, seal=number, rubber=rubber)
+		if supreme.sandy or (rotational_speed > 4 or supreme.draught_shaft > 8):
+			hml = "required"
+		else:
+			hml = "not required"
+
+		fwd_conclusion = str("Based on the data provided on this page, the advise is to offer the following fwd liner size: {size} mm and a Hard Metal Layer (HML) is {hml}. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}.").format(size=advisedSize,pv=pv_value, seal=number, rubber=rubber,hml=hml)
 	else:
 		fwd_conclusion= 'To give a more accurate fwdseal advise, any open data below should be filled in.'
 
@@ -132,7 +142,7 @@ def supremeEdit(request, supreme_id):
 
 			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme.id)
 	else:
-		form = forms.supremeWizard(initial={'company': company_id, 'application': supreme.application, 'cpp_fpp':supreme.cpp_fpp,'aft_seal':supreme.aft_seal,'fwd_seal':supreme.fwd_seal,'rpm':supreme.rpm,'draught_shaft':supreme.draught_shaft,'typeApproval':supreme.typeApproval})
+		form = forms.supremeWizard(initial={'sandy': supreme.sandy, 'company': company_id, 'application': supreme.application, 'cpp_fpp':supreme.cpp_fpp,'aft_seal':supreme.aft_seal,'fwd_seal':supreme.fwd_seal,'rpm':supreme.rpm,'draught_shaft':supreme.draught_shaft,'typeApproval':supreme.typeApproval})
 
 	return render(request,'sealadvisor2/add_supreme.html', { 'form':form, 'title':"Edit supreme advise"})
 
