@@ -15,14 +15,26 @@
                     {% form form=form %} {% endform %}
 
                     <br>
-                    <button type="submit" class="save btn btn-default">Save</button>
+                    <button type="submit" class="save btn btn-default">Next</button>
                     <a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>
                 </form>
 			</div>
 		</div>
 	</div>
 	<div class='col s6'>
-		
+	   <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Extra information</span>
+                <p id='pv_value'></p><br>
+                <div id='fkm_card'>
+                    <p>For a PV-value higher than 4 lagersmit requires FKM lip-seals to be used.</p><br>
+                </div>
+                <div id='ventus_card'>
+                    <p>For a PV-value higher than 6 a ventus will be autoselected. This can be turned off later on if the customer does not want a ventus system.</p>
+                    <p><img height='200px' src="{% static 'images/ventus.jpg' %}"></p><br>
+                </div>
+            </div>
+        </div>	
 	</div>
 
 </div>
@@ -33,19 +45,72 @@
         var selectField = $('#id_application');
         var fwd = $('#id_fwd_seal');
         var aft = $('#id_aft_seal');
+        var aftsize = $('#id_aftSize')
+        var fwdsize = $('#id_fwdSize')
 
         function toggleVerified(value) {
-            value == '1' ? fwd.parent().show() : fwd.parent().hide();
             value == '1' ? aft.parent().show() : aft.parent().hide();
+            value == '1' ? fwd.parent().show() : fwd.parent().hide();
+            toggleSizes();
         }
+
+        function toggleSizes() {
+            (aft.is(':checked') || selectField.val() != '1') ? aftsize.parent().show() : aftsize.parent().hide(); 
+            fwd.is(':checked') ? fwdsize.parent().show(): fwdsize.parent().hide();
+        }
+
+
+
+
+        function checkVentus(PV) {
+            if ( $('#id_aftSize').val() > 0 && $('#id_rpm').val() && $('#id_draught_shaft').val() ) {
+                PV = $('#id_aftSize').val()*3.14*($('#id_rpm').val()/60)*($('#id_draught_shaft').val()/1000);
+
+                
+            } else {
+                PV = 0;
+            }
+
+            (PV > 6) ? $('#ventus_card').show() : $('#ventus_card').hide();
+            (PV > 4) ? $('#fkm_card').show() : $('#fkm_card').hide();
+            $('#pv_value').html("The PV-value is equal to " + PV);
+        }
+
+
+        toggleSizes();
+        checkVentus();
+
+
+        $('#id_aftSize').keyup(function() {
+            checkVentus();
+        })
+
+        $('#id_rpm').keyup(function() {
+            checkVentus();
+        })
+
+        $('#id_draught_shaft').keyup(function() {
+            checkVentus();
+        })
 
         // show/hide on load based on pervious value of selectField
         toggleVerified(selectField.val());
+
+
+        aft.change(function() {
+            toggleSizes();
+        })
+
+        fwd.change(function() {
+            toggleSizes();
+        })
 
         // show/hide on change
         selectField.change(function() {
             toggleVerified($(this).val());
         });
+
+
 
         
     });

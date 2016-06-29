@@ -1,5 +1,5 @@
 from django import forms
-from sealadvisor2.models import sealApplication, supremeAdvise, supremeAftShaftInformation, supremeFwdShaftInformation, environmentalInformation
+from sealadvisor2.models import sealApplication, supremeAdvise
 from seals.models import Company
 
 
@@ -12,23 +12,5 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','aft_seal','fwd_seal','aftSize','fwdSize','rpm', 'draught_shaft','typeApproval')
+		fields = ('application','cpp_fpp','aft_seal','aftSize','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval')
 
-class supremeFwdForm(forms.ModelForm):
-
-	class Meta:
-		model = supremeFwdShaftInformation
-		fields = ('fwd_shaft_size','fwd_pcd_liner','fwd_pcd_flange','fwd_centering_edge')
-
-class supremeAftForm(forms.ModelForm):
-
-	class Meta:
-		model = supremeAftShaftInformation
-		fields = ('aft_shaft_size','aft_pcd_liner','aft_pcd_flange','aft_centering_edge')
-
-
-
-class supremeEnvironmentalForm(forms.ModelForm):
-	class Meta:
-		model= environmentalInformation
-		fields = ('eal','vgp','zero_leakage')

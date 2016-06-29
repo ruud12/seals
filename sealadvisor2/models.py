@@ -13,44 +13,28 @@ class sealApplication(models.Model):
 		return self.name
 
 
-class environmentalInformation(models.Model):
-	eal = models.BooleanField(default=False, verbose_name='EAL oil used (in case of retrofit)?')
-	vgp = models.BooleanField(default=False, verbose_name= 'Compliance with VGP (American waters)')
-	zero_leakage = models.BooleanField(default=False, verbose_name= 'Zero leakage (ventus/athmos)')
-
-	CHOICES = (
-		('ventus', 'Ventus'),
-		('athmos', 'Athmos'),
-	)
-
-	zero_leakage_type = models.CharField(max_length=20, choices=CHOICES, verbose_name="Zero leakage system (Athmos/Ventus)",blank=True)
-
-
-class supremeAftShaftInformation(models.Model):
-
-	aft_shaft_size = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)')
-	aft_pcd_liner = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal liner PCD [mm]')
-	aft_pcd_flange = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal flange ring PCD [mm]')
-	aft_centering_edge = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Aft seal flange ring centering edge [mm]')
-
-
-class supremeFwdShaftInformation(models.Model):
-	fwd_shaft_size = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)')
-	fwd_pcd_liner = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal liner PCD [mm]')
-	fwd_pcd_flange = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal flange PCD [mm]')
-	fwd_centering_edge = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='forward seal centering edge [mm]')
-
-
 class Class(models.Model):
 	key = models.CharField(max_length=10)
 
 	className = models.CharField(max_length=100, verbose_name='Class')
 	certificateNo = models.CharField(max_length=100, verbose_name='Certificate No.')
 
-
-
 	def __str__(self):
 		return str("{className} - {certificateNo}").format(className=self.className, certificateNo=self.certificateNo)
+
+
+class AftSealOptions(models.Model):
+	seaguard = models.BooleanField(default=False, verbose_name='Seaguard')
+
+	CHOICES = (
+		('shaft', 'Shaft centered'),
+		('hub', 'Hub centered'),
+	)
+
+	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
+	oring = models.BooleanField(default = True, verbose_name='O-ring between liner and shaft')
+
+
 
 class supremeAdvise(models.Model):
 
@@ -67,21 +51,18 @@ class supremeAdvise(models.Model):
 
 	# in case that application is equal to 'sterntube', are both the forward and/or aft seal required?
 
-	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal required?')
-	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal required?')
+	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal.')
+	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal.')
 
-	aftSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)', blank=True)
-	fwdSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)', blank=True)
+	aftSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
+	fwdSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)', blank=True, null=True)
 
-	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Shaft revolutions per minute [RPM]')
+	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Nominal shaft revolutions per minute [RPM]')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft draught (aft) [m]')
 
 
-	fwd_shaft_information = models.OneToOneField(supremeFwdShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
-	aft_shaft_information = models.OneToOneField(supremeAftShaftInformation, null=True, blank=True, on_delete=models.CASCADE)
 
 
-	environmental = models.OneToOneField(environmentalInformation, null=True, blank=True, on_delete=models.CASCADE)
 
 	typeApproval = models.ForeignKey(Class, verbose_name='Type approval required (specify which or leave blank)', blank=True, null=True)
 
