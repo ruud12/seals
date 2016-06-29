@@ -59,9 +59,11 @@
                 <p> {{ aft_conclusion }}</p>
                 {% endif %}
                 <br>
+                {% if advise.fwd_seal %}
                 {% if fwd_conclusion %}
                 <p><b>Fwd seal</b></p>
                 <p> {{ fwd_conclusion }}</p>
+                {% endif %}
                 {% endif %}
                 <br>
                 {% if advise.fwd_seal and not advise.fwd_shaft_information %}
