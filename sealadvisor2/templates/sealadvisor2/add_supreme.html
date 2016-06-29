@@ -4,7 +4,7 @@
 {% load material_form %} 			
 
 {% block content %}
-<h1>Supreme Sealadvisor</h1>
+<h1>Supreme Seal advisor</h1>
 <div class='row'>
 	<div class='col s6'>
 		<div class='card teal lighten-4'>
@@ -15,7 +15,7 @@
                     {% form form=form %} {% endform %}
 
                     <br>
-                    <button type="submit" class="save btn btn-default">Next</button>
+                    <button type="submit" class="save btn btn-default">{{ submit }}</button>
                     <a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>
                 </form>
 			</div>
@@ -64,7 +64,7 @@
 
         function checkVentus(PV) {
             if ( $('#id_aftSize').val() > 0 && $('#id_rpm').val() && $('#id_draught_shaft').val() ) {
-                PV = $('#id_aftSize').val()*3.14*($('#id_rpm').val()/60)*($('#id_draught_shaft').val()/1000);
+                PV = $('#id_aftSize').val()*3.14*($('#id_rpm').val()/60)*($('#id_draught_shaft').val()/10000);
 
                 
             } else {

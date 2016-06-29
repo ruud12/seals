@@ -23,6 +23,7 @@ class Class(models.Model):
 		return str("{className} - {certificateNo}").format(className=self.className, certificateNo=self.certificateNo)
 
 
+
 class AftSealOptions(models.Model):
 	seaguard = models.BooleanField(default=False, verbose_name='Seaguard')
 
@@ -33,6 +34,28 @@ class AftSealOptions(models.Model):
 
 	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
 	oring = models.BooleanField(default = True, verbose_name='O-ring between liner and shaft')
+	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
+	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier > is the seal used in a dirty/sandy environment')
+	wireWinders = models.BooleanField(default = False, verbose_name='Wire winders')
+	netCutters = models.BooleanField(default = False, verbose_name='Net cutters')
+	hastelloy = models.BooleanField(default = False, verbose_name='Hastelloy springs')
+	hml = models.BooleanField(default = False, verbose_name='Hard metal layer to prevent liner wear (HML)')
+
+
+class environmentalOptions(models.Model):
+	vgp = models.BooleanField(default=False, verbose_name='Has to comply with VGP regulations')
+
+	OIL_CHOICES = (
+		('mineral', 'Mineral oil'),
+		('eal', 'EAL oil (bio-oil)'),
+	)
+
+	oil = models.CharField(max_length=20, choices=OIL_CHOICES, verbose_name='What kind of oil is used')
+
+	air = models.BooleanField(default = False, verbose_name='Use an air type system (Ventus/Athmos) to comply with VGP and reduce the pressure on the lip seals')
+
+
+
 
 
 
@@ -54,14 +77,15 @@ class supremeAdvise(models.Model):
 	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal.')
 	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal.')
 
-	aftSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
-	fwdSize = models.DecimalField(max_digits=5, decimal_places=1,verbose_name='Forward shaft diameter (mm)', blank=True, null=True)
+	aftSize = models.DecimalField(max_digits=5, decimal_places=0,verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
+	fwdSize = models.DecimalField(max_digits=5, decimal_places=0,verbose_name='Forward shaft diameter (mm)', blank=True, null=True)
 
 	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Nominal shaft revolutions per minute [RPM]')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft draught (aft) [m]')
 
 
-
+	aft = models.ForeignKey(AftSealOptions, null=True, blank=True)
+	environment = models.ForeignKey(environmentalOptions, null=True, blank=True)
 
 
 	typeApproval = models.ForeignKey(Class, verbose_name='Type approval required (specify which or leave blank)', blank=True, null=True)

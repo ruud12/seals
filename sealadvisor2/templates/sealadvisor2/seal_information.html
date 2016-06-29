@@ -4,7 +4,7 @@
 {% load material_form %} 			
 
 {% block content %}
-<h1>Supreme Sealadvisor</h1>
+<h1>Supreme Seal advisor</h1>
 <div class='row'>
 	<div class='col s6'>
 		<div class='card teal lighten-4'>
@@ -15,17 +15,103 @@
                     {% form form=form %} {% endform %}
 
                     <br>
-                    <button type="submit" class="save btn btn-default">Save</button>
-                    <a class='wave-effect btn' href="{% url 'sealadvisor2:supremeDetail' supreme_id %}">Cancel</a>
+                    <button type="submit" class="save btn btn-default">{{ submit }}</button>
                 </form>
 			</div>
 		</div>
 	</div>
 	<div class='col s6'>
-		
+		<div class='card teal lighten-4' id='air_card'>
+			<div class='card-content'>
+				<span class='card-title black-text'>Air type</span>
+				<p>An air type system complies with VGP regulations and reduces the pressure on the lip-seals.</p>
+				<br>
+				<p>The PV-value is equal to: {{ pv }}</p>
+				<p id='air_type'>For the specified draught a {{ air_type }} system is used.</p>
+			</div>
+		</div>
 	</div>
 
 </div>
 
+
+<script type='text/javascript'>
+
+(function($) {
+    $(function() {
+        var selectField = $('#id_oil');
+        var vgp = $('#id_vgp');
+
+
+        function toggleVerified(value) {
+            if (value == 'mineral') {
+            	vgp.parent().show();
+        	} else {
+        		vgp.parent().hide();
+        		$('#id_air').attr('disabled', false);
+        	};
+        }
+
+        toggleVerified();
+        if ($('#id_air').is(':checked')) {
+        		$('#air_card').show();
+    	} else {
+        		$('#air_card').hide();
+    	}
+
+        // show/hide on change
+        selectField.change(function() {
+            toggleVerified($(this).val());
+        });
+
+
+        vgp.change(function() {
+        	if (vgp.is(':checked') && selectField.val()=='mineral') {
+        		$('#id_air').prop('checked', true);
+        		$('#air_card').show();
+        	} else {
+        		$('#id_air').attr('disabled', false);
+        	}
+        });
+
+        dirt = $("#id_dirtBarrier");
+
+        dirt.change(function() {
+        	if (dirt.is(':checked')) {
+        		$('#id_hml').prop('checked', true);
+        		$('#id_hml').attr('disabled', tru);
+        		$('#air_card').show();
+        	} else {
+        		$('#id_hml').attr('disabled', false);
+        	}
+        	checkhml();
+        });
+
+        function checkhml() {
+        	if ($("#id_hml").is(":checked")) {
+        		$("#id_distanceRing").parent().hide();
+        	} else {
+        		$("#id_distanceRing").parent().show();
+        	};
+        }
+
+        checkhml();
+
+        $('#id_air').change(function() {
+        	checkhml();
+        })
+
+        $('#id_hml').change(function() {
+        	if ($("#id_hml").is(":checked")) {
+        		$("#id_distanceRing").parent().hide();
+        	} else {
+        		$("#id_distanceRing").parent().show();
+        	};
+        });
+        
+    });
+})(jQuery);
+
+</script>
 
 {% endblock %}	 
