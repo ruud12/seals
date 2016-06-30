@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from sealadvisor2 import forms
-from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions
+from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions
 import bisect, decimal
 from django.core.urlresolvers import reverse
 # Create your views here.
@@ -47,7 +47,7 @@ def supreme(request):
 		form = forms.supremeWizard()
 
 
-	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Add supreme advise", 'submit':'Next'})
+	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Add Supreme advise", 'submit':'Next'})
 
 
 
@@ -69,7 +69,22 @@ def supremeEdit(request, supreme_id):
 	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save'})
 
 
+def supremeFwd(request, supreme_id):
+	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
 
+	if request.method == "POST":
+		form = forms.supremeFwdForm(request.POST)
+		if form.is_valid():
+			fwdOptions = form.save()
+			supreme.fwd = fwdOptions
+			supreme.save()
+
+			return redirect('sealadvisor2:supremeEnvironment', supreme_id)
+
+	else:
+		form = forms.supremeFwdForm()
+
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Fwd seal options','submit':'Next'})
 
 
 
@@ -86,8 +101,11 @@ def supremeAft(request, supreme_id):
 			return redirect('sealadvisor2:supremeEnvironment', supreme_id)
 
 	else:
-
-		form = forms.supremeAftForm()
+		size = supreme.aftSize if supreme.aftSize else supreme.fwdSize
+		if size > 600:
+			form = forms.supremeAftForm(initial={'oring': True})
+		else:
+			form = forms.supremeAftForm()
 
 	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Aft seal options','submit':'Next'})
 
@@ -131,7 +149,12 @@ def supremeEnvironment(request, supreme_id):
 			return redirect('sealadvisor2:supremeOverview', supreme_id)
 
 	else:
-		form = forms.supremeEnvironmentForm()
+
+		if supreme.aft.air:
+			form = forms.supremeEnvironmentForm(initial={'air':True})
+			form.fields['air'].widget.attrs['disabled'] = True
+		else:
+			form = forms.supremeEnvironmentForm()
 
 	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Next'})
 

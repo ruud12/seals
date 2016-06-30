@@ -74,40 +74,7 @@
         	}
         });
 
-        dirt = $("#id_dirtBarrier");
-
-        dirt.change(function() {
-        	if (dirt.is(':checked')) {
-        		$('#id_hml').prop('checked', true);
-        		$('#id_hml').attr('disabled', tru);
-        		$('#air_card').show();
-        	} else {
-        		$('#id_hml').attr('disabled', false);
-        	}
-        	checkhml();
-        });
-
-        function checkhml() {
-        	if ($("#id_hml").is(":checked")) {
-        		$("#id_distanceRing").parent().hide();
-        	} else {
-        		$("#id_distanceRing").parent().show();
-        	};
-        }
-
-        checkhml();
-
-        $('#id_air').change(function() {
-        	checkhml();
-        })
-
-        $('#id_hml').change(function() {
-        	if ($("#id_hml").is(":checked")) {
-        		$("#id_distanceRing").parent().hide();
-        	} else {
-        		$("#id_distanceRing").parent().show();
-        	};
-        });
+        
         
     });
 })(jQuery);

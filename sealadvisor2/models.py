@@ -23,6 +23,9 @@ class Class(models.Model):
 		return str("{className} - {certificateNo}").format(className=self.className, certificateNo=self.certificateNo)
 
 
+class FwdSealOptions(models.Model):
+	ocr = models.BooleanField(default=False, verbose_name='OCR ring')
+
 
 class AftSealOptions(models.Model):
 	seaguard = models.BooleanField(default=False, verbose_name='Seaguard')
@@ -33,13 +36,14 @@ class AftSealOptions(models.Model):
 	)
 
 	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
-	oring = models.BooleanField(default = True, verbose_name='O-ring between liner and shaft')
+	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
 	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier > is the seal used in a dirty/sandy environment')
 	wireWinders = models.BooleanField(default = False, verbose_name='Wire winders')
 	netCutters = models.BooleanField(default = False, verbose_name='Net cutters')
 	hastelloy = models.BooleanField(default = False, verbose_name='Hastelloy springs')
 	hml = models.BooleanField(default = False, verbose_name='Hard metal layer to prevent liner wear (HML)')
+	air = models.BooleanField(default = False, verbose_name='Use an air type system to equalize the pressure and collect any leakage (Ventus/Athmos)')
 
 
 class environmentalOptions(models.Model):
@@ -80,8 +84,8 @@ class supremeAdvise(models.Model):
 	aftSize = models.DecimalField(max_digits=5, decimal_places=0,verbose_name='Aft shaft diameter (mm)', blank=True, null=True)
 	fwdSize = models.DecimalField(max_digits=5, decimal_places=0,verbose_name='Forward shaft diameter (mm)', blank=True, null=True)
 
-	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'Nominal shaft revolutions per minute [RPM]')
-	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Shaft draught (aft) [m]')
+	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'RPM')
+	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Draught to (aft) shaft centerline [m]')
 
 
 	aft = models.ForeignKey(AftSealOptions, null=True, blank=True)
