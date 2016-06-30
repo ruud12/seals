@@ -12,6 +12,7 @@ urlpatterns = [
 	url(r'^supreme/$', views.supreme, name='supreme'),
 	url(r'^supreme/(?P<supreme_id>\d+)/edit/$', views.supremeEdit, name='supremeEdit'),
 	url(r'^supreme/(?P<supreme_id>\d+)/aft/$', views.supremeAft, name='supremeAft'),
+	url(r'^supreme/(?P<supreme_id>\d+)/fwd/$', views.supremeFwd, name='supremeFwd'),
 	url(r'^supreme/(?P<supreme_id>\d+)/aft/(?P<aft_id>\d+)/edit$', views.supremeAftEdit, name='supremeAftEdit'),
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/$', views.supremeEnvironment, name='supremeEnvironment'),
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/(?P<env_id>\d+)/edit$', views.supremeEnvironmentEdit, name='supremeEnvironmentEdit'),

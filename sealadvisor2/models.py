@@ -25,6 +25,7 @@ class Class(models.Model):
 
 class FwdSealOptions(models.Model):
 	ocr = models.BooleanField(default=False, verbose_name='OCR ring')
+	fkm = models.BooleanField(default=False, verbose_name='Use FKM lip-seals')
 
 
 class AftSealOptions(models.Model):

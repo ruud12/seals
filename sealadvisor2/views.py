@@ -98,7 +98,7 @@ def supremeAft(request, supreme_id):
 			supreme.aft = aftOptions
 			supreme.save()
 
-			return redirect('sealadvisor2:supremeEnvironment', supreme_id)
+			return redirect('sealadvisor2:supremeFwd', supreme_id)
 
 	else:
 		size = supreme.aftSize if supreme.aftSize else supreme.fwdSize
