@@ -1,9 +1,13 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from sealadvisor2 import forms
-from sealadvisor2.models import supremeAdvise, supremeFwdShaftInformation, supremeAftShaftInformation, environmentalInformation
+from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions
 import bisect, decimal
 from django.core.urlresolvers import reverse
 # Create your views here.
+
+
+
+
 
 
 
@@ -23,157 +27,49 @@ def findCorrectSize(shaft_diameter):
 
 
 def index(request):
-	supremeAdvises = supremeAdvise.objects.all()
-	return render(request, 'sealadvisor2/index.html', {'supreme':supremeAdvises})
+	advises = supremeAdvise.objects.all()
+
+	return render(request, 'sealadvisor2/index.html', {'advises': advises})
 
 
 def supreme(request):
-
 	if request.method == "POST":
 		form = forms.supremeWizard(request.POST)
 		if form.is_valid():
 			newAdvise = form.save()
 			
-			return redirect('sealadvisor2:supremeAft',newAdvise.id)
+			if ((newAdvise.application.key =='sterntube' or newAdvise.aft_seal) and not newAdvise.aft):
+				return redirect('sealadvisor2:supremeAft',newAdvise.id)
+			else:
+				return redirect('sealadvisor2:supremeEnvironment', newAdvise.id)
+
 	else:
 		form = forms.supremeWizard()
 
 
-	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Add supreme advise"})
+	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Add supreme advise", 'submit':'Next'})
 
 
 
-# def supreme(request):
-
-# 	if request.method == "POST":
-# 		form = forms.supremeWizard(request.POST)
-# 		if form.is_valid():
-# 			newAdvise = form.save()
-# 			return redirect('sealadvisor2:index')
-# 	else:
-# 		form = forms.supremeWizard()
-
-
-# 	return render(request, 'sealadvisor2/supreme.html', {'form':form})
-
-def supremeDetail(request, supreme_id):
-	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
-
-	# start calculating advise if enough data is provided:
-	if supreme.aft_shaft_information:
-		advisedSize = findCorrectSize(supreme.aft_shaft_information.aft_shaft_size)
-		rotational_speed = (supreme.aft_shaft_information.aft_shaft_size*decimal.Decimal(3.14)*supreme.rpm/(1000*60))
-		pv_value = rotational_speed*supreme.draught_shaft/10
-		number = str("X01{size}AA{shaft:.0f}A").format(size=advisedSize,shaft=supreme.aft_shaft_information.aft_shaft_size)
-
-		if (supreme.draught_shaft/10 > 1.8 or rotational_speed > 5.5 or pv_value > 6):
-			rubber = "PV-value too high, contact T&P"
-		elif supreme.environmental.eal:
-			rubber = "FKM-EAL"
-		elif (pv_value < 3.5 and rotational_speed < 3.5):
-			rubber = "NBR"
-		else:
-			rubber = "FKM"
-
-		aft_conclusion = str("Based on the data provided on this page, the advise is to offer the following aft liner size: {size} mm. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}." ).format(size=advisedSize,pv=pv_value, seal=number,rubber=rubber)
-	else:
-		aft_conclusion= 'To give a more accurate aft seal advise, any open data below should be filled in.'
-
-	if supreme.fwd_shaft_information:
-		advisedSize = findCorrectSize(supreme.fwd_shaft_information.fwd_shaft_size)
-		rotational_speed = (supreme.fwd_shaft_information.fwd_shaft_size*decimal.Decimal(3.14)*supreme.rpm/(1000*60))
-		pv_value = rotational_speed*supreme.draught_shaft/10
-		number = str("X01{size}AA{shaft:.0f}A").format(size=advisedSize,shaft=supreme.fwd_shaft_information.fwd_shaft_size)
-
-		if (supreme.draught_shaft/10 > 1.8 or rotational_speed > 5.5 or pv_value > 6):
-			rubber = "PV-value too high, contact T&P"
-		elif supreme.environmental.eal:
-			rubber = "FKM-EAL"
-		elif (pv_value < 3.5 and rotational_speed < 3.5):
-			rubber = "NBR"
-		else:
-			rubber = "FKM"
-
-		fwd_conclusion = str("Based on the data provided on this page, the advise is to offer the following fwd liner size: {size} mm. The PV-value is equal to {pv:.2f}. The advised seal is a {seal} with the following rubber type: {rubber}.").format(size=advisedSize,pv=pv_value, seal=number, rubber=rubber)
-	else:
-		fwd_conclusion= 'To give a more accurate fwdseal advise, any open data below should be filled in.'
-
-
-	return render(request,'sealadvisor2/supreme.html', {'advise':supreme,'aft_conclusion':aft_conclusion,'fwd_conclusion':fwd_conclusion})
 
 def supremeEdit(request, supreme_id):
 	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
 
-	company_id = supreme.company.pk if supreme.company else ''
-
 	if request.method == "POST":
 		form = forms.supremeWizard(request.POST, instance=supreme)
-
-		if form.is_valid():
-			updatedAdvise = form.save(commit=False)
-
-			if updatedAdvise.application.key == 'sterntube':
-				if not updatedAdvise.fwd_seal:
-					updatedAdvise.fwd_shaft_information = None
-				if not updatedAdvise.aft_seal:
-					updatedAdvise.aft_shaft_information = None
-			else:
-				updatedAdvise.aft_seal = True
-				updatedAdvise.fwd_seal = False
-				updatedAdvise.fwd_shaft_information = None
-
-			updatedAdvise.save()
-
-			if updatedAdvise.environmental:
-				updatedAdvise.environmental.zero_leakage_type = whichAirType(updatedAdvise.draught_shaft)
-				updatedAdvise.environmental.save()
-
-
-
-			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme.id)
-	else:
-		form = forms.supremeWizard(initial={'company': company_id, 'application': supreme.application, 'cpp_fpp':supreme.cpp_fpp,'aft_seal':supreme.aft_seal,'fwd_seal':supreme.fwd_seal,'rpm':supreme.rpm,'draught_shaft':supreme.draught_shaft,'typeApproval':supreme.typeApproval})
-
-	return render(request,'sealadvisor2/add_supreme.html', { 'form':form, 'title':"Edit supreme advise"})
-
-
-def supremeFwd(request, supreme_id):
-	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
-
-	if request.method == "POST":
-		form = forms.supremeFwdForm(request.POST)
-
-		if form.is_valid():
-			fwdInformation = form.save()
-			supreme.fwd_shaft_information = fwdInformation
-			supreme.save()
-
-			if supreme.environmental:
-				return redirect('sealadvisor2:supremeDetail', supreme_id=supreme.id)
-			else:
-				return redirect('sealadvisor2:environmental', supreme_id=supreme.id)
-	else:
-		form = forms.supremeFwdForm()
-
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id': supreme.id, 'title':"Forward shaft information"})
-
-
-
-def supremeFwdEdit(request, supreme_id, fwd_id):
-	fwd = get_object_or_404(supremeFwdShaftInformation, pk=fwd_id)
-
-	if request.method == "POST":
-		form = forms.supremeFwdForm(request.POST, instance=fwd)
-
 		if form.is_valid():
 			form.save()
-
-			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme_id)
+			
+			return redirect('sealadvisor2:supremeOverview',supreme_id)
 
 	else:
-		form = forms.supremeFwdForm(initial={"fwd_shaft_size": fwd.fwd_shaft_size,"fwd_pcd_liner": fwd.fwd_pcd_liner,"fwd_pcd_flange":fwd.fwd_pcd_flange,"fwd_centering_edge":fwd.fwd_centering_edge})
+		form = forms.supremeWizard(initial={'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'aft': supreme.aft.id, 'environment': supreme.environment.id, 'typeApproval':supreme.typeApproval.id })
 
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id':supreme_id, 'title':"Forward shaft information" })
+
+	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save'})
+
+
+
 
 
 
@@ -182,80 +78,117 @@ def supremeAft(request, supreme_id):
 
 	if request.method == "POST":
 		form = forms.supremeAftForm(request.POST)
-
 		if form.is_valid():
-			aftInformation = form.save()
-			supreme.aft_shaft_information = aftInformation
+			aftOptions = form.save()
+			supreme.aft = aftOptions
 			supreme.save()
 
-			if supreme.fwd_seal:
-				return redirect('sealadvisor2:supremeFwd', supreme_id=supreme.id)
-			elif not supreme.environmental:
-				return redirect('sealadvisor2:environmental', supreme_id=supreme.id)
-			else:
-				return redirect('sealadvisor2:supremeDetail', supreme_id=supreme.id)
+			return redirect('sealadvisor2:supremeEnvironment', supreme_id)
+
 	else:
+
 		form = forms.supremeAftForm()
 
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id': supreme.id, 'title':"Aft shaft information"})
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Aft seal options','submit':'Next'})
 
 
 
 def supremeAftEdit(request, supreme_id, aft_id):
-	aft = get_object_or_404(supremeAftShaftInformation, pk=aft_id)
+	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
+	aft = get_object_or_404(AftSealOptions, pk=aft_id)
 
 	if request.method == "POST":
 		form = forms.supremeAftForm(request.POST, instance=aft)
+		if form.is_valid():
+			aftOptions = form.save()
 
+			return redirect('sealadvisor2:supremeOverview', supreme_id)
+
+	else:
+		form = forms.supremeAftForm(initial={'seaguard':aft.seaguard, 'oring': aft.oring, 'linerCentering':aft.linerCentering,'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
+		print(aft.linerCentering)
+
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save'})
+
+
+
+
+
+
+
+def supremeEnvironment(request, supreme_id):
+	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
+	pv = (supreme.aftSize / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
+	air_type= 'Ventus' if supreme.draught_shaft >= 5 else 'Athmos'
+
+	if request.method == 'POST':
+		form = forms.supremeEnvironmentForm(request.POST)
+		if form.is_valid():
+			environmentalOptions = form.save()
+			supreme.environment = environmentalOptions
+			supreme.save()
+
+			return redirect('sealadvisor2:supremeOverview', supreme_id)
+
+	else:
+		form = forms.supremeEnvironmentForm()
+
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Next'})
+
+
+def supremeEnvironmentEdit(request, supreme_id, env_id):
+	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
+	env = get_object_or_404(environmentalOptions, pk=env_id)
+
+	pv = (supreme.aftSize / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
+	air_type= 'Ventus' if supreme.draught_shaft >= 5 else 'Athmos'
+
+	if request.method == 'POST':
+		form = forms.supremeEnvironmentForm(request.POST, instance = env)
 		if form.is_valid():
 			form.save()
 
-			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme_id)
+			return redirect('sealadvisor2:supremeOverview', supreme_id)
 
 	else:
-		form = forms.supremeAftForm(initial={"aft_shaft_size": aft.aft_shaft_size,"aft_pcd_liner": aft.aft_pcd_liner,"aft_pcd_flange":aft.aft_pcd_flange,"aft_centering_edge":aft.aft_centering_edge})
+		form = forms.supremeEnvironmentForm(initial = {'vgp':env.vgp, 'oil': env.oil, 'air': env.air})
 
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id':supreme_id, 'title':"Aft shaft information" })
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Save'})
 
 
 
-def environmental(request, supreme_id):
+
+
+
+def supremeOverview(request, supreme_id):
 	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
 
-	if request.method == "POST":
-		form = forms.supremeEnvironmentalForm(request.POST)
+	pv = (supreme.aftSize / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
+	air_type= 'a Ventus' if supreme.draught_shaft >= 5 else 'an Athmos'
 
-		if form.is_valid():
-			environmental = form.save(commit=False)
+	air = str('{type} system is used for this draft.').format(type=air_type)
 
-			environmental.zero_leakage_type = whichAirType(supreme.draught_shaft)
-			environmental.save()
-
-			supreme.environmental = environmental
-			supreme.save()
-
-			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme.id)
+	if (supreme.environment.oil =='eal'):
+		rubber = 'FKM-EAL'
+	elif pv > 4:
+		rubber = 'FKM'
 	else:
-		form = forms.supremeEnvironmentalForm()
+		rubber = 'NBR'
 
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id': supreme.id, 'title':"Environmental shaft information"})
+	if supreme.fwd_seal:
+		pv_fwd = (supreme.fwdSize / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
 
-
-
-def environmentalEdit(request, supreme_id, environmental_id):
-	environmental = get_object_or_404(environmentalInformation, pk=environmental_id)
-	supreme = get_object_or_404(supremeAdvise, pk=supreme_id)
-
-	if request.method == "POST":
-		form = forms.supremeEnvironmentalForm(request.POST, instance=environmental)
-
-		if form.is_valid():
-			environmental = form.save()
-
-			return redirect('sealadvisor2:supremeDetail', supreme_id=supreme_id)
+		if (supreme.environment.oil =='eal'):
+			rubber_fwd = 'FKM-EAL'
+		elif pv_fwd > 4:
+			rubber_fwd = 'FKM'
+		else:
+			rubber_fwd = 'NBR'
 
 	else:
-		form = forms.supremeEnvironmentalForm(initial={'eal':environmental.eal, 'vgp':environmental.vgp,'zero_leakage':environmental.zero_leakage })
+		pv_fwd = 0
+		rubber_fwd = 'none' 
 
-	return render(request,'sealadvisor2/seal_information.html', { 'form':form, 'supreme_id':supreme_id, 'title':"Environmental information" })
+	sizeaft = findCorrectSize(supreme.aftSize)
 
+	return render(request, 'sealadvisor2/supreme.html', { 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft })

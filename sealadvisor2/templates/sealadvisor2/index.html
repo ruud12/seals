@@ -32,8 +32,8 @@
 		</div>
 	</div>
 	<div class='col s8'>
-		{% for advise in supreme %}
-										<p><a href="{% url 'sealadvisor2:supremeDetail' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
+		{% for advise in advises %}
+										<p><a href="{% url 'sealadvisor2:supremeOverview' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
 						
 		{% endfor %}
 	</div>

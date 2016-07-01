@@ -1,11 +1,11 @@
 
 {% extends 'sealadvisor2/base.html' %}
 {% load static %}
-{% load material_form %} 			
 
 {% block content %}
-<h1>Supreme Sealadvisor</h1>
-<p><a class='wave-effect btn orange' href="{% url 'sealadvisor2:index' %}">Back to overview</a></p>
+<h1>Supreme Seal advisor</h1>
+<p><a class='wave-effect btn orange' href="{% url 'sealadvisor2:index' %}">Back to overview</a>
+<a class='wave-effect btn orange' href="{% url 'sealadvisor2:supreme' %}">Add new advise</a></p>
 <br>
 <div class='row'>
 	<div class='col s6'>
@@ -13,9 +13,8 @@
 			<div class='card-content'>
 				<span class='card-title black-text'>General information</span>
                 <div style='float:right;'>
-                    <a class="btn-floating wave-effect waves-light teal" href="{% url 'sealadvisor2:supremeEdit' advise.id %}"><i class="material-icons">edit</i></a>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeEdit' advise.id %}"><i class="material-icons">edit</i></a>
                 </div>
-				<p>Company: {{ advise.company }}</p>
                 <p>Application: {{ advise.application }}</p>
                 <br>
                 <p>{{ advise.get_cpp_fpp_display }} propellor</p>
@@ -23,93 +22,67 @@
                 <p>Draught shaft: {{ advise.draught_shaft }} m</p>
                 <br>
                 {% if advise.application.key == "sterntube" %}
-                <p>Aft seal required: {% if advise.aft_seal %}<b>yes</b>{% else %}no{% endif %}</p>
-                <p>Forward seal required: {% if advise.fwd_seal %}<b>yes</b>{% else %}no{% endif %}</p>
+                <p>Aft seal: {% if advise.aft_seal %}<b>yes</b>{% else %}no{% endif %}</p>
+                <p>Forward seal: {% if advise.fwd_seal %}<b>yes</b>{% else %}no{% endif %}</p>
                 {% endif %}
+                <br> 
                 <p>Type approval: {{ advise.typeApproval }}</p>
+                <br>
+                <p>Aft shaft size: {{ advise.aftSize }} mm</p>
+                {% if advise.fwd_seal %}
+                <p>Shaft size: {{ advise.fwdSize}} mm</p>
+                {% endif %}
 			</div>
 		</div>
-        {% if advise.environmental %}
-        <div class='card blue lighten-4'>
+        <div class='card green lighten-4'>
             <div class='card-content'>
-                <span class='card-title black-text'>Environmental information</span>
+                <span class='card-title black-text'>Environment</span>
                 <div style='float:right;'>
-                    <a class="btn-floating wave-effect waves-light blue" href="{% url 'sealadvisor2:environmentalEdit' advise.id advise.environmental.id %}"><i class="material-icons">edit</i></a>
-                </div>
-                <p>{% if advise.environmental.eal %}EAL is used/required{% else %}EAL is not required{% endif %}</p>
-                <p>{% if advise.environmental.vgp %}Has to comply with VGP{% else %} Does not have to comply with VGP{% endif %}</p>
-                <p>
-                    {% if advise.environmental.zero_leakage %}
-                    Zero leakage required: <b>{{ advise.environmental.get_zero_leakage_type_display }} air system</b> is used for a draught of {{ advise.draught_shaft }}m.
-                    {% else %}
-                    Zero leakage not required
-                    {% endif %}
-                </p>
+                    <a class="btn-floating waves-effect waves-light green" href="{% url 'sealadvisor2:supremeEnvironmentEdit' advise.id advise.environment.id %}"><i class="material-icons">edit</i></a>
+                </div>              
+                <p>Has to comply with VGP: {% if advise.environment.vgp %}yes{% else %}no{% endif %}</p>
+                <p>Oil type: {{ advise.environment.get_oil_display }}</p>
+                <p>Use air system: {% if advise.environment.air %}yes, {{ air }}{% else %}no{% endif %}
             </div>
         </div>
-        {% endif %}
-
-	</div>
-	<div class='col s6'>
-        <div class='card orange lighten-4'>
-            <div class='card-content'>
-                <span class='card-title black-text'>Advise</span>
-                {% if aft_conclusion %}
-                <p><b>Aft seal</b></p>
-                <p> {{ aft_conclusion }}</p>
-                {% endif %}
-                <br>
-                {% if advise.fwd_seal %}
-                {% if fwd_conclusion %}
-                <p><b>Fwd seal</b></p>
-                <p> {{ fwd_conclusion }}</p>
-                {% endif %}
-                {% endif %}
-                <br>
-                {% if advise.fwd_seal and not advise.fwd_shaft_information %}
-                <p><a class='wave-effect btn' href="{% url 'sealadvisor2:supremeFwd' advise.id %}">Add forward seal information</a></p>
-                <br>
-                {% endif %}
-                {% if advise.aft_seal and not advise.aft_shaft_information %}
-                <p><a class='wave-effect btn' href="{% url 'sealadvisor2:supremeAft' advise.id %}">Add aft seal information</a></p>
-                {% endif %}
-                {% if not advise.environmental %}
-                <p><a class='wave-effect btn' href="{% url 'sealadvisor2:environmental' advise.id %}">Add environmental information</a></p>
-                <br>
-                {% endif %}
-            </div>
-        </div>
-        {% if advise.fwd_shaft_information %}
-        <div class='card yellow lighten-5'>
-            <div class='card-content'>
-                <span class='card-title black-text'>Forward shaft information</span>
-                <div style='float:right;'>
-                    <a class="btn-floating wave-effect waves-light teal" href="{% url 'sealadvisor2:supremeFwdEdit' advise.id advise.fwd_shaft_information.id %}"><i class="material-icons">edit</i></a>
-                </div>
-                <p>Shaft size: {{ advise.fwd_shaft_information.fwd_shaft_size }}mm</p>
-                <p>PCD liner: {{ advise.fwd_shaft_information.fwd_pcd_liner }}mm</p>
-                <p>PCD flange: {{ advise.fwd_shaft_information.fwd_pcd_flange }}mm</p>
-                <p>Centering edge: {{ advise.fwd_shaft_information.fwd_centering_edge }}mm</p>
-            </div>
-        </div>
-        {% endif %}
-        {% if advise.aft_shaft_information %}
-        <div class='card yellow lighten-5'>
-            <div class='card-content'>
-                <span class='card-title black-text'>Aft shaft information</span>
-                <div style='float:right;'>
-                    <a class="btn-floating wave-effect waves-light teal" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft_shaft_information.id %}"><i class="material-icons">edit</i></a>
-                </div>
-                <p>Shaft size: {{ advise.aft_shaft_information.aft_shaft_size }}mm</p>
-                <p>PCD liner: {{ advise.aft_shaft_information.aft_pcd_liner }}mm</p>
-                <p>PCD flange: {{ advise.aft_shaft_information.aft_pcd_flange }}mm</p>
-                <p>Centering edge: {{ advise.aft_shaft_information.aft_centering_edge }}mm</p>
-            </div>
-        </div>
-        {% endif %}
         
 	</div>
+	<div class='col s6'>
+        {% if advise.aft %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Aft seal advise</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
+                </div> 
+                <p><b>X01{{ sizeaft }}AA{{ advise.aftSize }}A</b></p><br>
+                <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>
+                <p>Centering of liner: {{ advise.aft.get_linerCentering_display }}</p>
+                <p>O-ring between liner and shaft: {% if advise.aft.oring %} yes {% else %}no{% endif %}</p>
+                <p>HML layer: {% if advise.aft.hml %} yes {% else %}no{% endif %}</p>
+                <p>Distance ring: {% if advise.aft.distanceRing %}yes{% else %}no{% endif %}</p>
+                <p>Dirt barrier: {% if advise.aft.dirtBarrier %}yes{% else %}no{% endif %}</p>
+                <p>Wirewinders: {% if advise.aft.wireWinders %}yes{% else %}no{% endif %}</p>
+                <p>Netcutters: {% if advise.aft.netCutters %}yes{% else %}no{% endif %}</p>
+                <p>Hastelloy springs: {% if advise.aft.hastelloy %}yes{% else %}no{% endif %}</p>
+                <p>Type of lip-seal rubber: {{ rubber }}</p>
+                <p>PV-value: {{ pv }}</p>
 
+
+            </div>
+        </div>
+        {% endif %}
+        {% if advise.fwd_seal %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Forward seal advise</span>
+                <p>Type of lip-seal rubber: {{ rubber_fwd }}</p>
+                <p>PV-value: {{ pv_fwd }}</p>                
+
+            </div>
+        </div>
+        {% endif %}
+	</div>
 </div>
 
 
