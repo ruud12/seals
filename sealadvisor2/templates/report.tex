@@ -1,0 +1,74 @@
+\documentclass[11pt,a4paper,twoside]{report}
+\usepackage[latin1]{inputenc}
+\usepackage[dutch,english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[parfill]{parskip}
+\usepackage[head=5em]{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+\geometry{outer=3cm,inner=4cm}
+\author{Ruud Habing}
+\title{Herontwerp Ventus (ventiel)}
+\usepackage{titlesec}
+%scrreprt
+
+\titleformat{\chapter}[block]
+  {\normalfont\huge\bfseries}{\thechapter.}{1em}{\Huge}
+\titlespacing*{\chapter}{0pt}{5pt}{19pt}
+
+
+\pagestyle{fancy}
+\rhead{}
+\fancyfoot[LE,RO]{\thepage \, van \pageref{page:eind}}
+\fancyhead[LE,RO]{\includegraphics[height=2em]{lagersmit.png}}
+\fancyhead[RE,LO]{}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\cfoot{}
+
+
+\fancypagestyle{plain}{%
+	\fancyfoot[RE,LO]{\textsc{Herontwerp Supreme Ventus systeem}}
+	\fancyfoot[LE,RO]{\thepage \, van \pageref{page:eind}}
+	\fancyhead[LE,RO]{\includegraphics[height=2em]{lagersmit.png}}
+	\cfoot{}
+	\fancyhead[RE,LO]{}
+	\renewcommand{\headrulewidth}{0.4pt}
+	\renewcommand{\footrulewidth}{0.4pt}
+}
+
+\begin{document}
+
+
+\selectlanguage{dutch}
+\begin{titlepage}
+	\centering
+	\includegraphics[width=0.5\textwidth]{lagersmit.png}\par
+		
+	{\scshape\huge {{ title }}\par}
+     
+    Projectcode: IP00002/P002058
+    
+	\vspace{2cm}
+	\vspace{1cm}
+	{\Large Auteur: Ruud Habing\par}
+
+
+% Bottom of the page
+	{\large \today\par}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\chapter{Introductie}
+
+De Supreme Ventus is in 2005 op de markt geintroduceerd. De Ventus zorgt voor een luchtdruk in de ruimte tussen de waterkerende en de oliekerende seal(s) die net iets groter is dan de waterdruk op dezelfde diepte. Dit zorgt voor een minimale belasting op de waterkerende lipseals en het energieverlies afkomstig door wrijving neemt af. De lucht ontsnapt via een uitlaatventiel. Dit ventiel steekt boven de huisdelen uit en wordt beschermd door een beugel. Het uitlaatventiel voorkomt dat er water in de afdichting kan stromen als de luchtdruk wegvalt. Een ander USP (unique selling point) van de luchttoevoer is de mogelijkheid tot het afvoeren van eventuele doorgedrongen verontreinigingen (smeerolie of buitenboordwater) naar een draintank. Op deze manier wordt er voorkomen dat olie weglekt in het buitenboord water. 
+
+Voor het standaard schema, zie onderstaand in figuur \ref{fig:proefopstelling_ventus}
+
+\end{document}

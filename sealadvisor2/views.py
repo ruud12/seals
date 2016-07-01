@@ -3,7 +3,14 @@ from sealadvisor2 import forms
 from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions
 import bisect, decimal
 from django.core.urlresolvers import reverse
-# Create your views here.
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
+from django.http import HttpResponse
+from django.template import Context
+from django.template.loader import get_template
+from subprocess import Popen, PIPE
+import tempfile
+import os
 
 
 
@@ -313,3 +320,44 @@ def supremeOverview(request, supreme_id):
 	sizeaft = findCorrectSize(size)
 
 	return render(request, 'sealadvisor2/supreme.html', { 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft })
+
+
+# def supremeReport(request, supreme_id):
+# 	entry = supremeAdvise.objects.get(pk=supreme_id)
+
+# 	context = Context({
+# 		'content': 'test',
+# 	})
+
+
+# 	#define the location of 'mytemp' parent folder relative to the system temp
+# 	sysTemp = tempfile.gettempdir()
+# 	myTemp = os.path.join(sysTemp,'mytemp')
+
+# 	#You must make sure myTemp exists
+# 	if not os.path.exists(myTemp):
+# 		os.makedirs(myTemp)
+
+# 	tempdir = tempfile.mkdtemp(suffix='foo',prefix='bar',dir=myTemp)
+
+# 	template = get_template('report.tex')
+# 	rendered_tpl = template.render(context).encode('utf-8')
+# 	# Python3 only. For python2 check out the docs!
+# 	# with tempdir:
+# 	# Create subprocess, supress output with PIPE and
+# 	# run latex twice to generate the TOC properly.
+# 	# Finally read the generated pdf.
+# 	for i in range(2):
+# 		process = Popen(
+# 			['pdflatex', '-output-directory', tempdir],
+# 			stdin=PIPE,
+# 			stdout=PIPE,
+# 		)
+# 		process.communicate(rendered_tpl)
+# 	with open(os.path.join(tempdir, 'texput.pdf'), 'rb') as f:
+# 		pdf = f.read()
+			
+# 	r = HttpResponse(content_type='application/pdf')
+# 	r['Content-Disposition'] = 'attachment; filename=texput.pdf'
+# 	r.write(pdf)
+# 	return r

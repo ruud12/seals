@@ -19,25 +19,19 @@ class supremeWizard(forms.ModelForm):
 
 	def clean_aftSize(self):
 
-		if self._aft_seal is not None:
-			aftSize = self.cleaned_data['aftSize']
-			if aftSize is not None:
-				if aftSize > 900 or aftSize < 110:
-					raise forms.ValidationError("Size must be between 110 and 900")
-		else:
-			raise forms.ValidationError("Please input the diameter")
+		aftSize = self.cleaned_data['aftSize']
+		if aftSize is not None:
+			if aftSize > 900 or aftSize < 110:
+				raise forms.ValidationError("Size must be between 110 and 900")
 
 		return aftSize
 
 	def clean_fwdSize(self):
 
-		if self._fwd_seal is not None:
-			fwdSize = self.cleaned_data['fwdSize']
-			if fwdSize is not None:
-				if fwdSize > 900 or fwdSize < 110:
-					raise forms.ValidationError("Size must be between 110 and 900")
-		else:
-			raise forms.ValidationError("Please input the diameter")
+		fwdSize = self.cleaned_data['fwdSize']
+		if fwdSize is not None:
+			if fwdSize > 900 or fwdSize < 110:
+				raise forms.ValidationError("Size must be between 110 and 900")
 
 		return fwdSize
 

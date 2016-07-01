@@ -18,5 +18,6 @@ urlpatterns = [
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/$', views.supremeEnvironment, name='supremeEnvironment'),
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/(?P<env_id>\d+)/edit$', views.supremeEnvironmentEdit, name='supremeEnvironmentEdit'),
 	url(r'^supreme/(?P<supreme_id>\d+)/overview/$', views.supremeOverview, name='supremeOverview'),
+	# url(r'^supreme/(?P<supreme_id>\d+)/report\.pdf$', views.supremeReport, name='supremeReport'),
 
 ]
