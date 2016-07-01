@@ -5,6 +5,11 @@
 
 {% block content %}
 <h1>Supreme Seal advisor</h1>
+
+{% for tab in tabs %}
+<a href='{{ tab.href }}' class='btn waves-effect waves-light teal'>{{ tab.key }}</a>
+{% endfor %}
+
 <div class='row'>
 	<div class='col s6'>
 		<div class='card teal lighten-4'>
@@ -13,7 +18,6 @@
 				<form method="POST" class="post-form">
                     {% csrf_token %}
                     {% form form=form %} {% endform %}
-
                     <br>
                     <button type="submit" class="save btn btn-default">{{ submit }}</button>
                 </form>
@@ -21,6 +25,7 @@
 		</div>
 	</div>
 	<div class='col s6'>
+        {% if air %}
 		<div class='card teal lighten-4' id='air_card'>
 			<div class='card-content'>
 				<span class='card-title black-text'>Air type</span>
@@ -30,6 +35,22 @@
 				<p id='air_type'>For the specified draught a {{ air_type }} system is used.</p>
 			</div>
 		</div>
+        {% endif %}
+        {% if not air %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Extra information</span>
+                <p id='pv_value'></p><br>
+                <div id='fkm_card'>
+                    <p>For a PV-value higher than 4 lagersmit requires FKM lip-seals to be used.</p><br>
+                </div>
+                <div id='ventus_card'>
+                    <p>For a PV-value higher than 6 a ventus will be autoselected. This can be turned off later on if the customer does not want a ventus system.</p>
+                    <p><img height='200px' src="{% static 'images/ventus.jpg' %}"></p><br>
+                </div>
+            </div>
+        </div>
+        {% endif %}
 	</div>
 
 </div>
@@ -39,25 +60,25 @@
 
 (function($) {
     $(function() {
-        var selectField = $('#id_oil');
-        var vgp = $('#id_vgp');
+        var selectField = $('#id_cpp_fpp');
+        var oring = $('#id_pressure_oring');
 
 
         function toggleVerified(value) {
-            if (value == 'mineral') {
-            	vgp.parent().show();
+            if (value == 'fpp') {
+            	oring.parent().show();
         	} else {
-        		vgp.parent().hide();
-        		$('#id_air').attr('disabled', false);
+        		oring.parent().hide();
         	};
         }
 
         toggleVerified();
-        if ($('#id_air').is(':checked')) {
-        		$('#air_card').show();
-    	} else {
-        		$('#air_card').hide();
-    	}
+
+//         if ($('#id_air').is(':checked')) {
+//         		$('#air_card').show();
+//     	} else {
+//         		$('#air_card').hide();
+//     	}
 
         // show/hide on change
         selectField.change(function() {
@@ -65,16 +86,95 @@
         });
 
 
-        vgp.change(function() {
-        	if (vgp.is(':checked') && selectField.val()=='mineral') {
-        		$('#id_air').prop('checked', true);
-        		$('#air_card').show();
-        	} else {
-        		$('#id_air').attr('disabled', false);
-        	}
-        });
+//         vgp.change(function() {
+//         	if (vgp.is(':checked') && selectField.val()=='mineral') {
+//         		$('#id_air').prop('checked', true);
+//         		$('#air_card').show();
+//         	} else {
+//         		$('#id_air').attr('disabled', false);
+//         	}
+//         });
 
         
+        
+    });
+})(jQuery);
+
+</script>
+
+<script type='text/javascript'>
+(function($) {
+    $(function() {
+        var selectField = $('#id_application');
+        var fwd = $('#id_fwd_seal');
+        var aft = $('#id_aft_seal');
+        var aftsize = $('#id_aftSize')
+        var fwdsize = $('#id_fwdSize')
+
+        function toggleVerified(value) {
+            value == '1' ? aft.parent().show() : aft.parent().hide();
+            value == '1' ? fwd.parent().show() : fwd.parent().hide();
+            toggleSizes();
+        }
+
+        function toggleSizes() {
+            (aft.is(':checked') || selectField.val() != '1') ? aftsize.parent().show() : aftsize.parent().hide(); 
+            fwd.is(':checked') ? fwdsize.parent().show(): fwdsize.parent().hide();
+        }
+
+
+
+
+        function checkVentus(PV) {
+            if ( $('#id_aftSize').val() > 0 && $('#id_rpm').val() && $('#id_draught_shaft').val() ) {
+                PV = $('#id_aftSize').val()*3.14*($('#id_rpm').val()/60)*($('#id_draught_shaft').val()/10000);
+
+                
+            } else {
+                PV = 0;
+            }
+
+            (PV > 6) ? $('#ventus_card').show() : $('#ventus_card').hide();
+            (PV > 4) ? $('#fkm_card').show() : $('#fkm_card').hide();
+            $('#pv_value').html("The PV-value is equal to " + PV);
+        }
+
+
+        toggleSizes();
+        checkVentus();
+
+
+        $('#id_aftSize').keyup(function() {
+            checkVentus();
+        })
+
+        $('#id_rpm').keyup(function() {
+            checkVentus();
+        })
+
+        $('#id_draught_shaft').keyup(function() {
+            checkVentus();
+        })
+
+        // show/hide on load based on pervious value of selectField
+        toggleVerified(selectField.val());
+
+
+        aft.change(function() {
+            toggleSizes();
+        })
+
+        fwd.change(function() {
+            toggleSizes();
+        })
+
+        // show/hide on change
+        selectField.change(function() {
+            toggleVerified($(this).val());
+        });
+
+
+
         
     });
 })(jQuery);

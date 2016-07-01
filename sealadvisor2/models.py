@@ -52,12 +52,14 @@ class environmentalOptions(models.Model):
 
 	OIL_CHOICES = (
 		('mineral', 'Mineral oil'),
-		('eal', 'EAL oil (bio-oil)'),
+		('eal', 'EAL oil (bio degradable oil)'),
 	)
 
 	oil = models.CharField(max_length=20, choices=OIL_CHOICES, verbose_name='What kind of oil is used')
 
-	air = models.BooleanField(default = False, verbose_name='Use an air type system (Ventus/Athmos) to comply with VGP and reduce the pressure on the lip seals')
+	oilType = models.CharField(max_length=100, verbose_name='What type of oil is used', blank=True, null=True)
+
+	air = models.BooleanField(default = False, verbose_name='Use an air type system (Ventus/Athmos) to comply with VGP and reduce the pressure on the lip seals (only aft seal)')
 
 
 
@@ -77,6 +79,8 @@ class supremeAdvise(models.Model):
 
 	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor', blank=True, null=True)
 
+	pressure_oring = models.BooleanField(default=False, verbose_name='Pressure O-ring')
+
 	# in case that application is equal to 'sterntube', are both the forward and/or aft seal required?
 
 	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal.')
@@ -90,6 +94,7 @@ class supremeAdvise(models.Model):
 
 
 	aft = models.ForeignKey(AftSealOptions, null=True, blank=True)
+	fwd = models.ForeignKey(FwdSealOptions, null=True, blank=True)
 	environment = models.ForeignKey(environmentalOptions, null=True, blank=True)
 
 

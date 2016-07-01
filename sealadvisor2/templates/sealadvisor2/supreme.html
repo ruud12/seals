@@ -41,7 +41,8 @@
                     <a class="btn-floating waves-effect waves-light green" href="{% url 'sealadvisor2:supremeEnvironmentEdit' advise.id advise.environment.id %}"><i class="material-icons">edit</i></a>
                 </div>              
                 <p>Has to comply with VGP: {% if advise.environment.vgp %}yes{% else %}no{% endif %}</p>
-                <p>Oil type: {{ advise.environment.get_oil_display }}</p>
+                <p>Oil: {{ advise.environment.get_oil_display }}</p>
+                <p>Oil type: {{ advise.environment.oilType }}</p>
                 <p>Use air system: {% if advise.environment.air %}yes, {{ air }}{% else %}no{% endif %}
             </div>
         </div>
@@ -56,6 +57,7 @@
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
                 <p><b>X01{{ sizeaft }}AA{{ advise.aftSize }}A</b></p><br>
+                <p>Pressure O-ring: {% if advise.pressure_oring %}yes{% else %}no{% endif %}
                 <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>
                 <p>Centering of liner: {{ advise.aft.get_linerCentering_display }}</p>
                 <p>O-ring between liner and shaft: {% if advise.aft.oring %} yes {% else %}no{% endif %}</p>
@@ -72,12 +74,17 @@
             </div>
         </div>
         {% endif %}
-        {% if advise.fwd_seal %}
+        {% if advise.fwd %}
         <div class='card teal lighten-4'>
             <div class='card-content'>
                 <span class='card-title black-text'>Forward seal advise</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeFwdEdit' advise.id advise.fwd.id %}"><i class="material-icons">edit</i></a>
+                </div>
                 <p>Type of lip-seal rubber: {{ rubber_fwd }}</p>
-                <p>PV-value: {{ pv_fwd }}</p>                
+                <p>PV-value: {{ pv_fwd }}</p> 
+                <p>FKM lip-seals used: {% if advise.fwd.fkm %}yes{% else %}no{% endif %}</p>
+                <p>OCR ring: {% if advise.fwd.ocr %}yes{% else %}no{% endif %}</p>
 
             </div>
         </div>
