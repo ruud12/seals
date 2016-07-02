@@ -11,7 +11,28 @@ class Company(models.Model):
 		return self.name
 
 
+class partCategory(models.Model):
+	name = models.CharField(max_length=20)
 
+	def __str__(self):
+		return self.name
+
+class partMaterial(models.Model):
+	name = models.CharField(max_length=20)
+
+	def __str__(self):
+		return self.name
+
+
+class Part(models.Model):
+	name = models.CharField(max_length=100)
+	description = models.CharField(max_length=1000, null=True, blank=True)
+	category = models.ForeignKey(partCategory)
+	material = models.ForeignKey(partMaterial)
+	number = models.IntegerField(blank=True,null=True)
+
+	def __str__(self):
+		return self.name
 
 
 class Vessel(models.Model):
@@ -30,4 +51,8 @@ class Seal(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 
 	company = models.ForeignKey(Company)
+
+	parts = models.ManyToManyField(Part)
+
+
 
