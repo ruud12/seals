@@ -12,8 +12,8 @@ class Company(models.Model):
 
 
 class Seal(models.Model):
-	xNumber = models.CharField(max_length=20, verbose_name='X serial number')
-	sealType = models.CharField(max_length = 20, verbose_name='Seal type')
+	x_number = models.CharField(max_length=20, verbose_name='X serial number')
+	seal_type = models.CharField(max_length = 20, verbose_name='Seal type')
 	size = models.IntegerField()
 	created = models.DateTimeField(auto_now_add=True)
 

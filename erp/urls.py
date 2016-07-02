@@ -9,4 +9,5 @@ app_name = 'erp'
 
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
+	url(r'^addSeal/$', views.addSeal, name='addSeal'),
 ]
