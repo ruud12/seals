@@ -1,0 +1,26 @@
+{% load staticfiles %}
+<html>
+	<head>
+		<style>
+
+		</style>
+		<!--Import materialize.css-->
+
+        {% include 'material/includes/material_css.html' %}
+        <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
+        {% include 'material/includes/material_js.html' %}
+        {% load material_form %} 
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+        <link rel="stylesheet" href="{% static 'css/sealadvisor2.css' %}">
+	</head>
+  
+ 	<body>
+
+        <div class="content container">
+                {% block content %}
+                {% endblock %}
+        </div>
+
+ 	</body>
+</html>

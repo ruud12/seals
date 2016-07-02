@@ -6,15 +6,16 @@ from django.core.urlresolvers import reverse
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from django.http import HttpResponse
-from django.template import Context
-from django.template.loader import get_template
-from subprocess import Popen, PIPE
-import tempfile
+
+
+
 import os
-
-
-
-
+from subprocess import Popen, PIPE
+from tempfile import mkstemp
+ 
+from django.http import HttpResponse, Http404
+from django.template.loader import render_to_string
+from django.template import RequestContext
 
 
 
@@ -322,42 +323,45 @@ def supremeOverview(request, supreme_id):
 	return render(request, 'sealadvisor2/supreme.html', { 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft })
 
 
-# def supremeReport(request, supreme_id):
-# 	entry = supremeAdvise.objects.get(pk=supreme_id)
-
-# 	context = Context({
-# 		'content': 'test',
-# 	})
-
-
-# 	#define the location of 'mytemp' parent folder relative to the system temp
-# 	sysTemp = tempfile.gettempdir()
-# 	myTemp = os.path.join(sysTemp,'mytemp')
-
-# 	#You must make sure myTemp exists
-# 	if not os.path.exists(myTemp):
-# 		os.makedirs(myTemp)
-
-# 	tempdir = tempfile.mkdtemp(suffix='foo',prefix='bar',dir=myTemp)
-
-# 	template = get_template('report.tex')
-# 	rendered_tpl = template.render(context).encode('utf-8')
-# 	# Python3 only. For python2 check out the docs!
-# 	# with tempdir:
-# 	# Create subprocess, supress output with PIPE and
-# 	# run latex twice to generate the TOC properly.
-# 	# Finally read the generated pdf.
-# 	for i in range(2):
-# 		process = Popen(
-# 			['pdflatex', '-output-directory', tempdir],
-# 			stdin=PIPE,
-# 			stdout=PIPE,
-# 		)
-# 		process.communicate(rendered_tpl)
-# 	with open(os.path.join(tempdir, 'texput.pdf'), 'rb') as f:
-# 		pdf = f.read()
-			
-# 	r = HttpResponse(content_type='application/pdf')
-# 	r['Content-Disposition'] = 'attachment; filename=texput.pdf'
-# 	r.write(pdf)
-# 	return r
+def render_latex(request, template, dictionary, filename):
+    # render latex template and vars to a string
+    latex = render_to_string(template, dictionary, context_instance=None)
+ 
+    # create a unique temorary filename
+    fd, path = mkstemp(prefix="latex_", suffix=".pdf")
+    folder, fname = os.path.split(path)
+    jobname, ext = os.path.splitext(fname)  # jobname is just the filename without .pdf, it's what pdflatex uses
+ 
+    # for the TOC to be built, pdflatex must be run twice, on the second run it will generate a .toc file
+    for i in range(2):
+        # start pdflatex, we can send the tex file from stdin, but the output file can only be saved to disk, not piped to stdout unfortunately/
+        process = Popen(["pdflatex", "-output-directory", folder, "-jobname", jobname], stdin=PIPE, stdout=PIPE)  # piping stdout suppresses output messages
+        process.communicate(latex)
+ 
+    # open the temporary pdf file for reading.
+    try:
+        pdf = os.fdopen(fd, "rb")
+        output = pdf.read()
+        pdf.close()
+    except OSError:
+        raise Http404("Error generating PDF file")  # maybe we should use an http  500 here, 404 makes no sense
+ 
+    # generate the response with pdf attachment
+    response = HttpResponse(mimetype="application/pdf")
+    response["Content-Disposition"] = "attachment; filename=" + filename
+    response.write(output)
+ 
+    # delete the pdf from temp directory, and other generated files ending on .aux and .log
+    for ext in (".pdf", ".aux", ".log", ".toc", ".lof", ".lot", ".synctex.gz"):
+        try:
+            os.remove(os.path.join(folder, jobname) + ext)
+        except OSError:
+            pass
+ 
+    # return the response
+    return response
+ 
+#### Actual Usage ####
+ 
+def someview(request):
+    return render_latex(request, "reports/test.tex", {"foo": "bar"}, filename="latex_test.pdf")

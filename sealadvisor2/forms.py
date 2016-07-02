@@ -1,6 +1,5 @@
 from django import forms
 from sealadvisor2.models import sealApplication, supremeAdvise, AftSealOptions, environmentalOptions,FwdSealOptions
-from seals.models import Company
 
 
 
