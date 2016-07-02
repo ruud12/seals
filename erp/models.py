@@ -44,6 +44,7 @@ class Vessel(models.Model):
 
 
 
+
 class Seal(models.Model):
 	x_number = models.CharField(max_length=20, verbose_name='X serial number')
 	seal_type = models.CharField(max_length = 20, verbose_name='Seal type')
@@ -52,7 +53,17 @@ class Seal(models.Model):
 
 	company = models.ForeignKey(Company)
 
-	parts = models.ManyToManyField(Part)
+	def __str__(self):
+		return self.x_number
+
+
+class sealComponent(models.Model):
+	number = models.IntegerField()
+	part = models.ForeignKey(Part)
+	seal = models.ForeignKey(Seal)
+
+	def __str__(self):
+		return str("{number}x {part}").format(number=self.number,part=self.part)
 
 
 

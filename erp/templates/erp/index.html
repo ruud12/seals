@@ -11,7 +11,7 @@
       <div class='card-content'>
         <span class='card-title black-text'>Seals</span>
         {% for seal in seals %}
-        <p>{{ seal.x_number }} - <a href="{% url 'erp:editSeal' seal.id %}">edit</a></p>
+        <p><a href="{% url 'erp:viewSeal' seal.id %}">{{ seal.x_number }}</a> - <a href="{% url 'erp:editSeal' seal.id %}">edit</a></p>
         {% endfor %}
       </div>
     </div>

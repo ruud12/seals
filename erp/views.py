@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect, render_to_resp
 
 # Create your views here.
 
-from erp.models import Seal, Company
+from erp.models import Seal, Company, sealComponent
 from erp import forms
 
 def index(request):
@@ -11,6 +11,14 @@ def index(request):
 	companies = Company.objects.all()
 
 	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies})
+
+
+def viewSeal(request, seal_id):
+	seal = get_object_or_404(Seal, pk=seal_id)
+	parts = sealComponent.objects.filter(seal_id=seal_id)
+
+	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts })
+
 
 
 def addSeal(request):
@@ -27,6 +35,8 @@ def addSeal(request):
 		form = forms.addSealForm()
 
 	return render(request, 'erp/seal.html', {'form':form, 'submit':'Create new seal object','title':'Add new seal'})
+
+
 
 def editSeal(request, seal_id):
 	seal = get_object_or_404(Seal, pk=seal_id)

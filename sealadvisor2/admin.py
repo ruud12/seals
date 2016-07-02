@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from sealadvisor2.models import supremeAdvise,  environmentalOptions, AftSealOptions, sealApplication
-from erp.models import Company, Seal, Part, partMaterial, partCategory
+from erp.models import Company, Seal, Part, partMaterial, partCategory, sealComponent
 # Register your models here.
 
 admin.site.register(supremeAdvise)
@@ -14,4 +14,5 @@ admin.site.register(Seal)
 admin.site.register(Part)
 admin.site.register(partMaterial)
 admin.site.register(partCategory)
+admin.site.register(sealComponent)
 
