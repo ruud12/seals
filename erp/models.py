@@ -90,6 +90,9 @@ class serviceReport(models.Model):
 
 
 class sealComponentChange(models.Model):
-	seal = models.ForeignKey(Seal)
+	service_report = models.ForeignKey(serviceReport)
+
 	old_component = models.ForeignKey(Part, related_name='old_component')
 	new_component = models.ForeignKey(Part, related_name='new_component')
+
+	confirm = models.BooleanField(default=False)

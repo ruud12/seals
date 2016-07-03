@@ -4,7 +4,7 @@ from erp.tables import componentTable, partsTable
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent, Part, serviceReport
+from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponentChange, sealComponent
 from erp import forms
 
 def index(request):
@@ -59,12 +59,12 @@ def editPart(request, part_id):
 def viewSeal(request, seal_id):
 	seal = get_object_or_404(Seal, pk=seal_id)
 	parts = sealComponent.objects.filter(seal_id=seal_id)
-
+	reports = serviceReport.objects.filter(seal_id=seal_id)
 	table = componentTable(parts)
 
 
 
-	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts, 'table': table })
+	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts, 'table': table, 'reports':reports })
 
 
 
@@ -162,9 +162,14 @@ def addServiceReport(request, seal_id):
 		form = forms.addServiceReportForm(request.POST, seal_id=seal_id)
 
 		if form.is_valid():
-			newServiceReport = form.save(commit=false)
+			newServiceReport = form.save(commit=False)
 			newServiceReport.seal = seal
 			newServiceReport.save()
+			form.save_m2m()
+
+			for component in newServiceReport.parts_to_replace.all():
+				print('looping')
+				sealComponentChange.objects.create(service_report=newServiceReport, old_component=component.part, new_component=component.part)
 
 			return redirect('erp:viewSeal', seal_id)
 
@@ -173,3 +178,12 @@ def addServiceReport(request, seal_id):
 
 	return render(request, 'erp/simple_form.html', {'form':form, 'title':'Add service report','submit':'Add report'})
 
+
+def checkComponentChange(request,seal_id,part_id):
+
+	seal = get_object_or_404(Seal, pk=seal_id)
+	part = get_object_or_404(Part, pk=part_id)
+
+	form = forms.sealComponentChangeForm()
+
+	return render(request,'erp/simple_form.html', {'form':form, 'title':'Check part replacement','submit':'Save'})
