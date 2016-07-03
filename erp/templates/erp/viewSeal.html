@@ -6,6 +6,9 @@
 {% block content %}
 <h1>{{ seal.x_number }}</h1>
 
+<p><a class='btn waves-effect waves-light blue' href="{% url 'erp:index' %}">Home</a></p>
+<br>
+
 <div class='row'>
   <div class='col s6'>
     <div class='card teal lighten-4'>
@@ -17,7 +20,17 @@
         <p>X number: {{ seal.x_number }}</p>
         <p>Type: {{ seal.seal_type }}</p>
         <p>Company: {{ seal.company }}</p>
+        <p>Vessel: {{ seal.vessel }}</p>
         <p>Created: {{ seal.created }}</p>
+      </div>
+    </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Service reports</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:editSeal' seal.id %}"><i class="material-icons">add</i></a>
+        </div>
+        
       </div>
     </div>
   </div>
@@ -25,6 +38,9 @@
     <div class='card teal lighten-4'>
       <div class='card-content'>
         <span class='card-title black-text'>Parts</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addComponentToSeal' seal.id %}"><i class="material-icons">add</i></a>
+        </div>
         {% render_table table %}
       </div>
     </div>

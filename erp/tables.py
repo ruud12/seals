@@ -8,13 +8,15 @@ from django_tables2.utils import A
 class componentTable(tables.Table):
 
 	number = tables.Column(verbose_name='#')
+	partNumber = tables.Column(accessor='part.number')
 	size = tables.Column(accessor='part.size')
 	material = tables.Column(accessor='part.material')
+	name = tables.Column(accessor='part.name')
 
 	class Meta:
 		model = sealComponent
 		attrs = {'class': 'bordered striped'}
-		fields = ('number','part','size', 'status')
+		fields = ('number','partNumber', 'name','size', 'status')
 
 class partsTable(tables.Table):
 

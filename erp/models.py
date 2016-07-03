@@ -33,7 +33,7 @@ class Part(models.Model):
 	size = models.IntegerField()
 
 	def __str__(self):
-		return self.name
+		return str("{name} {size} ({material})").format(name=self.name, size=self.size, material=self.material)
 
 
 class Vessel(models.Model):
@@ -51,7 +51,7 @@ class Seal(models.Model):
 	seal_type = models.CharField(max_length = 20, verbose_name='Seal type')
 	size = models.IntegerField()
 	created = models.DateTimeField(auto_now_add=True)
-
+	vessel = models.ForeignKey(Vessel, blank=True, null=True)
 	company = models.ForeignKey(Company)
 
 	def __str__(self):

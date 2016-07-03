@@ -102,6 +102,27 @@ def editSeal(request, seal_id):
 	return render(request, 'erp/seal.html', {'form':form, 'submit':'Save seal','title':'Edit seal'})
 
 
+def addComponentToSeal(request, seal_id):
+	seal = get_object_or_404(Seal, pk=seal_id)
+	size = seal.size
+
+	if request.method == 'POST':
+		form = forms.addComponentToSealForm(request.POST)
+
+		if form.is_valid():
+			newComponent = form.save(commit=False)
+			newComponent.seal = seal
+			newComponent.save()
+
+			return redirect('erp:viewSeal', seal_id)
+
+	else:
+		form = forms.addComponentToSealForm(size=size)
+
+	return render(request, 'erp/simple_form.html', {'form':form, 'submit':'Add component to seal','title':'Add component'})
+
+
+
 def addCompany(request):
 	if request.method=="POST":
 		form = forms.addCompanyForm(request.POST)
