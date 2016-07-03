@@ -1,5 +1,5 @@
 from django import forms
-from erp.models import Seal, Company
+from erp.models import Seal, Company, Part
 
 
 class addSealForm(forms.ModelForm):
@@ -11,3 +11,9 @@ class addCompanyForm(forms.ModelForm):
 	class Meta:
 		model = Company
 		fields = ('name',)
+
+
+class addPartForm(forms.ModelForm):
+	class Meta:
+		model = Part
+		fields = ('number','category','size','name','description','material')

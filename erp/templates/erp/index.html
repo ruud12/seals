@@ -15,14 +15,21 @@
         {% endfor %}
       </div>
     </div>
-  </div>
-  <div class='col s6'>
     <div class='card teal lighten-4'>
       <div class='card-content'>
         <span class='card-title black-text'>Companies</span>
         {% for company in companies %}
         <p>{{ company }} - <a href="{% url 'erp:editCompany' company.id %}">edit</a></p>
         {% endfor %}
+      </div>
+    </div>
+
+  </div>
+  <div class='col s6'>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Parts</span>
+        <p><a href="{% url 'erp:viewAllParts' %}">Parts list</a></p>
       </div>
     </div>
   </div>

@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
-from erp.tables import componentTable
+from erp.tables import componentTable, partsTable
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent
+from erp.models import Seal, Company, sealComponent, Part
 from erp import forms
 
 def index(request):
@@ -12,6 +12,48 @@ def index(request):
 	companies = Company.objects.all()
 
 	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies})
+
+
+
+def viewAllParts(request):
+	parts = Part.objects.all()
+
+	table = partsTable(parts)
+
+	return render(request, 'erp/viewAllParts.html', {'table':table})
+
+
+def addPart(request):
+
+	if request.method == "POST":
+		form = forms.addPartForm(request.POST)
+
+		if form.is_valid():
+			newPart = form.save()
+
+			return redirect('erp:viewAllParts')
+	else:
+		form = forms.addPartForm()
+
+	return render(request,'erp/simple_form.html', {'form':form,'title':'Add part', 'submit':'Create part'})
+
+
+def editPart(request, part_id):
+	part = get_object_or_404(Part, pk=part_id)
+
+	if request.method == "POST":
+		form = forms.addPartForm(request.POST, instance=part)
+
+		if form.is_valid():
+			newPart = form.save()
+
+			return redirect('erp:viewAllParts')
+	else:
+		form = forms.addPartForm(initial={'number':part.number,'category':part.category.id,'size':part.size,'name':part.name,'description':part.description,'material':part.material.id})
+
+	return render(request,'erp/simple_form.html', {'form':form,'title':'Edit part', 'submit':'Save part'})
+
+
 
 
 def viewSeal(request, seal_id):

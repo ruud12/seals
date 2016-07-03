@@ -29,7 +29,7 @@ class Part(models.Model):
 	description = models.CharField(max_length=1000, null=True, blank=True)
 	category = models.ForeignKey(partCategory)
 	material = models.ForeignKey(partMaterial)
-	number = models.IntegerField(blank=True,null=True)
+	number = models.IntegerField()
 	size = models.IntegerField()
 
 	def __str__(self):
@@ -65,8 +65,8 @@ class sealComponent(models.Model):
 
 	CHOICES = (
 		('as-installed', 'As installed'),
-		('replaced', 'Replaced (due to maintainance)'),
-		('removed', 'Removed and not replaced'))
+		('replacement', 'Replacement part (due to maintainance)'),
+	)
 
 
 	replaced_by = models.ForeignKey('self', null=True, blank=True, verbose_name='Replaced by component')
