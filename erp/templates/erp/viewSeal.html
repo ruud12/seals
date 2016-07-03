@@ -1,4 +1,5 @@
 {% extends 'erp/base.html' %}
+{% load render_table from django_tables2 %}
 {% load static %}
 
 
@@ -25,8 +26,10 @@
       <div class='card-content'>
         <span class='card-title black-text'>Parts</span>
         {% for part in parts %}
-        <p>{{ part.number }}x: {{ part.part.name }} ({{ part.part.material }})</p>
+        <p>{{ part.number }}x: {{ part.part.name }} ({{ part.part.material }})<br>
+          - status: {{ part.status }}</p>
         {% endfor %}
+        {% render_table table %}
       </div>
     </div>
   </div>

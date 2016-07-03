@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
+from erp.tables import componentTable
 
 # Create your views here.
 
@@ -17,7 +18,11 @@ def viewSeal(request, seal_id):
 	seal = get_object_or_404(Seal, pk=seal_id)
 	parts = sealComponent.objects.filter(seal_id=seal_id)
 
-	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts })
+	table = componentTable(parts)
+
+
+
+	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts, 'table': table })
 
 
 

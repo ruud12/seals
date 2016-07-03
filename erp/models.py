@@ -30,6 +30,7 @@ class Part(models.Model):
 	category = models.ForeignKey(partCategory)
 	material = models.ForeignKey(partMaterial)
 	number = models.IntegerField(blank=True,null=True)
+	size = models.IntegerField()
 
 	def __str__(self):
 		return self.name
@@ -66,6 +67,7 @@ class sealComponent(models.Model):
 		('as-installed', 'As installed'),
 		('replaced', 'Replaced (due to maintainance)'),
 		('removed', 'Removed and not replaced'))
+
 
 	replaced_by = models.ForeignKey('self', null=True, blank=True, verbose_name='Replaced by component')
 
