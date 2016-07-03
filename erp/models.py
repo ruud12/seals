@@ -62,8 +62,17 @@ class sealComponent(models.Model):
 	part = models.ForeignKey(Part)
 	seal = models.ForeignKey(Seal)
 
+	CHOICES = (
+		('as-installed', 'As installed'),
+		('replaced', 'Replaced (due to maintainance)'),
+		('removed', 'Removed and not replaced'))
+
+	replaced_by = models.ForeignKey('self', null=True, blank=True, verbose_name='Replaced by component')
+
+	status = models.CharField(max_length=20, choices=CHOICES)
+
 	def __str__(self):
-		return str("{number}x {part}").format(number=self.number,part=self.part)
+		return str("{seal} - {number}x {part}").format(number=self.number,part=self.part, seal=self.seal)
 
 
 

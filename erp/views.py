@@ -47,7 +47,7 @@ def editSeal(request, seal_id):
 		if form.is_valid():
 			form.save()
 
-			return redirect('erp:index')
+			return redirect('erp:viewSeal', seal_id)
 
 	else:
 		form = forms.addSealForm(initial={'x_number':seal.x_number, 'size':seal.size,'company':seal.company.id,'seal_type':seal.seal_type})
