@@ -4,7 +4,7 @@ from erp.tables import componentTable, partsTable
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent, Part
+from erp.models import Seal, Company, sealComponent, Part, serviceReport
 from erp import forms
 
 def index(request):
@@ -107,7 +107,7 @@ def addComponentToSeal(request, seal_id):
 	size = seal.size
 
 	if request.method == 'POST':
-		form = forms.addComponentToSealForm(request.POST)
+		form = forms.addComponentToSealForm(request.POST,size=size)
 
 		if form.is_valid():
 			newComponent = form.save(commit=False)
@@ -153,4 +153,23 @@ def editCompany(request, company_id):
 		form = forms.addCompanyForm(initial={'name':company.name })
 
 	return render(request, 'erp/company.html', {'form':form,'submit':'Save company','title':'Edit company'})
+
+
+def addServiceReport(request, seal_id):
+	seal = get_object_or_404(Seal, pk=seal_id)
+
+	if request.method == "POST":
+		form = forms.addServiceReportForm(request.POST, seal_id=seal_id)
+
+		if form.is_valid():
+			newServiceReport = form.save(commit=false)
+			newServiceReport.seal = seal
+			newServiceReport.save()
+
+			return redirect('erp:viewSeal', seal_id)
+
+	else:
+		form = forms.addServiceReportForm(seal_id=seal_id)
+
+	return render(request, 'erp/simple_form.html', {'form':form, 'title':'Add service report','submit':'Add report'})
 

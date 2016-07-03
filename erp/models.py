@@ -74,7 +74,7 @@ class sealComponent(models.Model):
 	status = models.CharField(max_length=20, choices=CHOICES)
 
 	def __str__(self):
-		return str("{seal} - {number}x {part}").format(number=self.number,part=self.part, seal=self.seal)
+		return str("{number}x {part}").format(number=self.number,part=self.part, seal=self.seal)
 
 
 
@@ -82,3 +82,14 @@ class serviceReport(models.Model):
 	seal = models.ForeignKey(Seal)
 	name = models.CharField(max_length=100)
 
+	parts_to_replace = models.ManyToManyField(sealComponent)
+
+
+	def __str__(self):
+		return self.name
+
+
+class sealComponentChange(models.Model):
+	seal = models.ForeignKey(Seal)
+	old_component = models.ForeignKey(Part, related_name='old_component')
+	new_component = models.ForeignKey(Part, related_name='new_component')

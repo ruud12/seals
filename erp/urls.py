@@ -14,6 +14,7 @@ urlpatterns = [
 	url(r'^editPart/(?P<part_id>\d+)/$', views.editPart, name='editPart'),
 	url(r'^addSeal/$', views.addSeal, name='addSeal'),
 	url(r'^viewSeal/(?P<seal_id>\d+)/addComponent/$', views.addComponentToSeal, name='addComponentToSeal'),
+	url(r'^viewSeal/(?P<seal_id>\d+)/addServiceReport/$', views.addServiceReport, name='addServiceReport'),
 	url(r'^viewSeal/(?P<seal_id>\d+)/$', views.viewSeal, name='viewSeal'),
 	url(r'^addCompany/$', views.addCompany, name='addCompany'),
 	url(r'^editCompany/(?P<company_id>\d+)/$', views.editCompany, name='editCompany'),
