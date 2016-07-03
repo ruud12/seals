@@ -78,3 +78,7 @@ class sealComponent(models.Model):
 
 
 
+class serviceReport(models.Model):
+	seal = models.ForeignKey(Seal)
+	name = models.CharField(max_length=100)
+
