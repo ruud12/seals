@@ -1,5 +1,5 @@
 from django import forms
-from erp.models import Seal, Company, Part, sealComponent, serviceReport, confirmComponentChange
+from erp.models import Seal, Company, Part, sealComponent, serviceReport, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory
 
 class addSealForm(forms.ModelForm):
 	class Meta:
@@ -10,6 +10,26 @@ class addCompanyForm(forms.ModelForm):
 	class Meta:
 		model = Company
 		fields = ('name',)
+
+class addMaterialForm(forms.ModelForm):
+	class Meta:
+		model = partMaterial
+		fields = ('name',)
+
+class addCategoryForm(forms.ModelForm):
+	class Meta:
+		model = partCategory
+		fields = ('name',)
+
+class addMechanicForm(forms.ModelForm):
+	class Meta:
+		model = Mechanic
+		fields = ('first_name','last_name')
+
+class addVesselForm(forms.ModelForm):
+	class Meta:
+		model = Vessel
+		fields = ('name','company')
 
 
 class addPartForm(forms.ModelForm):

@@ -4,14 +4,18 @@ from erp.tables import componentTable, partsTable
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange
+from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory
 from erp import forms
 
 def index(request):
 	seals = Seal.objects.all()
 	companies = Company.objects.all()
+	vessels = Vessel.objects.all()
+	mechanics = Mechanic.objects.all()
+	categories = partCategory.objects.all()
+	materials = partMaterial.objects.all()
 
-	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies})
+	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies,'vessels':vessels, 'mechanics':mechanics, 'categories':categories,'materials':materials })
 
 
 
@@ -136,7 +140,7 @@ def addCompany(request):
 	else:
 		form = forms.addCompanyForm()
 
-	return render(request, 'erp/company.html', {'form': form, 'submit':'Create new company', 'title':'Add new compaty'})
+	return render(request, 'erp/company.html', {'form': form, 'submit':'Create new company', 'title':'Add new company'})
 
 
 def editCompany(request, company_id):
@@ -154,6 +158,38 @@ def editCompany(request, company_id):
 		form = forms.addCompanyForm(initial={'name':company.name })
 
 	return render(request, 'erp/company.html', {'form':form,'submit':'Save company','title':'Edit company'})
+
+
+def addVessel(request):
+	if request.method=="POST":
+		form = forms.addVesselForm(request.POST)
+
+		if form.is_valid():
+			newVessel = form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addVesselForm()
+
+	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new vessel', 'title':'Add vessel'})
+
+
+def editVessel(request, vessel_id):
+	vessel = get_object_or_404(Vessel, pk=vessel_id)
+
+	if request.method == 'POST':
+		form = forms.addVesselForm(request.POST, instance = vessel)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addVesselForm(initial={'name':vessel.name, 'company':vessel.company.id })
+
+	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save vessel','title':'Edit vessel'})
 
 
 def addServiceReport(request, seal_id):
@@ -196,3 +232,99 @@ def checkComponentChange(request,seal_id, change_id):
 	form = forms.confirmComponentChangeForm(initial = {'old_part':change.old_part, 'new_part': change.new_part})
 
 	return render(request,'erp/simple_form.html', {'form':form, 'title':'Check part replacement','submit':'Save'})
+
+
+
+def addMechanic(request):
+	if request.method=="POST":
+		form = forms.addMechanicForm(request.POST)
+
+		if form.is_valid():
+			newMechanic = form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addMechanicForm()
+
+	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new mechanic', 'title':'Add mechanic'})
+
+
+def editMechanic(request, mechanic_id):
+	mechanic = get_object_or_404(Mechanic, pk=mechanic_id)
+
+	if request.method == 'POST':
+		form = forms.addMechanicForm(request.POST, instance = mechanic)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addMechanicForm(initial={'first_name':mechanic.first_name, 'last_name': mechanic.last_name })
+
+	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save mechanic','title':'Edit mechanic'})
+
+
+def addMaterial(request):
+	if request.method=="POST":
+		form = forms.addMaterialForm(request.POST)
+
+		if form.is_valid():
+			newMaterial = form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addMaterialForm()
+
+	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new material', 'title':'Add material'})
+
+def editMaterial(request, material_id):
+	material = get_object_or_404(Material, pk=mechanic_id)
+
+	if request.method == 'POST':
+		form = forms.addMaterialForm(request.POST, instance = material)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addMaterialForm(initial={'name':material.name })
+
+	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save material','title':'Edit material'})
+
+
+def addCategory(request):
+	if request.method=="POST":
+		form = forms.addCategoryForm(request.POST)
+
+		if form.is_valid():
+			newCategory = form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addCategoryForm()
+
+	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new category', 'title':'Add category'})
+
+
+def editCategory(request, category_id):
+	category = get_object_or_404(Category, pk=category_id)
+
+	if request.method == 'POST':
+		form = forms.addCategoryForm(request.POST, instance = category)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addCategoryForm(initial={'name':category.name })
+
+	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save category','title':'Edit category'})

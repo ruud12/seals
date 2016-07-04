@@ -10,6 +10,9 @@
     <div class='card teal lighten-4'>
       <div class='card-content'>
         <span class='card-title black-text'>Seals</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addSeal' %}"><i class="material-icons">add</i></a>
+        </div>
         {% for seal in seals %}
         <p><a href="{% url 'erp:viewSeal' seal.id %}">{{ seal.x_number }}</a> - <a href="{% url 'erp:editSeal' seal.id %}">edit</a></p>
         {% endfor %}
@@ -18,8 +21,33 @@
     <div class='card teal lighten-4'>
       <div class='card-content'>
         <span class='card-title black-text'>Companies</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addCompany' %}"><i class="material-icons">add</i></a>
+        </div>
         {% for company in companies %}
         <p>{{ company }} - <a href="{% url 'erp:editCompany' company.id %}">edit</a></p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Part categories</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addCategory' %}"><i class="material-icons">add</i></a>
+        </div>
+        {% for category in categories %}
+        <p>{{ category }} - <a href="{% url 'erp:editCategory' category.id %}">edit</a></p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Part materials</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addMaterial' %}"><i class="material-icons">add</i></a>
+        </div>
+        {% for material in materials %}
+        <p>{{ material }} - <a href="{% url 'erp:editMaterial' material.id %}">edit</a></p>
         {% endfor %}
       </div>
     </div>
@@ -29,7 +57,32 @@
     <div class='card teal lighten-4'>
       <div class='card-content'>
         <span class='card-title black-text'>Parts</span>
-        <p><a href="{% url 'erp:viewAllParts' %}">Parts list</a></p>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addPart' %}"><i class="material-icons">add</i></a>
+        </div>
+        <p><a href="{% url 'erp:viewAllParts' %}">View all parts</a></p>
+      </div>
+    </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Vessels</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addVessel' %}"><i class="material-icons">add</i></a>
+        </div>
+        {% for vessel in vessels %}
+        <p>{{ vessel }} - <a href="{% url 'erp:editVessel' vessel.id %}">edit</a></p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Mechanics</span>
+        <div style='float:right;'>
+          <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addMechanic' %}"><i class="material-icons">add</i></a>
+        </div>
+        {% for mechanic in mechanics %}
+        <p>{{ mechanic }} - <a href="{% url 'erp:editMechanic' mechanic.id %}">edit</a></p>
+        {% endfor %}
       </div>
     </div>
   </div>

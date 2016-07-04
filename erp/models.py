@@ -96,3 +96,10 @@ class confirmComponentChange(models.Model):
 	new_part = models.ForeignKey(Part, related_name='new_part')
 	confirm = models.BooleanField(default=False)
 
+
+class Mechanic(models.Model):
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+
+	def __str__(self):
+		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)
