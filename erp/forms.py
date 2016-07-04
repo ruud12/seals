@@ -60,7 +60,8 @@ class addServiceReportForm(forms.ModelForm):
 
 	class Meta:
 		model = serviceReport
-		fields = ('name','parts_to_replace')
+		fields = ('name','date','mechanics','parts_to_replace')
+
 
 
 class confirmComponentChangeForm(forms.ModelForm):

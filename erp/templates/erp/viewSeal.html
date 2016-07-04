@@ -30,9 +30,12 @@
         <div style='float:right;'>
           <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addServiceReport' seal.id %}"><i class="material-icons">add</i></a>
         </div>
+        <ul class='collection'>
         {% for report in reports %}
-          <p>{{ report }}, Parts to replace: {% for part in report.parts_to_replace.all %}{{ part }},{% endfor %}</p>
+          <li class='collection-item'>Name: {{ report }} - <a href="{% url 'erp:exportReportAsPDF' report.id %}">download report</a><br>
+           Parts to replace: {% for part in report.parts_to_replace.all %}{{ part }},{% endfor %}</li>
         {% endfor %}
+        </ul>
       </div>
     </div>
   </div>

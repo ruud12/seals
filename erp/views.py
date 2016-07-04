@@ -1,6 +1,9 @@
-from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
 from erp.tables import componentTable, partsTable
+from datetime import datetime
+
 
 # Create your views here.
 
@@ -206,10 +209,14 @@ def addServiceReport(request, seal_id):
 
 			servicereport = get_object_or_404(serviceReport, pk=newServiceReport.id)
 
-			for change in servicereport.parts_to_replace.all():
-				confirmComponentChange.objects.create(report=servicereport, old_part=change.part, new_part=change.part)
+
+			# create confirm objects for each changed part
+			# for change in servicereport.parts_to_replace.all():
+			# 	confirmComponentChange.objects.create(report=servicereport, old_part=change.part, new_part=change.part)
 
 			return redirect('erp:viewSeal', seal_id)
+
+
 
 	else:
 		form = forms.addServiceReportForm(seal_id=seal_id)
@@ -328,3 +335,37 @@ def editCategory(request, category_id):
 		form = forms.addCategoryForm(initial={'name':category.name })
 
 	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save category','title':'Edit category'})
+
+# inches to points
+def itp(inch): 
+	return inch * 72
+
+
+
+def exportReportAsPDF(request, report_id):
+	report = get_object_or_404(serviceReport, pk=report_id)
+
+
+	# A4 paper is 8.3 by 11.7 inches
+	# 1 point is equal to 1/72 inch
+	# Create the HttpResponse object with the appropriate PDF headers.
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+
+	# Create the PDF object, using the response object as its "file."
+	p = canvas.Canvas(response)
+	width = 8.3
+	height = 11.7
+
+
+	mechanics = ([mechanic.first_name + " " + mechanic.last_name for mechanic in report.mechanics.all()])
+	# Draw things on the PDF. Here's where the PDF generation happens.
+	# See the ReportLab documentation for the full list of functionality.
+	p.drawString(itp(1), itp(10), report.name)
+	p.drawString(itp(1), itp(9.5), report.date.strftime('Date: %d, %b %Y'))
+	p.drawString(itp(1), itp(9), ", ".join(mechanics))
+
+	# Close the PDF object cleanly, and we're done.
+	p.showPage()
+	p.save()
+	return response

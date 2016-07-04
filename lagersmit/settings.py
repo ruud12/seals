@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'material.admin',
     'sealadvisor2',
     'erp',
+    'reportlab',
 ]
 
 MIDDLEWARE_CLASSES = [

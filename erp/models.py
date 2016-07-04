@@ -76,11 +76,19 @@ class sealComponent(models.Model):
 	def __str__(self):
 		return str("{number}x {part}").format(number=self.number,part=self.part, seal=self.seal)
 
+class Mechanic(models.Model):
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
 
+	def __str__(self):
+		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)
 
 class serviceReport(models.Model):
 	seal = models.ForeignKey(Seal)
 	name = models.CharField(max_length=100)
+	mechanics = models.ManyToManyField(Mechanic)
+	date = models.DateField()
+
 
 	parts_to_replace = models.ManyToManyField(sealComponent)
 
@@ -97,9 +105,3 @@ class confirmComponentChange(models.Model):
 	confirm = models.BooleanField(default=False)
 
 
-class Mechanic(models.Model):
-	first_name = models.CharField(max_length=30)
-	last_name = models.CharField(max_length=30)
-
-	def __str__(self):
-		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)
