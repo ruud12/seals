@@ -167,9 +167,7 @@ def addServiceReport(request, seal_id):
 			newServiceReport.save()
 			form.save_m2m()
 
-			for component in newServiceReport.parts_to_replace.all():
-				print('looping')
-				sealComponentChange.objects.create(service_report=newServiceReport, old_component=component.part, new_component=component.part)
+
 
 			return redirect('erp:viewSeal', seal_id)
 

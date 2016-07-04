@@ -43,8 +43,4 @@ class addServiceReportForm(forms.ModelForm):
 		fields = ('name','parts_to_replace')
 
 
-class sealComponentChangeForm(forms.ModelForm):
 
-	class Meta:
-		model = sealComponentChange
-		fields = ('old_component','new_component','confirm')
