@@ -46,6 +46,14 @@
         {% render_table table %}
       </div>
     </div>
+    <div class='card teal lighten-4'>
+      <div class='card-content'>
+        <span class='card-title black-text'>Confirm replacement parts</span>
+        {% for change in changes %}
+        <p>Old: {{ change.old_part }} - New: {{ change.new_part }}</p>
+        {% endfor %}
+      </div>
+    </div>
   </div>
 </div>
 

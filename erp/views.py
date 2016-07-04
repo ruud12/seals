@@ -4,7 +4,7 @@ from erp.tables import componentTable, partsTable
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponentChange, sealComponent
+from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange
 from erp import forms
 
 def index(request):
@@ -61,10 +61,11 @@ def viewSeal(request, seal_id):
 	parts = sealComponent.objects.filter(seal_id=seal_id)
 	reports = serviceReport.objects.filter(seal_id=seal_id)
 	table = componentTable(parts)
+	changed_parts = confirmComponentChange.objects.filter(seal_id=seal_id)
 
 
 
-	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts, 'table': table, 'reports':reports })
+	return render(request, 'erp/viewSeal.html', {'seal':seal, 'parts':parts, 'table': table, 'reports':reports, 'changes': changed_parts })
 
 
 
@@ -135,7 +136,7 @@ def addCompany(request):
 	else:
 		form = forms.addCompanyForm()
 
-	return render(request, 'erp/company.html', {'form': form, 'submit':'Create new company', 'title':'Add new company'})
+	return render(request, 'erp/company.html', {'form': form, 'submit':'Create new company', 'title':'Add new compaty'})
 
 
 def editCompany(request, company_id):
@@ -167,7 +168,10 @@ def addServiceReport(request, seal_id):
 			newServiceReport.save()
 			form.save_m2m()
 
+			servicereport = get_object_or_404(serviceReport, pk=newServiceReport.id)
 
+			for change in servicereport.parts_to_replace.all():
+				confirmComponentChange.objects.create(report=servicereport, old_part=change.part, new_part=change.part)
 
 			return redirect('erp:viewSeal', seal_id)
 
@@ -177,11 +181,18 @@ def addServiceReport(request, seal_id):
 	return render(request, 'erp/simple_form.html', {'form':form, 'title':'Add service report','submit':'Add report'})
 
 
-def checkComponentChange(request,seal_id,part_id):
+def checkComponentChange(request,seal_id, change_id):
 
-	seal = get_object_or_404(Seal, pk=seal_id)
-	part = get_object_or_404(Part, pk=part_id)
+	change = get_object_or_404(confirmComponentChangeForm, pk = change_id)
 
-	form = forms.sealComponentChangeForm()
+	if request.method == "POST":
+		form = forms.confirmComponentChangeForm(request.POST, instance=change)
+
+		if form.is_valid():
+			form.save(update_fields=['new_part','old_part','confirm'])
+
+			return redirect('erp:viewSeal', seal_id)
+
+	form = forms.confirmComponentChangeForm(initial = {'old_part':change.old_part, 'new_part': change.new_part})
 
 	return render(request,'erp/simple_form.html', {'form':form, 'title':'Check part replacement','submit':'Save'})

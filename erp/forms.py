@@ -1,5 +1,5 @@
 from django import forms
-from erp.models import Seal, Company, Part, sealComponent, serviceReport, sealComponentChange
+from erp.models import Seal, Company, Part, sealComponent, serviceReport, confirmComponentChange
 
 class addSealForm(forms.ModelForm):
 	class Meta:
@@ -43,4 +43,8 @@ class addServiceReportForm(forms.ModelForm):
 		fields = ('name','parts_to_replace')
 
 
+class confirmComponentChangeForm(forms.ModelForm):
 
+	class Meta:
+		model = confirmComponentChange
+		fields = ('old_part', 'new_part', 'confirm')
