@@ -4,11 +4,16 @@ from django.utils import timezone
 # Create your models here.
 
 
+
+
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 
 	def __str__(self):
 		return self.name
+
+
+
 
 
 class partCategory(models.Model):
@@ -56,6 +61,17 @@ class Seal(models.Model):
 
 	def __str__(self):
 		return self.x_number
+
+
+class contactPerson(models.Model):
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+
+	company = models.ForeignKey(Company)
+	position = models.CharField(max_length=100)
+
+	def __str__(self):
+		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)	
 
 
 class sealComponent(models.Model):

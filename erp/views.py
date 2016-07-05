@@ -4,7 +4,6 @@ from reportlab.pdfgen import canvas
 from erp.tables import componentTable, partsTable
 from datetime import datetime
 
-
 # Create your views here.
 
 from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory
@@ -305,6 +304,9 @@ def editMaterial(request, material_id):
 	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save material','title':'Edit material'})
 
 
+
+
+
 def addCategory(request):
 	if request.method=="POST":
 		form = forms.addCategoryForm(request.POST)
@@ -336,9 +338,18 @@ def editCategory(request, category_id):
 
 	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save category','title':'Edit category'})
 
+
+
+
+
+
+
 # inches to points
 def itp(inch): 
 	return inch * 72
+
+
+
 
 
 
