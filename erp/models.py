@@ -41,9 +41,22 @@ class Part(models.Model):
 		return str("{name} {size} ({material})").format(name=self.name, size=self.size, material=self.material)
 
 
+class contactPerson(models.Model):
+	first_name = models.CharField(max_length=30)
+	last_name = models.CharField(max_length=30)
+
+	company = models.ForeignKey(Company)
+	position = models.CharField(max_length=100)
+
+	def __str__(self):
+		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)	
+
+
 class Vessel(models.Model):
 	name = models.CharField(max_length=100)
 	company = models.ForeignKey(Company)
+	imo = models.CharField(max_length=10, verbose_name='IMO number')
+	contacts = models.ManyToManyField(contactPerson, blank=True, null=True)
 
 	def __str__(self):
 		return self.name
@@ -63,15 +76,7 @@ class Seal(models.Model):
 		return self.x_number
 
 
-class contactPerson(models.Model):
-	first_name = models.CharField(max_length=30)
-	last_name = models.CharField(max_length=30)
 
-	company = models.ForeignKey(Company)
-	position = models.CharField(max_length=100)
-
-	def __str__(self):
-		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)	
 
 
 class sealComponent(models.Model):

@@ -6,7 +6,7 @@ from datetime import datetime
 
 # Create your views here.
 
-from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory
+from erp.models import Seal, Company, sealComponent, Part, serviceReport, sealComponent, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory, contactPerson
 from erp import forms
 
 def index(request):
@@ -16,8 +16,9 @@ def index(request):
 	mechanics = Mechanic.objects.all()
 	categories = partCategory.objects.all()
 	materials = partMaterial.objects.all()
+	contacts = contactPerson.objects.all()
 
-	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies,'vessels':vessels, 'mechanics':mechanics, 'categories':categories,'materials':materials })
+	return render(request, 'erp/index.html', {'seals':seals, 'companies':companies,'vessels':vessels, 'mechanics':mechanics, 'categories':categories,'materials':materials, 'contacts':contacts })
 
 
 
@@ -162,7 +163,7 @@ def editCompany(request, company_id):
 	return render(request, 'erp/company.html', {'form':form,'submit':'Save company','title':'Edit company'})
 
 
-def addVessel(request):
+def addVessel(request, company_id):
 	if request.method=="POST":
 		form = forms.addVesselForm(request.POST)
 
@@ -172,7 +173,7 @@ def addVessel(request):
 			return redirect('erp:index')
 
 	else:
-		form = forms.addVesselForm()
+		form = forms.addVesselForm(company_id=company_id, initial={'company': company_id })
 
 	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new vessel', 'title':'Add vessel'})
 
@@ -189,9 +190,43 @@ def editVessel(request, vessel_id):
 			return redirect('erp:index')
 
 	else:
-		form = forms.addVesselForm(initial={'name':vessel.name, 'company':vessel.company.id })
+		form = forms.addVesselForm(company_id=vessel.company.id, initial={'name':vessel.name, 'company':vessel.company.id })
 
 	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save vessel','title':'Edit vessel'})
+
+
+
+def addContactPerson(request):
+	if request.method=="POST":
+		form = forms.addContactPersonForm(request.POST)
+
+		if form.is_valid():
+			newContactPerson = form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addContactPersonForm()
+
+	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new contact person', 'title':'Add contact person'})
+
+
+def editContactPerson(request, contact_id):
+	contact = get_object_or_404(contactPerson, pk=contact_id)
+
+	if request.method == 'POST':
+		form = forms.addContactPersonForm(request.POST, instance = contact)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('erp:index')
+
+	else:
+		form = forms.addContactPersonForm(initial={'first_name':contact.first_name, 'last_name':contact.last_name,'position':contact.position, 'company':contact.company.id })
+
+	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save contact','title':'Edit contact'})
+
 
 
 def addServiceReport(request, seal_id):
@@ -380,3 +415,23 @@ def exportReportAsPDF(request, report_id):
 	p.showPage()
 	p.save()
 	return response
+
+
+
+def addVesselCompany(request):
+
+	if request.method == "POST":
+		form = forms.selectCompany(request.POST)
+
+		if form.is_valid():
+			# do something
+			print(form.cleaned_data['company'].id)
+
+			company_id = form.cleaned_data['company'].id
+
+			return redirect('erp:addVessel', company_id)
+
+	else:
+		form = forms.selectCompany()
+
+	return render(request, 'erp/simple_form.html', { 'form': form, 'title':'Select company', 'submit': 'Next' })

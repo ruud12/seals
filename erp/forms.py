@@ -1,5 +1,11 @@
 from django import forms
-from erp.models import Seal, Company, Part, sealComponent, serviceReport, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory
+from erp.models import Seal, Company, Part, sealComponent, serviceReport, confirmComponentChange, Vessel, Mechanic, partMaterial, partCategory, contactPerson
+
+
+
+class selectCompany(forms.Form):
+	company = forms.ModelChoiceField(queryset=Company.objects.all())
+
 
 
 class addSealForm(forms.ModelForm):
@@ -11,6 +17,11 @@ class addCompanyForm(forms.ModelForm):
 	class Meta:
 		model = Company
 		fields = ('name',)
+
+class addContactPersonForm(forms.ModelForm):
+	class Meta:
+		model = contactPerson
+		fields = ('first_name','last_name','company','position')
 
 class addMaterialForm(forms.ModelForm):
 	class Meta:
@@ -28,9 +39,15 @@ class addMechanicForm(forms.ModelForm):
 		fields = ('first_name','last_name')
 
 class addVesselForm(forms.ModelForm):
+	def __init__(self,*args,**kwargs):
+		self.company_id = kwargs.pop('company_id')
+		super(addVesselForm, self).__init__(*args,**kwargs)
+		self.fields['contacts'].queryset = contactPerson.objects.filter(company=self.company_id)
+
+
 	class Meta:
 		model = Vessel
-		fields = ('name','company')
+		fields = ('name','imo','company','contacts')
 
 
 class addPartForm(forms.ModelForm):
