@@ -14,7 +14,7 @@
           <a class="btn-floating waves-effect waves-light blue" href="{% url 'erp:addSeal' %}"><i class="material-icons">add</i></a>
         </div>
         {% for seal in seals %}
-        <p><a href="{% url 'erp:viewSeal' seal.id %}">{{ seal.x_number }}</a> - <a href="{% url 'erp:editSeal' seal.id %}">edit</a></p>
+        <p><a href="{% url 'erp:viewSeal' seal.id %}">{{ seal.x_number }}</a> - <a href="{% url 'erp:editSeal' seal.id %}">edit</a> - <a href="{% url 'erp:addServiceReport' seal.id %}">Add service report</a></p>
         {% endfor %}
       </div>
     </div>

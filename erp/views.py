@@ -182,7 +182,7 @@ def editVessel(request, vessel_id):
 	vessel = get_object_or_404(Vessel, pk=vessel_id)
 
 	if request.method == 'POST':
-		form = forms.addVesselForm(request.POST, instance = vessel)
+		form = forms.addVesselForm(request.POST, company_id = vessel.company.id, instance = vessel)
 
 		if form.is_valid():
 			form.save()
@@ -190,7 +190,7 @@ def editVessel(request, vessel_id):
 			return redirect('erp:index')
 
 	else:
-		form = forms.addVesselForm(company_id=vessel.company.id, initial={'name':vessel.name, 'company':vessel.company.id })
+		form = forms.addVesselForm(company_id=vessel.company.id, initial={'name':vessel.name, 'company':vessel.company.id, 'imo': vessel.imo, 'contacts':[contact.id for contact in vessel.contacts.all()] })
 
 	return render(request, 'erp/simple_form.html', {'form':form,'submit':'Save vessel','title':'Edit vessel'})
 
@@ -250,12 +250,11 @@ def addServiceReport(request, seal_id):
 
 			return redirect('erp:viewSeal', seal_id)
 
-
-
 	else:
 		form = forms.addServiceReportForm(seal_id=seal_id)
 
-	return render(request, 'erp/simple_form.html', {'form':form, 'title':'Add service report','submit':'Add report'})
+
+	return render(request, 'erp/simple_form.html', {'form':form, 'title':'Add service report for ','submit':'Add report', 'seal':seal})
 
 
 def checkComponentChange(request,seal_id, change_id):

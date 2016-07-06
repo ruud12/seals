@@ -20,6 +20,21 @@
 			</div>
 		</div>
 	</div>
+	{% if seal %}
+	<div class='col s6'>
+		<div class='card teal lighten-4'>
+			<div class='card-content'>
+				<span class='card-title black-text'>Seal information</span>
+				<p>X-number: {{ seal.x_number }}</p>
+				<p>Installed in vessel: {{ seal.vessel }}</p>
+				<p>Vessel owned by: {{ seal.company }}</p>
+				<p>Seal type: {{ seal.seal_type }}</p>
+				<p>Size: {{ seal.size }}</p>
+
+			</div>
+		</div>
+	</div>
+	{% endif %}
 </div>
 
 

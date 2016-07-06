@@ -49,7 +49,7 @@ class contactPerson(models.Model):
 	position = models.CharField(max_length=100)
 
 	def __str__(self):
-		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)	
+		return str("{first_name} {last_name} ({position})").format(first_name=self.first_name, last_name=self.last_name, position=self.position)	
 
 
 class Vessel(models.Model):
@@ -109,6 +109,7 @@ class serviceReport(models.Model):
 	name = models.CharField(max_length=100)
 	mechanics = models.ManyToManyField(Mechanic)
 	date = models.DateField()
+	superintendant = models.ForeignKey(contactPerson)
 
 
 	parts_to_replace = models.ManyToManyField(sealComponent)
