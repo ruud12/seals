@@ -105,7 +105,7 @@ def editSeal(request, seal_id):
 			return redirect('erp:viewSeal', seal_id)
 
 	else:
-		form = forms.addSealForm(initial={'x_number':seal.x_number, 'size':seal.size,'company':seal.company.id,'seal_type':seal.seal_type})
+		form = forms.addSealForm(initial={'x_number':seal.x_number, 'size':seal.size,'company':seal.company.id,'seal_type':seal.seal_type, 'vessel': seal.vessel.id})
 
 	return render(request, 'erp/seal.html', {'form':form, 'submit':'Save seal','title':'Edit seal'})
 
@@ -378,43 +378,29 @@ def editCategory(request, category_id):
 
 
 
-# inches to points
-def itp(inch): 
-	return inch * 72
-
-
-
-
 
 
 def exportReportAsPDF(request, report_id):
+	from erp.printing import MyPrint
+	from io import BytesIO
+
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachment; filename="reports.pdf"'
+
+	buffer = BytesIO()
+
 	report = get_object_or_404(serviceReport, pk=report_id)
 
+	report = MyPrint(buffer, 'A4', report)
 
-	# A4 paper is 8.3 by 11.7 inches
-	# 1 point is equal to 1/72 inch
-	# Create the HttpResponse object with the appropriate PDF headers.
-	response = HttpResponse(content_type='application/pdf')
-	response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+	pdf = report.export_report()
 
-	# Create the PDF object, using the response object as its "file."
-	p = canvas.Canvas(response)
-	width = 8.3
-	height = 11.7
+	response.write(pdf)
 
-
-	mechanics = ([mechanic.first_name + " " + mechanic.last_name for mechanic in report.mechanics.all()])
-	# Draw things on the PDF. Here's where the PDF generation happens.
-	# See the ReportLab documentation for the full list of functionality.
-	p.drawString(itp(1), itp(10), report.name)
-	p.drawString(itp(1), itp(9.5), report.date.strftime('Date: %d, %b %Y'))
-	p.drawString(itp(1), itp(9), ", ".join(mechanics))
-
-	# Close the PDF object cleanly, and we're done.
-	p.showPage()
-	p.save()
 	return response
 
+
+	
 
 
 def addVesselCompany(request):
