@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'sealadvisor2',
     'erp',
     'reportlab',
+    'model_utils',
 ]
 
 MIDDLEWARE_CLASSES = [

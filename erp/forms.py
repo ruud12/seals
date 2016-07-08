@@ -11,7 +11,7 @@ class selectCompany(forms.Form):
 class addSealForm(forms.ModelForm):
 	class Meta:
 		model = Seal
-		fields = ('seal_type','x_number', 'company', 'size','vessel')
+		fields = ('seal_type','x_number', 'date_installed', 'company', 'size','vessel')
 
 class addCompanyForm(forms.ModelForm):
 	class Meta:

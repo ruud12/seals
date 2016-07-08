@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from model_utils import FieldTracker
 
 # Create your models here.
 
@@ -56,7 +57,7 @@ class Vessel(models.Model):
 	name = models.CharField(max_length=100)
 	company = models.ForeignKey(Company)
 	imo = models.CharField(max_length=10, verbose_name='IMO number')
-	contacts = models.ManyToManyField(contactPerson, blank=True, null=True)
+	contacts = models.ManyToManyField(contactPerson, blank=True)
 
 	def __str__(self):
 		return self.name
@@ -71,6 +72,9 @@ class Seal(models.Model):
 	created = models.DateTimeField(auto_now_add=True)
 	vessel = models.ForeignKey(Vessel, blank=True, null=True)
 	company = models.ForeignKey(Company)
+	date_installed = models.DateField(verbose_name='Installed date')
+	date_removed = models.DateField(verbose_name='Removed date', blank=True, null=True)
+
 
 	def __str__(self):
 		return self.x_number
