@@ -110,7 +110,6 @@ class Mechanic(models.Model):
 
 class serviceReport(models.Model):
 	seal = models.ForeignKey(Seal)
-	name = models.CharField(max_length=100)
 	mechanics = models.ManyToManyField(Mechanic)
 	date = models.DateField()
 	superintendant = models.ForeignKey(contactPerson)
@@ -120,7 +119,7 @@ class serviceReport(models.Model):
 
 
 	def __str__(self):
-		return self.name
+		return self.seal.x_number + ' service report'
 
 
 class confirmComponentChange(models.Model):
