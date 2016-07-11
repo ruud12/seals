@@ -46,7 +46,7 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','pressure_oring', 'aft_seal','aftSize','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval')
+		fields = ('application','cpp_fpp','pressure_oring', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','fwd_build_in_length','rpm', 'draught_shaft','typeApproval')
 
 
 class supremeAftForm(forms.ModelForm):

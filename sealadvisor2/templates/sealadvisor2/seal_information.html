@@ -20,6 +20,7 @@
                     {% form form=form %} {% endform %}
                     <br>
                     <button type="submit" class="save btn btn-default">{{ submit }}</button>
+                    <a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>
                 </form>
 			</div>
 		</div>
@@ -36,7 +37,7 @@
 			</div>
 		</div>
         {% endif %}
-        {% if not air %}
+        {% if extra %}
         <div class='card teal lighten-4'>
             <div class='card-content'>
                 <span class='card-title black-text'>Extra information</span>
@@ -110,6 +111,8 @@
         var aft = $('#id_aft_seal');
         var aftsize = $('#id_aftSize')
         var fwdsize = $('#id_fwdSize')
+        var fwdbuild = $('#id_fwd_build_in_length');
+        var aftbuild = $('#id_aft_build_in_length');
 
         function toggleVerified(value) {
             value == '1' ? aft.parent().show() : aft.parent().hide();
@@ -118,8 +121,21 @@
         }
 
         function toggleSizes() {
-            (aft.is(':checked') || selectField.val() != '1') ? aftsize.parent().show() : aftsize.parent().hide(); 
-            fwd.is(':checked') ? fwdsize.parent().show(): fwdsize.parent().hide();
+            if (aft.is(':checked') || selectField.val() != '1') {
+                aftsize.parent().show();
+                aftbuild.parent().show();
+            } else {
+                aftsize.parent().hide(); 
+                aftbuild.parent().hide();
+            }
+
+            if (fwd.is(':checked')) {
+                fwdsize.parent().show();
+                fwdbuild.parent().show();
+            } else {
+                fwdsize.parent().hide();
+                fwdbuild.parent().hide();
+            }
         }
 
 

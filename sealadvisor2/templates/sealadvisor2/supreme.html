@@ -57,6 +57,7 @@
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
                 <p><b>X01{{ sizeaft }}AA{{ advise.aftSize }}A</b></p><br>
+                <p>Build-in length: {{ advise.aft_build_in_length }} mm</p>
                 <p>Pressure O-ring: {% if advise.pressure_oring %}yes{% else %}no{% endif %}
                 <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>
                 <p>Centering of liner: {{ advise.aft.get_linerCentering_display }}</p>
@@ -81,6 +82,7 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeFwdEdit' advise.id advise.fwd.id %}"><i class="material-icons">edit</i></a>
                 </div>
+                <p>Build-in length: {{ advise.fwd_build_in_length }} mm</p>
                 <p>Type of lip-seal rubber: {{ rubber_fwd }}</p>
                 <p>PV-value: {{ pv_fwd }}</p> 
                 <p>FKM lip-seals used: {% if advise.fwd.fkm %}yes{% else %}no{% endif %}</p>

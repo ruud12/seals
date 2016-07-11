@@ -114,7 +114,7 @@ def supremeEdit(request, supreme_id):
 			form = forms.supremeWizard(initial={'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft })
 
 
-	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','air':False})
+	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','extra':True, 'air':False})
 
 
 def supremeFwd(request, supreme_id):
@@ -136,7 +136,7 @@ def supremeFwd(request, supreme_id):
 
 	tabs = getTabs(supreme)
 
-	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Fwd seal options','submit':'Next','air':False, 'tabs': tabs})
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Fwd seal options','submit':'Next','air':False,'extra':False,  'tabs': tabs})
 
 
 def supremeFwdEdit(request, supreme_id, fwd_id):
@@ -156,7 +156,7 @@ def supremeFwdEdit(request, supreme_id, fwd_id):
 	else:
 		form = forms.supremeFwdForm(initial={'ocr':fwd.ocr, 'fkm':fwd.fkm})
 
-	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit forward seal options','submit':'Save','air':False})
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit forward seal options','submit':'Save','air':False,'extra':False })
 
 
 
@@ -189,7 +189,7 @@ def supremeAft(request, supreme_id):
 
 	tabs = getTabs(supreme)
 
-	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Aft seal options','submit':'Next','air':False, 'tabs': tabs })
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Aft seal options','submit':'Next','air':False,'extra':False, 'tabs': tabs })
 
 
 
