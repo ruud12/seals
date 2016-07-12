@@ -38,6 +38,7 @@ class AftSealOptions(models.Model):
 
 	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
 	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
+	anode = models.BooleanField(default = False, verbose_name='Use kathodic protection to prevent corrosion')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
 	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier > is the seal used in a dirty/sandy environment')
 	wireWinders = models.BooleanField(default = False, verbose_name='Wire winders')

@@ -22,16 +22,12 @@
                 <p>Draught shaft: {{ advise.draught_shaft }} m</p>
                 <br>
                 {% if advise.application.key == "sterntube" %}
-                <p>Aft seal: {% if advise.aft_seal %}<b>yes</b>{% else %}no{% endif %}</p>
-                <p>Forward seal: {% if advise.fwd_seal %}<b>yes</b>{% else %}no{% endif %}</p>
+                <p>Aft seal: {% if advise.aft_seal %}<b>yes, size: {{ advise.aftSize }} mm</b>{% else %}no{% endif %}</p>
+                <p>Forward seal: {% if advise.fwd_seal %}<b>yes, size: {{ advise.fwdSize}} mm</b>{% else %}no{% endif %}</p>
                 {% endif %}
                 <br> 
                 <p>Type approval: {{ advise.typeApproval }}</p>
                 <br>
-                <p>Aft shaft size: {{ advise.aftSize }} mm</p>
-                {% if advise.fwd_seal %}
-                <p>Shaft size: {{ advise.fwdSize}} mm</p>
-                {% endif %}
 			</div>
 		</div>
         <div class='card green lighten-4'>
@@ -56,7 +52,7 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
-                <p><b>X01{{ sizeaft }}AA{{ advise.aftSize }}A</b></p><br>
+                <p><b>Drawing number: {{ number }}</b></p><br>
                 <p>Build-in length: {{ advise.aft_build_in_length }} mm</p>
                 <p>Pressure O-ring: {% if advise.pressure_oring %}yes{% else %}no{% endif %}
                 <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>
@@ -70,8 +66,8 @@
                 <p>Hastelloy springs: {% if advise.aft.hastelloy %}yes{% else %}no{% endif %}</p>
                 <p>Type of lip-seal rubber: {{ rubber }}</p>
                 <p>PV-value: {{ pv }}</p>
-
-
+                <p>Execution: {{ execution.execution }}</p>
+                <p>Execution code: {{ execution.code }}</p>
             </div>
         </div>
         {% endif %}

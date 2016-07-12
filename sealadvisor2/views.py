@@ -19,6 +19,144 @@ from django.template import RequestContext
 
 
 
+def determine_aft_execution(aft):
+
+
+
+
+	execution = ""
+
+	if aft.linerCentering == 'shaft':
+		execution = execution + "A"
+
+	if aft.hml:
+		execution = execution + "C"
+
+	if aft.distanceRing:
+		execution = execution + "D"
+
+	if aft.oring:
+		execution = execution + "F"
+
+	if aft.dirtBarrier:
+		execution = execution + "L"
+
+	if aft.anode:
+		execution = execution + "P"
+
+	execution = ''.join(sorted(execution))
+
+	codes = (
+		("AA", "standard"),
+		("AB", "E"),
+		("AC", "F"),
+		("AD", "CFL"),
+		("AE", "D"),
+		("AF", "CDN"),
+		("AG", "nvt"),
+		("AH", "DL"),
+		("AJ", "N"),
+		("AK", "CL"),
+		("AL", "DF"),
+		("AM", "EF"),
+		("AN", "DE"),
+		("AO", "FL"),
+		("AP", "C"),
+		("AQ", "BE"),
+		("AR", "CN"),
+		("AS", "FW"),
+		("AT", "AEFL"),
+		("AU", "CDL"),
+		("AV", "CD"),
+		("AW", "DLN"),
+		("AX", "L"),
+		("AY", "BEF"),
+		("AZ", "CLN"),
+		("BA", "DN"),
+		("BB", "C2DN"),
+		("BC", "CELN"),
+		("BD", "CF"),
+		("BE", "AEF"),
+		("BF", "DFL"),
+		("BG", "ACEFL"),
+		("BH", "ADELZ"),
+		("BJ", "CNP"),
+		("BK", "LN"),
+		("BL", "LNP"),
+		("BM", "CLNP"),
+		("BN", "DEF"),
+		("BP", "FN"),
+		("BQ", "FLNP"),
+		("BR", "EL"),
+		("BS", "ACDFL"),
+		("BT", "ACDEFLM"),
+		("BU", "ADF"),
+		("BV", "ADFL"),
+		("BW", "ACEFLM"),
+		("BX", "ACELZ"),
+		("BY", "EFN"),
+		("BZ", "P"),
+		("CA", "AEFLN"),
+		("CB", "DEFN"),
+		("CC", "DFLN"),
+		("CD", "DEFLN"),
+		("CE", "EFNP"),
+		("CF", "AF"),
+		("CG", "ACDLZ"),
+		("CH", "CEN"),
+		("CJ", "EFL"),
+		("CK", "CFN"),
+		("CL", "CFLN"),
+		("CM", "ACFLN"),
+		("CN", "CENZ"),
+		("CP", "CLMN"),
+		("CQ", "CEFN"),
+		("CR", "CEFLN"),
+		("CS", "DEL "),
+		("CT", "CE"),
+		("CU", "AEFN"),
+		("CV", "DLNP"),
+		("CW", "ACEFLMPV"),
+		("CX", "AEFZ"),
+		("CY", "EN"),
+		("CZ", "DFN"),
+		("DA", "CEFL"),
+		("DB", "ACDF"),
+		("DC", "NP"),
+		("DD", "AEFLNPV"),
+		("DE", "CEL"),
+		("DF", "AZ"),
+		("DG", "CDFL"),
+		("DH", "DELN"),
+	)
+
+	print(execution)
+
+	for x in codes:
+		if x[1] == execution:
+			execution_code = x[0]
+			break
+		else:
+			execution_code = "??"
+
+	if not execution_code:
+		execution_code = "??"
+
+
+
+	return {"execution": execution, 'code': execution_code }
+
+
+
+
+
+
+
+
+
+
+
+
 def whichAirType(draught):
 	return 'ventus' if draught > 4 else 'athmos'
 
@@ -26,9 +164,51 @@ def whichAirType(draught):
 def findCorrectSize(shaft_diameter):
 	# check for the closest liner value taking into account a 1 cm liner thickness
 
-	available_sizes = [110,125,155,175,200,225,260,330,355,440,600,720,800,900,1000]
-	n = bisect.bisect_left(available_sizes,shaft_diameter+10)
-	return available_sizes[n]
+	available_sizes = [155,170,190,200,220,240,260,280,300,330,355,380,400,420,450,480,500,530,560,600,630,670,710,750,800,850]
+
+
+	liners = (
+		(155,46260651,158,104,213,128,13,8),
+		(170,46260652,173,140,233,128,13,8),
+		(190,46260653,193,155,253,128,15,8),
+		(200,46260654,203,175,263,128,15,8),
+		(220,46260655,223,185,283,128,15,8),
+		(240,46260656,243,203,303,138,15,10),
+		(260,46260657,263,223,323,138,15,10),
+		(280,46260658,283,243,353,138,18,10),
+		(300,46260659,303,259,373,143,18,12),
+		(330,46260660,333,279,403,143,18,12),
+		(355,46260661,358,309,433,158,18,12),
+		(380,46260662,383,332,463,158,18,12),
+		(400,46260663,403,357,483,158,23,12),
+		(420,46260664,423,375,503,158,23,12),
+		(450,46260665,453,395,533,158,23,12),
+		(480,46260666,483,421,563,158,23,12),
+		(500,46260667,503,451,583,158,23,12),
+		(530,46260668,533,470,613,158,23,12),
+		(560,46260669,563,495,653,168,23,12),
+		(600,46260670,603,525,703,168,23,12),
+		(630,46260671,633,555,733,183,28,12),
+		(670,46260672,673,585,773,198,28,12),
+		(710,46260673,713,625,833,213,28,15),
+		(750,46260674,753,665,873,213,28,15),
+		(800,46260675,803,705,913,213,33,15),
+		(850,46260676,853,745,963,213,33,15)
+	)
+
+
+	for x in range(0,len(liners)-1):
+		if shaft_diameter > liners[x][3] and shaft_diameter <= liners[x+1][3]:
+			available_size = liners[x][0]
+			break
+		else:
+			available_size = 0
+
+	print(available_size)
+	# n = bisect.bisect_left(available_sizes,shaft_diameter+10)
+	# return available_sizes[n]
+
+	return available_size
 
 
 
@@ -96,22 +276,35 @@ def supremeEdit(request, supreme_id):
 	if request.method == "POST":
 		form = forms.supremeWizard(request.POST, instance=supreme)
 		if form.is_valid():
-			form.save()
+			supreme = form.save(commit=False)
+
+			if not supreme.aft_seal and supreme.aft:
+				aft = get_object_or_404(AftSealOptions, pk = supreme.aft.id)
+				supreme.aft = None
+				aft.delete()
+
+			if not supreme.fwd_seal and supreme.fwd:
+				fwd = get_object_or_404(FwdSealOptions, pk = supreme.fwd.id)
+				supreme.fwd = None
+				fwd.delete()
+
+			supreme.save()
+
 			
 			if (not supreme.aft) and (supreme.aft_seal):
 				return redirect('sealadvisor2:supremeAft',supreme_id)
 			elif (not supreme.fwd) and supreme.fwd_seal:
-				return redirect('sealadvisor2:supremeAft',supreme_id)
+				return redirect('sealadvisor2:supremeFwd',supreme_id)
 			elif (not supreme.environment):
-				return redirect('sealadvisor2:supremeEnvironement',supreme_id)
+				return redirect('sealadvisor2:supremeEnvironment',supreme_id)
 			else:
 				return redirect('sealadvisor2:supremeOverview',supreme_id)
 
 	else:
 		if supreme.typeApproval:
-			form = forms.supremeWizard(initial={'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id })
+			form = forms.supremeWizard(initial={'fwd_build_in_length': supreme.fwd_build_in_length, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id })
 		else:
-			form = forms.supremeWizard(initial={'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft })
+			form = forms.supremeWizard(initial={'fwd_build_in_length': supreme.fwd_build_in_length, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft })
 
 
 	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','extra':True, 'air':False})
@@ -210,7 +403,7 @@ def supremeAftEdit(request, supreme_id, aft_id):
 				return redirect('sealadvisor2:supremeOverview', supreme_id)
 
 	else:
-		form = forms.supremeAftForm(initial={'seaguard':aft.seaguard, 'oring': aft.oring, 'linerCentering':aft.linerCentering,'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
+		form = forms.supremeAftForm(initial={'anode': aft.anode, 'seaguard':aft.seaguard, 'oring': aft.oring, 'linerCentering':aft.linerCentering,'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
 
 	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save','air':False})
 
@@ -297,12 +490,16 @@ def supremeOverview(request, supreme_id):
 
 	air = str('{type} system is used for this draft.').format(type=air_type)
 
-	if (supreme.environment.oil =='eal'):
-		rubber = 'FKM-EAL'
-	elif pv > 4:
-		rubber = 'FKM'
+
+	if (supreme.environment):
+		if (supreme.environment.oil =='eal'):
+			rubber = 'FKM-EAL'
+		elif pv > 4:
+			rubber = 'FKM'
+		else:
+			rubber = 'NBR'
 	else:
-		rubber = 'NBR'
+		rubber = 'Depends on environmental options which are not filled in.'
 
 	if supreme.fwd_seal:
 		pv_fwd = (supreme.fwdSize / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
@@ -318,9 +515,28 @@ def supremeOverview(request, supreme_id):
 		pv_fwd = 0
 		rubber_fwd = 'none' 
 
-	sizeaft = findCorrectSize(size)
 
-	return render(request, 'sealadvisor2/supreme.html', { 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft })
+	if supreme.aft_seal:
+		sizeaft = findCorrectSize(size)
+		execution = determine_aft_execution(supreme.aft)
+
+		if supreme.application.key == 'sterntube':
+			number = "X01"
+		elif supreme.application.key =='thruster':
+			number = "X40"
+
+		number = number + str(sizeaft) + execution['code'] + str(supreme.aftSize) + "A"
+
+	else:
+		sizeaft = ''
+		execution = ''
+		number = ''
+
+
+
+
+
+	return render(request, 'sealadvisor2/supreme.html', { 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft, 'execution': execution, 'number': number })
 
 
 def render_latex(request, template, dictionary, filename):
