@@ -81,7 +81,7 @@
                     <a class="btn-floating waves-effect waves-light green" href="{% url 'sealadvisor2:supremeEnvironmentEdit' advise.id advise.environment.id %}"><i class="material-icons">edit</i></a>
                 </div>              
 
-                 <table class='teal lighten-5' style='font-size:0.8em;'>
+                 <table class='green lighten-5' style='font-size:0.8em;'>
                     <thead>
                     <tr>
                     <th data-field="id">Parameter</th>
@@ -121,12 +121,31 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
-                <p><b>Drawing number: {{ number }}</b> ({% if execution.code == '??' %}Drawing with this configuration does not exist{% endif %})</p>
 
-                <p>Type: {{ type }}</p>
-                <p>PV-value: {{ pv }}</p>
-                <p>Execution: {{ execution.execution }}, code: {{ execution.code }}</p>
                 <br>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    
+
+                    <tbody>
+                        <tr>
+                            <td><b>Drawing number</b></td>
+                            <td><b>{{ number }} {% if execution.code == '??' %}(Drawing with this configuration does not exist){% endif %}</b></td>
+                        </tr>
+                        <tr>
+                            <td>Type</td>
+                            <td>{{ type }}</td>
+                        </tr>  
+                        <tr>
+                            <td>PV-value</td>
+                            <td>{{ pv }}</td>
+                        </tr> 
+                        <tr>
+                            <td>Execution</td>
+                            <td>{{ execution.execution }}, code: {{ execution.code }}</td>
+                        </tr> 
+                    </tbody>
+                </table>
+                <br>    
                 <table class='teal lighten-5' style='font-size:0.8em;'>
                     <thead>
                     <tr>
@@ -140,23 +159,20 @@
                             <td>Build-in length</td>
                             <td>{{ advise.aft_build_in_length }}</td>
                         </tr>
-
-                        
                         <tr>
                             <td>Centering of liner</td>
                             <td>{{ advise.aft.get_linerCentering_display }}</td>
                         </tr>  
-                        </tbody>
-                        </table>
-                        <br>
+                    </tbody>
+                </table>
+                <br>
                 <table class='teal lighten-5' style='font-size:0.8em;'>
                     <thead>
-                    <tr>
-                    <th data-field="id">Customised options</th>
-                    <th data-field="name">Value</th>
-                    </tr>
+                        <tr>
+                            <th data-field="id">Customised options</th>
+                            <th data-field="name">Value</th>
+                        </tr>
                     </thead>
-
                     <tbody> 
                     <tr>
                             <td>Use seaguard for extra protection</td>
