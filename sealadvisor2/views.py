@@ -541,7 +541,7 @@ def supremeOverview(request, supreme_id):
 			sealtype = 'STA'
 
 			if supreme.aft.seaguard:
-				sealtype = "SGA"
+				sealtype = "SG"
 
 		elif supreme.application.key =='thruster':
 			sealtype = "TS4"

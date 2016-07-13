@@ -29,7 +29,7 @@ class FwdSealOptions(models.Model):
 
 
 class AftSealOptions(models.Model):
-	seaguard = models.BooleanField(default=False, verbose_name='Seaguard')
+	seaguard = models.BooleanField(default=False, verbose_name='Seaguard (backup oil repellant lip-seal)')
 
 	CHOICES = (
 		('shaft', 'Shaft centered'),
@@ -38,14 +38,14 @@ class AftSealOptions(models.Model):
 
 	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
 	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
-	anode = models.BooleanField(default = False, verbose_name='Use kathodic protection to prevent corrosion')
+	anode = models.BooleanField(default = False, verbose_name='Kathodic protection')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
-	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier > is the seal used in a dirty/sandy environment')
+	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier')
 	wireWinders = models.BooleanField(default = False, verbose_name='Wire winders')
 	netCutters = models.BooleanField(default = False, verbose_name='Net cutters')
 	hastelloy = models.BooleanField(default = False, verbose_name='Hastelloy springs')
-	hml = models.BooleanField(default = False, verbose_name='Hard metal layer to prevent liner wear (HML)')
-	air = models.BooleanField(default = False, verbose_name='Use an air type system to equalize the pressure and collect any leakage (Ventus/Athmos)')
+	hml = models.BooleanField(default = False, verbose_name='Hard metal layer (HML)')
+	air = models.BooleanField(default = False, verbose_name='Ventus/Athmos (depending on draught)')
 
 
 class environmentalOptions(models.Model):

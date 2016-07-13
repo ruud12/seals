@@ -15,19 +15,63 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeEdit' advise.id %}"><i class="material-icons">edit</i></a>
                 </div>
-                <p>Application: {{ advise.application }}</p>
+
                 <br>
-                <p>{{ advise.get_cpp_fpp_display }} propellor</p>
-                <p>Shaft rotational speed: {{ advise.rpm }} rpm</p>
-                <p>Draught shaft: {{ advise.draught_shaft }} m</p>
-                <br>
-                {% if advise.application.key == "sterntube" %}
-                <p>Aft seal: {% if advise.aft_seal %}<b>yes, size: {{ advise.aftSize }} mm</b>{% else %}no{% endif %}</p>
-                <p>Forward seal: {% if advise.fwd_seal %}<b>yes, size: {{ advise.fwdSize}} mm</b>{% else %}no{% endif %}</p>
-                {% endif %}
-                <br> 
-                <p>Type approval: {{ advise.typeApproval }}</p>
-                <br>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <thead>
+                    <tr>
+                    <th data-field="id">Parameter</th>
+                    <th data-field="name">Value</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Application</td>
+                            <td>{{ advise.application }}</td>
+                        </tr> 
+                        <tr>
+                            <td>CPP or FPP</td>
+                            <td>{{ advise.get_cpp_fpp_display }} propellor</td>
+                        </tr>
+                        <tr>
+                            <td>Shaft rotational speed</td>
+                            <td>{{ advise.rpm }} rpm</td>
+                        </tr>
+                        <tr>
+                            <td>Draught shaft</td>
+                            <td>{{ advise.draught_shaft }} m</td>
+                        </tr>
+                        <tr>
+                            <td>Shaft rotational speed</td>
+                            <td>{{ advise.rpm }} rpm</td>
+                        </tr>
+                        {% if advise.application.key == "sterntube" %}
+                        <tr>
+                            <td>Aft seal</td>
+                            <td>{% if advise.aft_seal %}<b>Size: {{ advise.aftSize }} mm</b>{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Forward seal</td>
+                            <td>{% if advise.fwd_seal %}<b>Size: {{ advise.fwdSize }} mm</b>{% else %}no{% endif %}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td>Aft seal</td>
+                            <td>size: {{ advise.aftSize }} mm</b></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <td>Shaft rotational speed</td>
+                            <td>{{ advise.rpm }} rpm</td>
+                        </tr>
+
+                        <tr>
+                            <td>Type approval</td>
+                            <td>{{ advise.typeApproval }}</td>
+                        </tr>                        
+                    </tbody>
+                </table>                                                
 			</div>
 		</div>
         <div class='card green lighten-4'>
@@ -36,10 +80,35 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light green" href="{% url 'sealadvisor2:supremeEnvironmentEdit' advise.id advise.environment.id %}"><i class="material-icons">edit</i></a>
                 </div>              
-                <p>Has to comply with VGP: {% if advise.environment.vgp %}yes{% else %}no{% endif %}</p>
-                <p>Oil: {{ advise.environment.get_oil_display }}</p>
-                <p>Oil type: {{ advise.environment.oilType }}</p>
-                <p>Use air system: {% if advise.environment.air %}yes, {{ air }}{% else %}no{% endif %}
+
+                 <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <thead>
+                    <tr>
+                    <th data-field="id">Parameter</th>
+                    <th data-field="name">Value</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Has to comply with VGP</td>
+                            <td>{% if advise.environment.vgp %}yes{% else %}no{% endif %}</td>
+                        </tr> 
+                        <tr>
+                            <td>Oil</td>
+                            <td>{{ advise.environment.get_oil_display }}</td>
+                        </tr>
+                        <tr>
+                            <td>Oil type</td>
+                            <td>{{ advise.environment.oilType }}</td>
+                        </tr>
+                        <tr>
+                            <td>Use air system</td>
+                            <td>{% if advise.environment.air %}yes, {{ air }}{% else %}no{% endif %}</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>       
             </div>
         </div>
         
@@ -52,24 +121,83 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
-                <p><b>Drawing number: {{ number }}</b></p>
+                <p><b>Drawing number: {{ number }}</b> ({% if execution.code == '??' %}Drawing with this configuration does not exist{% endif %})</p>
+
                 <p>Type: {{ type }}</p>
-                <br>
-                <p>Build-in length: {{ advise.aft_build_in_length }} mm</p>
-                <p>Pressure O-ring: {% if advise.pressure_oring %}yes{% else %}no{% endif %}
-                <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>
-                <p>Centering of liner: {{ advise.aft.get_linerCentering_display }}</p>
-                <p>O-ring between liner and shaft: {% if advise.aft.oring %} yes {% else %}no{% endif %}</p>
-                <p>HML layer: {% if advise.aft.hml %} yes {% else %}no{% endif %}</p>
-                <p>Distance ring: {% if advise.aft.distanceRing %}yes{% else %}no{% endif %}</p>
-                <p>Dirt barrier: {% if advise.aft.dirtBarrier %}yes{% else %}no{% endif %}</p>
-                <p>Wirewinders: {% if advise.aft.wireWinders %}yes{% else %}no{% endif %}</p>
-                <p>Netcutters: {% if advise.aft.netCutters %}yes{% else %}no{% endif %}</p>
-                <p>Hastelloy springs: {% if advise.aft.hastelloy %}yes{% else %}no{% endif %}</p>
-                <p>Type of lip-seal rubber: {{ rubber }}</p>
                 <p>PV-value: {{ pv }}</p>
-                <p>Execution: {{ execution.execution }}</p>
-                <p>Execution code: {{ execution.code }}</p>
+                <p>Execution: {{ execution.execution }}, code: {{ execution.code }}</p>
+                <br>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <thead>
+                    <tr>
+                    <th data-field="id">Parameter</th>
+                    <th data-field="name">Value</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>Build-in length</td>
+                            <td>{{ advise.aft_build_in_length }}</td>
+                        </tr>
+
+                        
+                        <tr>
+                            <td>Centering of liner</td>
+                            <td>{{ advise.aft.get_linerCentering_display }}</td>
+                        </tr>  
+                        </tbody>
+                        </table>
+                        <br>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <thead>
+                    <tr>
+                    <th data-field="id">Customised options</th>
+                    <th data-field="name">Value</th>
+                    </tr>
+                    </thead>
+
+                    <tbody> 
+                    <tr>
+                            <td>Use seaguard for extra protection</td>
+                            <td>{% if advise.aft.seaguard %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>O-ring between liner and shaft</td>
+                            <td>{% if advise.aft.oring %} yes {% else %}no{% endif %}</td>
+                        </tr> 
+                        <tr>
+                            <td>HML layer</td>
+                            <td>{% if advise.aft.hml %} yes {% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Distance ring</td>
+                            <td>{% if advise.aft.distanceRing %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Dirt barrier</td>
+                            <td>{% if advise.aft.dirtBarrier %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Wirewinders</td>
+                            <td>{% if advise.aft.wireWinders %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Netcutters</td>
+                            <td>{% if advise.aft.netCutters %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Hastelloy springs</td>
+                            <td>{% if advise.aft.hastelloy %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>Type of lip-seal rubber</td>
+                            <td>{{ rubber }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
             </div>
         </div>
         {% endif %}

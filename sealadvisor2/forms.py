@@ -53,8 +53,6 @@ class supremeWizard(forms.ModelForm):
 			if aft_build_in_length is not None:
 				if aft_build_in_length < 10 or aft_build_in_length > 1000:
 					raise forms.ValidationError('Built in length must be between 10 and 1000 mm')
-			else:
-				raise forms.ValidationError('Built in length is required')
 
 		return aft_build_in_length
 
