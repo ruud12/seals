@@ -59,19 +59,7 @@ class supremeWizard(forms.ModelForm):
 		return aft_build_in_length
 
 
-	def clean_fwd_build_in_length(self):
-		fwd_build_in_length = self.cleaned_data['fwd_build_in_length']
 
-		fwd_seal = self.cleaned_data.get('fwd_seal')
-
-		if fwd_seal:
-			if fwd_build_in_length is not None:
-				if fwd_build_in_length < 10 or fwd_build_in_length > 1000:
-					raise forms.ValidationError('Built in length must be between 10 and 1000 mm')
-			else:
-				raise forms.ValidationError('Built in length is required')
-
-		return fwd_build_in_length
 
 
 
@@ -85,13 +73,13 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','pressure_oring', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','fwd_build_in_length','rpm', 'draught_shaft','typeApproval')
+		fields = ('application','cpp_fpp','vgp', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval')
 
 
 class supremeAftForm(forms.ModelForm):
 	class Meta:
 		model = AftSealOptions
-		fields = ( 'linerCentering','seaguard', 'dirtBarrier','oring', 'anode', 'hml', 'distanceRing','wireWinders','netCutters','hastelloy','air')
+		fields = ( 'linerCentering','seaguard', 'air', 'dirtBarrier','oring', 'anode', 'hml', 'distanceRing','wireWinders','netCutters','hastelloy')
 
 
 class supremeFwdForm(forms.ModelForm):

@@ -87,7 +87,8 @@ class supremeAdvise(models.Model):
 	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal.')
 	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal.')
 
-	fwd_build_in_length = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Forward seal build in length [mm]', blank=True, null=True)
+	vgp = models.BooleanField(default=False, verbose_name='Has to comply with VGP regulations')
+
 	aft_build_in_length = models.DecimalField(max_digits=5, decimal_places=0, verbose_name='Aft seal build in length [mm]', blank=True, null=True)
 
 	aftSize = models.DecimalField(max_digits=5, decimal_places=0,verbose_name='Aft shaft diameter (mm)', blank=True, null=True)

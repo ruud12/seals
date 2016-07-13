@@ -52,7 +52,9 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeAftEdit' advise.id advise.aft.id %}"><i class="material-icons">edit</i></a>
                 </div> 
-                <p><b>Drawing number: {{ number }}</b></p><br>
+                <p><b>Drawing number: {{ number }}</b></p>
+                <p>Type: {{ type }}</p>
+                <br>
                 <p>Build-in length: {{ advise.aft_build_in_length }} mm</p>
                 <p>Pressure O-ring: {% if advise.pressure_oring %}yes{% else %}no{% endif %}
                 <p>Use seaguard for extra protection: {% if advise.aft.seaguard %}yes{% else %}no{% endif %}</p>

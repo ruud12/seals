@@ -20,12 +20,28 @@
                     {% form form=form %} {% endform %}
                     <br>
                     <button type="submit" class="save btn btn-default">{{ submit }}</button>
-                    <a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>
+                    <!--<a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>-->
                 </form>
 			</div>
 		</div>
 	</div>
 	<div class='col s6'>
+        <div class='card teal lighten-4' id='id_fpp_cpp_info'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Fixed or controllable pitch</span>
+                <p>A Controllable pitch propellor (CPP) has blades that can be adjusted to vary the thrust power or direction. When a CPP is used, the shaft has to be pulled to install the seal or a new liner.</p>
+                <br>
+                <p>When using a fixed pitch propellor, the aft seal can be installed without pulling the shaft as removal of the propellor is enough.</p>
+                <br>
+                <p align='center'><img height='200px' src="{% static 'images/cppfpp.jpg' %}">
+            </div>
+        </div>
+        <div class='card teal lighten-4' id='id_vgp_info'>
+            <div class='card-content'>
+                <span class='card-title black-text'>VGP (Vessel general permit</span>
+                <p>The VGP states that no mineral oil can be leaked or a specific bio-oil must be used. To comply with the VGP regulations, either bio-oil must be used or an air type (Ventus/Athmos) seal must be used.</p>
+            </div>
+        </div>
         {% if air %}
 		<div class='card teal lighten-4' id='air_card'>
 			<div class='card-content'>
@@ -52,6 +68,7 @@
             </div>
         </div>
         {% endif %}
+
 	</div>
 
 </div>
@@ -95,7 +112,33 @@
 //         		$('#id_air').attr('disabled', false);
 //         	}
 //         });
+        
 
+        $('#id_fpp_cpp_info').hide();
+
+        $('#id_cpp_fpp_container')
+        .mouseover(function() {
+            $('#id_fpp_cpp_info').show();
+            clearTimeout(hoverTimeOut);
+        })
+        .mouseout(function() {
+            hoverTimeOut = setTimeout(function() {
+                $('#id_fpp_cpp_info').hide();
+            }, 500);
+        })
+
+        $('#id_vgp_info').hide();
+
+        $('#id_vgp_container')
+        .mouseover(function() {
+            $('#id_vgp_info').show();
+            clearTimeout(hoverTimeOut_vgp);
+        })
+        .mouseout(function() {
+            hoverTimeOut_vgp = setTimeout(function() {
+                $('#id_vgp_info').hide();
+            }, 500);
+        })
         
         
     });
@@ -111,7 +154,6 @@
         var aft = $('#id_aft_seal');
         var aftsize = $('#id_aftSize')
         var fwdsize = $('#id_fwdSize')
-        var fwdbuild = $('#id_fwd_build_in_length');
         var aftbuild = $('#id_aft_build_in_length');
 
         function toggleVerified(value) {
@@ -131,10 +173,8 @@
 
             if (fwd.is(':checked')) {
                 fwdsize.parent().show();
-                fwdbuild.parent().show();
             } else {
                 fwdsize.parent().hide();
-                fwdbuild.parent().hide();
             }
         }
 
