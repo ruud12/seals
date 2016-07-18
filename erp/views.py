@@ -322,7 +322,7 @@ def addMaterial(request):
 	return render(request, 'erp/simple_form.html', {'form': form, 'submit':'Create new material', 'title':'Add material'})
 
 def editMaterial(request, material_id):
-	material = get_object_or_404(Material, pk=mechanic_id)
+	material = get_object_or_404(partMaterial, pk=material_id)
 
 	if request.method == 'POST':
 		form = forms.addMaterialForm(request.POST, instance = material)
@@ -357,7 +357,7 @@ def addCategory(request):
 
 
 def editCategory(request, category_id):
-	category = get_object_or_404(Category, pk=category_id)
+	category = get_object_or_404(partCategory, pk=category_id)
 
 	if request.method == 'POST':
 		form = forms.addCategoryForm(request.POST, instance = category)
