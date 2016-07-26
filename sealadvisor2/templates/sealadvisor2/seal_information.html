@@ -4,7 +4,7 @@
 {% load material_form %} 			
 
 {% block content %}
-<h1>Supreme Seal advisor</h1>
+<h1>Supreme Seal Advisor</h1>
 
 {% for tab in tabs %}
 <a href='{{ tab.href }}' class='btn waves-effect waves-light teal'>{{ tab.key }}</a>
@@ -18,6 +18,7 @@
 				<form method="POST" class="post-form">
                     {% csrf_token %}
                     {% form form=form %} {% endform %}
+                    <br>
                     <br>
                     <button type="submit" class="save btn btn-default">{{ submit }}</button>
                     <!--<a class='wave-effect btn' href="{% url 'sealadvisor2:index' %}">Cancel</a>-->
@@ -92,27 +93,6 @@
 
         toggleVerified();
 
-//         if ($('#id_air').is(':checked')) {
-//         		$('#air_card').show();
-//     	} else {
-//         		$('#air_card').hide();
-//     	}
-
-        // show/hide on change
-        selectField.change(function() {
-            toggleVerified($(this).val());
-        });
-
-
-//         vgp.change(function() {
-//         	if (vgp.is(':checked') && selectField.val()=='mineral') {
-//         		$('#id_air').prop('checked', true);
-//         		$('#air_card').show();
-//         	} else {
-//         		$('#id_air').attr('disabled', false);
-//         	}
-//         });
-        
 
         $('#id_fpp_cpp_info').hide();
 

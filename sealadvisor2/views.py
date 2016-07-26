@@ -240,6 +240,20 @@ def index(request):
 	return render(request, 'sealadvisor2/index.html', {'advises': advises})
 
 
+def salesType(request):
+
+	if request.method == "POST":
+		form = forms.supremeSalesTypeForm(request.POST)
+		if form.is_valid():
+
+			return redirect('sealadvisor2:supreme')
+
+	else:
+		form = forms.supremeSalesTypeForm()
+
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Choose sales type', 'submit':'Next' })
+
+
 def supreme(request):
 	if request.method == "POST":
 		form = forms.supremeWizard(request.POST)

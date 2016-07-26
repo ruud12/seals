@@ -1,9 +1,31 @@
 from django import forms
-from sealadvisor2.models import sealApplication, supremeAdvise, AftSealOptions, environmentalOptions,FwdSealOptions
+from sealadvisor2.models import sealApplication, supremeAdvise, AftSealOptions, environmentalOptions,FwdSealOptions, Certificate
+from erp.models import Company
 
 
 
+class supremeSalesTypeForm(forms.Form):
+	CHOICES = (
+		('new','Supreme new'),
+		('retrofit', 'Supreme retrofit'),
+		('spares', 'Supreme spare parts')
+	)
 
+	sales_type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
+	company = company = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer')
+
+
+	def clean_sales_type(self):
+
+		sales_type = self.cleaned_data['sales_type']
+
+		if sales_type == 'spares':
+			raise forms.ValidationError('No spare parts wizard yet')
+
+		return sales_type
+
+	class Meta:
+		fields = ('sales_type', )
 
 
 class supremeWizard(forms.ModelForm):
@@ -23,8 +45,8 @@ class supremeWizard(forms.ModelForm):
 
 		if aft_seal:
 			if aftSize is not None:
-				if aftSize > 900 or aftSize < 110:
-					raise forms.ValidationError("Size must be between 110 and 900")
+				if aftSize > 900 or aftSize < 90:
+					raise forms.ValidationError("Size must be between 90 and 900")
 			else:
 				raise forms.ValidationError('Size is required')
 		
@@ -36,8 +58,8 @@ class supremeWizard(forms.ModelForm):
 
 		if fwd_seal:
 			if fwdSize is not None:
-				if fwdSize > 900 or fwdSize < 110:
-					raise forms.ValidationError("Size must be between 110 and 900")
+				if fwdSize > 900 or fwdSize < 90:
+					raise forms.ValidationError("Size must be between 90 and 900")
 			else:
 				raise forms.ValidationError('Size is required')
 		
@@ -71,7 +93,7 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','vgp', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval')
+		fields = ('application','cpp_fpp','number_of_shafts', 'vgp', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval','classCertificate')
 
 
 class supremeAftForm(forms.ModelForm):
@@ -87,6 +109,13 @@ class supremeFwdForm(forms.ModelForm):
 
 
 class supremeEnvironmentForm(forms.ModelForm):
+	OIL_CHOICES = (
+		('mineral', 'Mineral oil'),
+		('eal', 'EAL oil (bio degradable oil)'),
+	)
+
+	oil = forms.ChoiceField(widget=forms.RadioSelect, choices=OIL_CHOICES)
+
 	class Meta:
 		model = environmentalOptions
 		fields = ('oil','oilType','vgp','air')

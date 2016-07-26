@@ -4,12 +4,12 @@
 			
 
 {% block content %}
-<h1>Sealadvisor</h1>
+<h1>Lagersmit</h1>
 
 <div class='row'>
 	<div class='col s4'>
 		<div class='card small blue lighten-2'>
-			<a href="{% url 'sealadvisor2:supreme' %}">
+			<a href="{% url 'sealadvisor2:supremeSalesType' %}">
 			<div class='card-image'>
 				<img src="{% static 'images/sta.png' %}">
 				<span class='card-title black-text'><b>Add Supreme advise</b></span>
@@ -19,6 +19,17 @@
 			</div>
 			</a>
 		</div>
+		<div class='card small blue lighten-2'>
+			<div class='card-image'>
+				<img src="{% static 'images/stern.jpg' %}">
+				<span class='card-title black-text'><b>Add Bearing advise</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Bearings</p>
+			</div>
+		</div>
+	</div>
+	<div class='col s4'>
 		<div class='card small blue lighten-2'>
 			<a href=''>
 			<div class='card-image'>
@@ -30,10 +41,22 @@
 			</div>
 			</a>
 		</div>
+		
+		<div class='card small blue lighten-2'>
+			<a href=''>
+			<div class='card-image'>
+				<img src="{% static 'images/other.jpg' %}">
+				<span class='card-title black-text'><b>Other</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Other</p>
+			</div>
+			</a>
+		</div>
 	</div>
-	<div class='col s8'>
+	<div class='col s4'>
 		{% for advise in advises %}
-										<p><a href="{% url 'sealadvisor2:supremeOverview' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
+			<p><a href="{% url 'sealadvisor2:supremeOverview' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
 						
 		{% endfor %}
 	</div>

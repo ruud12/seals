@@ -23,6 +23,15 @@ class Class(models.Model):
 		return str("{className} - {certificateNo}").format(className=self.className, certificateNo=self.certificateNo)
 
 
+class Certificate(models.Model):
+	key = models.CharField(max_length=10)
+
+	bureau = models.CharField(max_length=100, verbose_name='Classification bureau')
+
+	def __str__(self):
+		return str("{bureau}").format(bureau=self.bureau)
+
+
 class FwdSealOptions(models.Model):
 	ocr = models.BooleanField(default=False, verbose_name='OCR ring')
 	fkm = models.BooleanField(default=False, verbose_name='Use FKM lip-seals')
@@ -80,12 +89,14 @@ class supremeAdvise(models.Model):
 
 	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor', blank=True, null=True)
 
+	number_of_shafts = models.IntegerField(verbose_name='Number of shafts')
+
 	pressure_oring = models.BooleanField(default=False, verbose_name='Pressure O-ring')
 
 	# in case that application is equal to 'sterntube', are both the forward and/or aft seal required?
 
-	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal.')
-	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal.')
+	fwd_seal = models.BooleanField(default=False, verbose_name='Forward seal')
+	aft_seal = models.BooleanField(default=False, verbose_name='Aft seal')
 
 	vgp = models.BooleanField(default=False, verbose_name='Has to comply with VGP regulations')
 
@@ -104,6 +115,7 @@ class supremeAdvise(models.Model):
 
 
 	typeApproval = models.ForeignKey(Class, verbose_name='Type approval required (specify which or leave blank)', blank=True, null=True)
+	classCertificate = models.ForeignKey(Certificate, verbose_name='Class certificate (specify which or leave blank)', blank=True, null=True)
 
 
 	def __str__(self):
