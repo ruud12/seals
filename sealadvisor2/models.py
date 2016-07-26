@@ -40,12 +40,9 @@ class FwdSealOptions(models.Model):
 class AftSealOptions(models.Model):
 	seaguard = models.BooleanField(default=False, verbose_name='Seaguard (backup oil repellant lip-seal)')
 
-	CHOICES = (
-		('shaft', 'Shaft centered'),
-		('hub', 'Hub centered'),
-	)
 
-	linerCentering = models.CharField(max_length=20, choices=CHOICES, verbose_name='Liner centering')
+
+	linerCentering = models.CharField(max_length=20, verbose_name='Liner centering')
 	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
 	anode = models.BooleanField(default = False, verbose_name='Kathodic protection')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
@@ -108,6 +105,8 @@ class supremeAdvise(models.Model):
 	rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'RPM')
 	draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Draught to (aft) shaft centerline [m]')
 
+
+	linerCentering = models.CharField(max_length=20, verbose_name='Liner centering')
 
 	aft = models.ForeignKey(AftSealOptions, null=True, blank=True)
 	fwd = models.ForeignKey(FwdSealOptions, null=True, blank=True)

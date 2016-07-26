@@ -91,12 +91,28 @@ class supremeWizard(forms.ModelForm):
 			raise forms.ValidationError("RPM must be between 80 and 500")
 		return rpm
 
+	CHOICES = (
+		('shaft', 'Shaft centered'),
+		('hub', 'Hub centered'),
+	)
+
+	linerCentering = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','number_of_shafts', 'vgp', 'aft_seal','aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval','classCertificate')
+		fields = ('application','cpp_fpp','number_of_shafts', 'vgp', 'aft_seal','linerCentering', 'aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval','classCertificate')
 
 
 class supremeAftForm(forms.ModelForm):
+
+	CHOICES = (
+		('shaft', 'Shaft centered'),
+		('hub', 'Hub centered'),
+	)
+
+	linerCentering = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+
+
 	class Meta:
 		model = AftSealOptions
 		fields = ( 'linerCentering','seaguard', 'air', 'dirtBarrier','oring', 'anode', 'hml', 'distanceRing','wireWinders','netCutters','hastelloy')

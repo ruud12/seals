@@ -135,6 +135,7 @@
         var aftsize = $('#id_aftSize')
         var fwdsize = $('#id_fwdSize')
         var aftbuild = $('#id_aft_build_in_length');
+        var linercentering = $('#id_linerCentering_container');
 
         function toggleVerified(value) {
             value == '1' ? aft.parent().show() : aft.parent().hide();
@@ -146,9 +147,11 @@
             if (aft.is(':checked') || selectField.val() != '1') {
                 aftsize.parent().show();
                 aftbuild.parent().show();
+                linercentering.parent().show();
             } else {
                 aftsize.parent().hide(); 
                 aftbuild.parent().hide();
+                linercentering.parent().hide();
             }
 
             if (fwd.is(':checked')) {

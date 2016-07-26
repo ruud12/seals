@@ -467,7 +467,7 @@ def supremeEnvironment(request, supreme_id):
 	tabs = getTabs(supreme)
 	pv = round(pv,1)
 
-	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Save','air':True, 'tabs': tabs})
+	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Next','air':True, 'tabs': tabs})
 
 
 def supremeEnvironmentEdit(request, supreme_id, env_id):
