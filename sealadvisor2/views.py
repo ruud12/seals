@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from sealadvisor2 import forms
 from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions
+from erp.models import Company
 import bisect, decimal
 from django.core.urlresolvers import reverse
 from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -26,8 +27,10 @@ def determine_aft_execution(aft):
 
 	execution = ""
 
-	if aft.linerCentering == 'shaft':
-		execution = execution + "A"
+#	if aft.linerCentering == 'shaft':
+#		execution = execution + "A"
+
+
 
 	if aft.hml:
 		execution = execution + "C"
@@ -236,8 +239,9 @@ def getTabs(advise):
 
 def index(request):
 	advises = supremeAdvise.objects.all()
+	companies = Company.objects.all()
 
-	return render(request, 'sealadvisor2/index.html', {'advises': advises})
+	return render(request, 'sealadvisor2/index.html', {'advises': advises, 'companies':companies})
 
 
 def salesType(request):
@@ -312,9 +316,9 @@ def supremeEdit(request, supreme_id):
 
 	else:
 		if supreme.typeApproval:
-			form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id })
+			form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id,'linerCentering':supreme.linerCentering , 'number_of_shafts':supreme.number_of_shafts})
 		else:
-			form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft })
+			form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'linerCentering':supreme.linerCentering, 'number_of_shafts':supreme.number_of_shafts})
 
 
 	return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','extra':True, 'air':False})
@@ -419,7 +423,7 @@ def supremeAftEdit(request, supreme_id, aft_id):
 				return redirect('sealadvisor2:supremeOverview', supreme_id)
 
 	else:
-		form = forms.supremeAftForm(initial={'anode': aft.anode, 'seaguard':aft.seaguard, 'oring': aft.oring, 'linerCentering':aft.linerCentering,'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
+		form = forms.supremeAftForm(initial={'anode': aft.anode, 'seaguard':aft.seaguard, 'oring': aft.oring, 'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
 
 	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save','air':False})
 

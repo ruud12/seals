@@ -34,7 +34,9 @@ class Certificate(models.Model):
 
 class FwdSealOptions(models.Model):
 	ocr = models.BooleanField(default=False, verbose_name='OCR ring')
-	fkm = models.BooleanField(default=False, verbose_name='Use FKM lip-seals')
+	fkm = models.BooleanField(default=False, verbose_name='FKM lip-seals')
+	hml = models.BooleanField(default = False, verbose_name='Hard metal layer (HML)')
+	high_pressure = models.BooleanField(default=False, verbose_name= 'High pressure (3 lip-seals)')
 
 
 class AftSealOptions(models.Model):
@@ -42,7 +44,6 @@ class AftSealOptions(models.Model):
 
 
 
-	linerCentering = models.CharField(max_length=20, verbose_name='Liner centering')
 	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
 	anode = models.BooleanField(default = False, verbose_name='Kathodic protection')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
@@ -52,6 +53,7 @@ class AftSealOptions(models.Model):
 	hastelloy = models.BooleanField(default = False, verbose_name='Hastelloy springs')
 	hml = models.BooleanField(default = False, verbose_name='Hard metal layer (HML)')
 	air = models.BooleanField(default = False, verbose_name='Ventus/Athmos (depending on draught)')
+	fkm = models.BooleanField(default=False, verbose_name='FKM lip-seals')
 
 
 class environmentalOptions(models.Model):
@@ -86,7 +88,7 @@ class supremeAdvise(models.Model):
 
 	cpp_fpp = models.CharField(max_length=10,choices=CHOICES,verbose_name='Fixed or controllable pitch propellor', blank=True, null=True)
 
-	number_of_shafts = models.IntegerField(verbose_name='Number of shafts')
+	number_of_shafts = models.IntegerField(verbose_name='Number of shafts per vessel')
 
 	pressure_oring = models.BooleanField(default=False, verbose_name='Pressure O-ring')
 

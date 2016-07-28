@@ -55,10 +55,15 @@
 		</div>
 	</div>
 	<div class='col s4'>
+        <h2>Advises</h2>
 		{% for advise in advises %}
 			<p><a href="{% url 'sealadvisor2:supremeOverview' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
-						
 		{% endfor %}
+		
+		<h2>Companies</h2>
+		{% for company in companies %}
+			<p><a href="{% url 'erp:editCompany' company.id %}">{{ company }}</a></p>
+        {% endfor %}
 	</div>
 </div>
 {% endblock %}	 

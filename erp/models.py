@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from model_utils import FieldTracker
 
+from sealadvisor2.models import AftSealOptions, FwdSealOptions
+
 # Create your models here.
 
 
@@ -9,6 +11,10 @@ from model_utils import FieldTracker
 
 class Company(models.Model):
 	name = models.CharField(max_length=100)
+	
+	aft_defaults = models.ForeignKey(AftSealOptions, null=True, blank=True)
+	fwd_defaults = models.ForeignKey(FwdSealOptions, null=True, blank=True)
+	
 
 	def __str__(self):
 		return self.name

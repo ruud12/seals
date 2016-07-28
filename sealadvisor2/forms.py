@@ -12,7 +12,7 @@ class supremeSalesTypeForm(forms.Form):
 	)
 
 	sales_type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-	company = company = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer')
+	company = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer', required=False)
 
 
 	def clean_sales_type(self):
@@ -110,18 +110,17 @@ class supremeAftForm(forms.ModelForm):
 		('hub', 'Hub centered'),
 	)
 
-	linerCentering = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
 
 
 	class Meta:
 		model = AftSealOptions
-		fields = ( 'linerCentering','seaguard', 'air', 'dirtBarrier','oring', 'anode', 'hml', 'distanceRing','wireWinders','netCutters','hastelloy')
+		fields = ( 'seaguard', 'air', 'dirtBarrier','wireWinders','netCutters','oring', 'anode', 'hml', 'distanceRing','fkm','hastelloy')
 
 
 class supremeFwdForm(forms.ModelForm):
 	class Meta:
 		model = FwdSealOptions
-		fields = ('ocr', 'fkm')
+		fields = ('ocr', 'fkm','hml','high_pressure' )
 
 
 class supremeEnvironmentForm(forms.ModelForm):
