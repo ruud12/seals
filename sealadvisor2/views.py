@@ -625,3 +625,36 @@ def render_latex(request, template, dictionary, filename):
  
 def someview(request):
     return render_latex(request, "reports/test.tex", {"foo": "bar"}, filename="latex_test.pdf")
+
+
+
+
+
+from django.views.generic.edit import CreateView, UpdateView
+from erp.models import Company
+
+class CompanyCreate(CreateView):
+    model = Company
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ['name'] 
+    
+    def get_context_data(self, **kwargs):
+        context = super(CompanyCreate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Create new company"
+        context["cancel"] = "index"
+        return context
+    
+    
+class CompanyUpdate(UpdateView):
+    model = Company
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ["name"]
+
+    def get_context_data(self, **kwargs):
+        context = super(CompanyUpdate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Edit company"
+        context["cancel"] = "index"
+        return context   
+    

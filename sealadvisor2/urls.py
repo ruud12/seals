@@ -19,6 +19,8 @@ urlpatterns = [
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/$', views.supremeEnvironment, name='supremeEnvironment'),
 	url(r'^supreme/(?P<supreme_id>\d+)/environment/(?P<env_id>\d+)/edit$', views.supremeEnvironmentEdit, name='supremeEnvironmentEdit'),
 	url(r'^supreme/(?P<supreme_id>\d+)/overview/$', views.supremeOverview, name='supremeOverview'),
+	url(r'^addcompany/$', views.CompanyCreate.as_view(), name="createCompany"),
+	url(r'^updatecompany/(?P<pk>\d+)$', views.CompanyUpdate.as_view(success_url='/sealadvisor2/'), name="updateCompany"),
 	# url(r'^supreme/(?P<supreme_id>\d+)/report\.pdf$', views.supremeReport, name='supremeReport'),
 
 ]
