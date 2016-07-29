@@ -255,7 +255,7 @@ def salesType(request):
 	else:
 		form = forms.supremeSalesTypeForm()
 
-	return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Choose sales type', 'submit':'Next' })
+	return render(request, 'sealadvisor2/simple_form2.html', {'form':form, 'title': 'Choose sales type', 'submit':'Next','cancel':'index' })
 
 
 def supreme(request):
@@ -583,48 +583,6 @@ def supremeOverview(request, supreme_id):
 	return render(request, 'sealadvisor2/supreme.html', {'type':sealtype, 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft, 'execution': execution, 'number': number })
 
 
-def render_latex(request, template, dictionary, filename):
-    # render latex template and vars to a string
-    latex = render_to_string(template, dictionary, context_instance=None)
- 
-    # create a unique temorary filename
-    fd, path = mkstemp(prefix="latex_", suffix=".pdf")
-    folder, fname = os.path.split(path)
-    jobname, ext = os.path.splitext(fname)  # jobname is just the filename without .pdf, it's what pdflatex uses
- 
-    # for the TOC to be built, pdflatex must be run twice, on the second run it will generate a .toc file
-    for i in range(2):
-        # start pdflatex, we can send the tex file from stdin, but the output file can only be saved to disk, not piped to stdout unfortunately/
-        process = Popen(["pdflatex", "-output-directory", folder, "-jobname", jobname], stdin=PIPE, stdout=PIPE)  # piping stdout suppresses output messages
-        process.communicate(latex)
- 
-    # open the temporary pdf file for reading.
-    try:
-        pdf = os.fdopen(fd, "rb")
-        output = pdf.read()
-        pdf.close()
-    except OSError:
-        raise Http404("Error generating PDF file")  # maybe we should use an http  500 here, 404 makes no sense
- 
-    # generate the response with pdf attachment
-    response = HttpResponse(mimetype="application/pdf")
-    response["Content-Disposition"] = "attachment; filename=" + filename
-    response.write(output)
- 
-    # delete the pdf from temp directory, and other generated files ending on .aux and .log
-    for ext in (".pdf", ".aux", ".log", ".toc", ".lof", ".lot", ".synctex.gz"):
-        try:
-            os.remove(os.path.join(folder, jobname) + ext)
-        except OSError:
-            pass
- 
-    # return the response
-    return response
- 
-#### Actual Usage ####
- 
-def someview(request):
-    return render_latex(request, "reports/test.tex", {"foo": "bar"}, filename="latex_test.pdf")
 
 
 
@@ -658,3 +616,15 @@ class CompanyUpdate(UpdateView):
         context["cancel"] = "index"
         return context   
     
+import json
+
+def get_companies(request):
+	if request.is_ajax():
+		q = request.GET.get('term', '')
+		companies = Company.objects.all()
+		companies_list = [company.name for company in companies]
+		data = json.dumps(companies_list)
+	else:
+		data = 'fail'
+	mimetype = 'application/json'
+	return HttpResponse(data, mimetype)

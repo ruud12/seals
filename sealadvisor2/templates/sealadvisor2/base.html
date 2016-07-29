@@ -1,5 +1,4 @@
-{% load staticfiles %}
-<html>
+{% load staticfiles %}<html>
 	<head>
 		<style>
 
@@ -10,6 +9,8 @@
         <script src="{% static 'material/js/jquery-2.2.0.js' %}"></script>
         {% include 'material/includes/material_js.html' %}
         {% load material_form %} 
+        <script type='text/javascript' src='{% static 'js/jquery-ui.js' %}'></script>
+        <link rel='stylesheet' type='text/css' href='{% static 'css/jquery-ui/smoothness/jquery-ui.css' %}' />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <link rel="stylesheet" href="{% static 'css/sealadvisor2.css' %}">
