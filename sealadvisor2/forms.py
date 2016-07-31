@@ -1,7 +1,6 @@
 from django import forms
 from sealadvisor2.models import sealApplication, supremeAdvise, AftSealOptions, environmentalOptions,FwdSealOptions, Certificate
 from erp.models import Company
-from ajax_select.fields import AutoCompleteSelectField, AutoCompleteSelectMultipleField
 
 
 class supremeSalesTypeForm(forms.Form):
@@ -13,7 +12,7 @@ class supremeSalesTypeForm(forms.Form):
 
 	sales_type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 	# company = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer', required=False)
-	company = AutoCompleteSelectField('company_search', label='Customer', required=False, help_text='type company name')
+	company = forms.CharField(max_length=100)
 
 
 	def clean_sales_type(self):
@@ -26,7 +25,7 @@ class supremeSalesTypeForm(forms.Form):
 		return sales_type
 
 	class Meta:
-		fields = ('sales_type', )
+		fields = ('sales_type', 'company')
 
 
 class supremeWizard(forms.ModelForm):

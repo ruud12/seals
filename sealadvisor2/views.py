@@ -6,24 +6,12 @@ import bisect, decimal
 from django.core.urlresolvers import reverse
 from django.contrib.staticfiles.templatetags.staticfiles import static
 
-from django.http import HttpResponse
-
-
-
-import os
-from subprocess import Popen, PIPE
-from tempfile import mkstemp
- 
 from django.http import HttpResponse, Http404
-from django.template.loader import render_to_string
 from django.template import RequestContext
 
 
 
 def determine_aft_execution(aft):
-
-
-
 
 	execution = ""
 
@@ -255,7 +243,7 @@ def salesType(request):
 	else:
 		form = forms.supremeSalesTypeForm()
 
-	return render(request, 'sealadvisor2/simple_form2.html', {'form':form, 'title': 'Choose sales type', 'submit':'Next','cancel':'index' })
+	return render(request, 'sealadvisor2/simple_form.html', {'form':form, 'title': 'Choose sales type..', 'submit':'Next','cancel':'index' })
 
 
 def supreme(request):
@@ -616,15 +604,24 @@ class CompanyUpdate(UpdateView):
         context["cancel"] = "index"
         return context   
     
+
 import json
 
+
 def get_companies(request):
-	if request.is_ajax():
-		q = request.GET.get('term', '')
-		companies = Company.objects.all()
-		companies_list = [company.name for company in companies]
-		data = json.dumps(companies_list)
-	else:
-		data = 'fail'
-	mimetype = 'application/json'
-	return HttpResponse(data, mimetype)
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        drugs = Company.objects.filter(name__icontains = q )[:20]
+        results = []
+        for drug in drugs:
+            drug_json = {}
+            drug_json['id'] = drug.id
+            drug_json['label'] = drug.name
+            drug_json['value'] = drug.name
+            results.append(drug_json)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+

@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'reportlab',
     'model_utils',
     'jquery_ui',
-    'ajax_select',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -142,4 +141,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
+STATIC_ROOT = os.path.join('sealadvisor2','static/')
 STATIC_URL = '/static/'
+
