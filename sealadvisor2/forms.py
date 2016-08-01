@@ -141,4 +141,4 @@ class CompanyEditForm(forms.ModelForm):
 
 	class Meta:
 		model = Company
-		fields = ('name', 'aft_defaults', 'fwd_defaults')
+		fields = ('name', )	

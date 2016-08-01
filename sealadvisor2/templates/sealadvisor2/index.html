@@ -63,7 +63,7 @@
 		<h2>Companies</h2>
 		<p><a href="{% url 'sealadvisor2:createCompany' %}">Create new company</a></p>
 		{% for company in companies %}
-			<p><a href="{% url 'sealadvisor2:updateCompany' company.id %}">{{ company }}</a></p>
+			<p><a href="{% url 'sealadvisor2:CompanyEdit2' company.id %}">{{ company }}</a></p>
         {% endfor %}
 	</div>
 </div>

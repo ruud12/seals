@@ -265,7 +265,7 @@ def checkComponentChange(request,seal_id, change_id):
 		form = forms.confirmComponentChangeForm(request.POST, instance=change)
 
 		if form.is_valid():
-			form.save(update_fields=['new_part','old_part','confirm'])
+			form.save(update_fields=["name"])
 
 			return redirect('erp:viewSeal', seal_id)
 

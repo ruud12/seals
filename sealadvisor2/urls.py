@@ -24,7 +24,7 @@ urlpatterns = [
 	url(r'^updatecompany/(?P<pk>\d+)$', views.CompanyUpdate.as_view(success_url='/sealadvisor2/'), name="updateCompany"),
 	#api urls
 	url(r'^get_companies/$', views.get_companies, name='get_companies'),
-	url(r'^companyEdit/(?P<company_id>\d+)/$', views.CompanyEditView, name='CompanyEdit'),
+	url(r'^companyEdit2/(?P<company_id>\d+)/$', views.CompanyDefaultsEdit, name='CompanyEdit2'),
 
 
 ]
