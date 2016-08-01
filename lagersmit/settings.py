@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'reportlab',
     'model_utils',
     'jquery_ui',
+    'ajax_select',
 ]
 
 MIDDLEWARE_CLASSES = [

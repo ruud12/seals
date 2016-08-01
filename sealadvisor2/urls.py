@@ -1,6 +1,7 @@
 from django.conf.urls import url
 from sealadvisor2 import views
-
+from erp.models import Company
+from ajax_select import urls as ajax_select_urls
 
 
 app_name = 'sealadvisor2'
@@ -23,6 +24,7 @@ urlpatterns = [
 	url(r'^updatecompany/(?P<pk>\d+)$', views.CompanyUpdate.as_view(success_url='/sealadvisor2/'), name="updateCompany"),
 	#api urls
 	url(r'^get_companies/$', views.get_companies, name='get_companies'),
+	url(r'^companyEdit/(?P<company_id>\d+)/$', views.CompanyEditView, name='CompanyEdit'),
 
 
 ]

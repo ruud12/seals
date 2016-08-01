@@ -11,7 +11,7 @@ class supremeSalesTypeForm(forms.Form):
 	)
 
 	sales_type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
-	# company = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer', required=False)
+	# company1 = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer', required=False)
 	company = forms.CharField(max_length=100)
 
 
@@ -134,3 +134,11 @@ class supremeEnvironmentForm(forms.ModelForm):
 	class Meta:
 		model = environmentalOptions
 		fields = ('oil','oilType','vgp','air')
+
+
+
+class CompanyEditForm(forms.ModelForm):
+
+	class Meta:
+		model = Company
+		fields = ('name', 'aft_defaults', 'fwd_defaults')

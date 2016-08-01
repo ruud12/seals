@@ -625,3 +625,36 @@ def get_companies(request):
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
 
+
+
+def CompanyEditView(request, company_id):
+	company = get_object_or_404(Company, pk=company_id)
+
+	if not company.aft_defaults:
+		aft_defaults = AftSealOptions.objects.create()
+		company.aft_defaults = aft_defaults
+		company.save()
+
+	if not company.fwd_defaults:
+		fwd_defaults = FwdSealOptions.objects.create()
+		company.fwd_defaults = fwd_defaults
+		company.save()
+
+	if request.method == "POST":
+		form = forms.CompanyEditForm(request.POST, instance=company)
+
+		if form.is_valid():
+			form.save()
+
+			return redirect('sealadvisor2:index')
+
+
+
+	else:
+		form = forms.CompanyEditForm(initial = {'aft_defaults':company.aft_defaults.id, 'fwd_defaults': company.fwd_defaults.id, 'name': company.name })
+
+	aftform = forms.supremeAftForm(initial={'anode': company.aft_defaults.anode, 'seaguard':company.aft_defaults.seaguard, 'oring': company.aft_defaults.oring, 'distanceRing':company.aft_defaults.distanceRing, 'dirtBarrier': company.aft_defaults.dirtBarrier,'wireWinders':company.aft_defaults.wireWinders,'netCutters': company.aft_defaults.netCutters, 'hastelloy': company.aft_defaults.hastelloy})
+	fwdform = forms.supremeFwdForm(initial={'ocr':company.fwd_defaults.ocr, 'fkm':company.fwd_defaults.fkm})
+
+
+	return render(request, 'sealadvisor2/company_edit.html', {'form':form, 'title': "Edit company", 'submit': 'Save', 'cancel':'index','company': company, 'fwdform': fwdform, 'aftform':aftform })
