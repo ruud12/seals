@@ -9,15 +9,29 @@
         {% include 'material/includes/material_css.html' %}
         {% include 'material/includes/material_js.html' %}
         {% load material_form %} 
-        <script type='text/javascript' src='{% static 'js/jquery-ui.js' %}'></script>
-        <link rel='stylesheet' type='text/css' href='{% static 'css/jquery-ui/smoothness/jquery-ui.css' %}' />
+        <script type='text/javascript' src="{% static 'js/jquery-ui.js' %}""></script>
+        <link rel='stylesheet' type='text/css' href="{% static 'css/jquery-ui/smoothness/jquery-ui.css' %}" />
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
         <link rel="stylesheet" href="{% static 'css/sealadvisor2.css' %}">
 	</head>
   
  	<body>
-
+        <div class='content container'>
+            
+        </div>
+        
+        <nav>
+            <div class="nav-wrapper blue lighten-4">
+            <a href="#" class="brand-logo"><img src="{% static 'images/logo-lagersmit.png' %}"></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="{% url 'sealadvisor2:index' %}">Home</a></li>
+                <li><a href="{% url 'sealadvisor2:supreme' %}">Add Supreme advise</a></li>
+                <li><a href="">Add Liquidyne advise</a></li>
+            </ul>
+            </div>
+        </nav>
+        
         <div class="content container">
                 {% block content %}
                 {% endblock %}

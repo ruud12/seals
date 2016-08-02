@@ -19,3 +19,21 @@ form.search-seals .fieldWrapper {
 form.search-seals #id_installedInVessel {
 	display:none;
 }*/
+
+h1 {
+    font-size:3em;
+    font-family:'georgia';
+}
+
+span.card-title {
+    font-family:'georgia';
+}
+
+nav img {
+    height:60px;
+}
+
+nav ul a {
+    font-family:"georgia";
+    color:black;
+}

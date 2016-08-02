@@ -4,9 +4,6 @@
 
 {% block content %}
 <h1>Supreme Seal advisor</h1>
-<p><a class='wave-effect btn orange' href="{% url 'sealadvisor2:index' %}">Back to overview</a>
-<a class='wave-effect btn orange' href="{% url 'sealadvisor2:supreme' %}">Add new advise</a></p>
-<br>
 <div class='row'>
 	<div class='col s6'>
 		<div class='card teal lighten-4'>
@@ -224,12 +221,36 @@
                 <div style='float:right;'>
                     <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:supremeFwdEdit' advise.id advise.fwd.id %}"><i class="material-icons">edit</i></a>
                 </div>
-                <p>Build-in length: {{ advise.fwd_build_in_length }} mm</p>
-                <p>Type of lip-seal rubber: {{ rubber_fwd }}</p>
-                <p>PV-value: {{ pv_fwd }}</p> 
-                <p>FKM lip-seals used: {% if advise.fwd.fkm %}yes{% else %}no{% endif %}</p>
-                <p>OCR ring: {% if advise.fwd.ocr %}yes{% else %}no{% endif %}</p>
-
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <thead>
+                        <tr>
+                            <th data-field="id">Customised options</th>
+                            <th data-field="name">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody> 
+                        <tr>
+                            <td>Build-in length</td>
+                            <td>{{ advise.fwd_build_in_length }} mm}</td>
+                        </tr>
+                        <tr>
+                            <td>Type of lip-seal rubber</td>
+                            <td>{{ rubber_fwd }}</td>
+                        </tr>
+                        <tr>
+                            <td>PV-value</td>
+                            <td>{{ pv_fwd }}</td>
+                        </tr>
+                        <tr>
+                            <td>FKM lip-seals used</td>
+                            <td>{% if advise.fwd.fkm %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                        <tr>
+                            <td>OCR</td>
+                            <td>{% if advise.fwd.ocr %}yes{% else %}no{% endif %}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         {% endif %}

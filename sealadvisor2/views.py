@@ -337,7 +337,7 @@ def supremeFwd(request, supreme_id):
 
     tabs = getTabs(supreme)
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Fwd seal options','submit':'Next','air':False,'extra':False,  'tabs': tabs})
+    return render(request, 'sealadvisor2/fwd.html', {'form':form, 'title': 'Fwd seal options','submit':'Next','air':False,'extra':False,  'tabs': tabs})
 
 
 def supremeFwdEdit(request, supreme_id, fwd_id):
@@ -357,7 +357,7 @@ def supremeFwdEdit(request, supreme_id, fwd_id):
     else:
         form = forms.supremeFwdForm(initial={'ocr':fwd.ocr, 'fkm':fwd.fkm})
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit forward seal options','submit':'Save','air':False,'extra':False })
+    return render(request, 'sealadvisor2/fwd.html', {'form':form, 'title': 'Edit forward seal options','submit':'Save','air':False,'extra':False })
 
 
 
@@ -390,7 +390,7 @@ def supremeAft(request, supreme_id):
 
     tabs = getTabs(supreme)
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Aft seal options','submit':'Next','air':False,'extra':False, 'tabs': tabs })
+    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Aft seal options','submit':'Next','air':False,'extra':False, 'tabs': tabs })
 
 
 
@@ -413,7 +413,7 @@ def supremeAftEdit(request, supreme_id, aft_id):
     else:
         form = forms.supremeAftForm(initial={'anode': aft.anode, 'seaguard':aft.seaguard, 'oring': aft.oring, 'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save','air':False})
+    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save','air':False})
 
 
 
@@ -459,7 +459,7 @@ def supremeEnvironment(request, supreme_id):
     tabs = getTabs(supreme)
     pv = round(pv,1)
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Next','air':True, 'tabs': tabs})
+    return render(request, 'sealadvisor2/environment.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Next','air':True, 'tabs': tabs})
 
 
 def supremeEnvironmentEdit(request, supreme_id, env_id):
@@ -485,7 +485,7 @@ def supremeEnvironmentEdit(request, supreme_id, env_id):
     else:
         form = forms.supremeEnvironmentForm(initial = {'vgp':env.vgp, 'oil': env.oil, 'oilType': env.oilType, 'air': env.air})
 
-    return render(request, 'sealadvisor2/seal_information.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Save','air':True})
+    return render(request, 'sealadvisor2/environment.html', {'form':form, 'title': 'Environmental information','air_type':air_type,'pv':pv,'submit':'Save','air':True})
 
 
 
