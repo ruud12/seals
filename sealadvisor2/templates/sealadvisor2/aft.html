@@ -28,27 +28,7 @@
 	</div>
 	<div class='col s8'>
 
-        <div class='card teal lighten-4' id='id_fpp_cpp_info'>
-            <div class='card-content'>
-                <span class='card-title black-text'>Fixed or controllable pitch</span>
-                <p>A Controllable pitch propellor (CPP) has blades that can be adjusted to vary the thrust power or direction. When a CPP is used, the shaft has to be pulled to install the seal or a new liner.</p>
-                <br>
-                <p>When using a fixed pitch propellor, the aft seal can be installed without pulling the shaft as removal of the propellor is enough.</p>
-                <br>
-                <p align='center'><img height='200px' src="{% static 'images/cppfpp.jpg' %}">
-            </div>
-        </div>
-        <div class='card teal lighten-4' id='id_vgp_info'>
-            <div class='card-content'>
-                <span class='card-title black-text'>VGP (Vessel general permit)</span>
-                <p>The VGP states that no mineral oil can be leaked or a specific bio-oil must be used. To comply with the VGP regulations, either bio-oil must be used or an air type (Ventus/Athmos) seal must be used.</p>
-                <br>
-                
-                <p>- Where does the vessel sail?</p>
-                <p>- Does the vessel have to comply with the VGP for American waters?</p>
-                
-            </div>
-        </div>
+        
         <div class='card teal lighten-4'>
             <div class='card-content'>
                 <span class='card-title black-text'>Explanation</span>
@@ -66,6 +46,7 @@
                     </div>
                     <div class="modal-footer">
                         <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                        <a href="#!" id='selectseaguard' class=" modal-action modal-close waves-effect waves-green btn-flat">Use seaguard</a>
                     </div>
                 </div>
                 
@@ -74,19 +55,57 @@
           
                 
                     <br>
-                <p><b>Zero emission (Ventus/Athmos)</b></p>
-                <p>- How important is zero emission to you?</p>
+                <p><b><a class=' modal-trigger' href='#modal_air'>Zero emission (Ventus/Athmos)</a></b></p>
+                <p>- Looking for zero emission?</p>
                 <p>- Do you want to monitor the seal condition?</p>
                 <p>- Does your vessel sail in places where zero emission is required?</p> 
                 <br>
-                <p><b>Dirt/nets/wires</b></p>
+                
+                <div id="modal_air" class="modal">
+                    <div class="modal-content">
+                        <h4>Zero emission using air system</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                        <a href="#!" id='selectair' class="  waves-effect waves-green btn-flat">Use air system</a>
+                    </div>
+                </div>
+                
+                
+                
+                
+                <p><b><a class=' modal-trigger' href='#modal_dirt'>Dirt barrier/net cutters/wire winders</a></b></p>
                 <p>- Will the vessel sail in waters where a lot of sand or debris is present in the water?</p>
                 <br>
+                
+                <div id="modal_dirt" class="modal">
+                    <div class="modal-content">
+                        <h4>Dirt barrier/wire winders/net cutters</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                        <a href="#!" id='selectwire' class="  waves-effect waves-green btn-flat">Use wire winders</a>
+                        <a href="#!" id='selectnet' class="  waves-effect waves-green btn-flat">Use net cutters</a>
+                        <a href="#!" id='selectdirt' class="  waves-effect waves-green btn-flat">Use dirtbarrier</a>
+                    </div>
+                </div>
 
 
-                <p><b>Kathodic protection</b></p>
-                <p>- Do you want to protect the liner against corrosion using kathodic protection?</p>            
+                <p><b><a class=' modal-trigger' href='#modal_cathodic'>Cathodic protection</a></b></p>
+                <p>- Do you want to protect the liner against corrosion?</p>            
                 <br>
+                
+                <div id="modal_cathodic" class="modal">
+                    <div class="modal-content">
+                        <h4>Cathodic protection</h4>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                        <a href="#!" id='selectcathodic' class=" waves-effect waves-green btn-flat">Use cathodic protection</a>
+                    </div>
+                </div>
+                
+                
                 <p><b><a class=' modal-trigger' href='#modal_hml'>HML / Distance ring</a></b></p>
                 <p>- Would you like to stretch the liner lifetime using a HML (hard metal layer) or distance ring?</p>
                 
@@ -94,7 +113,7 @@
                     <div class="modal-content">
                         <h4>Information</h4>
                         <p><b>HML</b></p>
-                        <p>Tests under specific conditions indicate that the lifetime of a liner provided with a HML may be stretched up to 20 years. The real lifetime varies depending on the specific operation conditions of a sealk</p><br>
+                        <p>Tests under specific conditions indicate that the lifetime of a liner provided with a HML may be stretched up to 20 years. The real lifetime varies depending on the specific operation conditions of a seal.</p><br>
                         <p><b>Distance ring</b></p>
                         <p>The distance ring extends the lifetime of a liner. A divisible distance ring can be fitted with the SUPREME design. Over time, the rubber lip seals wear down the liner. By removing or adding a distance ring, the housing parts can be repositioned. After repositioning, the lip seals run on a new surface thus extending the lifetime of the seal.</p>
                     </div>
@@ -105,24 +124,26 @@
                 
                 
                 <br>
-                <p><b>Hastelloy springs</b></p>
+                <p><b><a class=' modal-trigger' href='#modal_hastelloy'>Hastelloy springs</a></b></p>
                 <p>info</p>
+                
+                
+                <div id="modal_hastelloy" class="modal">
+                    <div class="modal-content">
+                        <h4>Hastelloy information</h4>
+                        <p>info</p>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
+                        <a href="#!" id='selecthastelloy' class="modal-action modal-close waves-effect waves-green btn-flat">Use hastelloy</a>
+                    </div>
+                </div>
             </div>
         </div>
       
 
 
-        {% if air %}
-		<div class='card teal lighten-4' id='air_card'>
-			<div class='card-content'>
-				<span class='card-title black-text'>Air type</span>
-				<p>An air type system complies with VGP regulations and reduces the pressure on the lip-seals.</p>
-				<br>
-				<p>The PV-value is equal to: {{ pv }}</p>
-				<p id='air_type'>For the specified draught a {{ air_type }} system is used.</p>
-			</div>
-		</div>
-        {% endif %}
+
         {% if extra %}
         <div class='card teal lighten-4'>
             <div class='card-content'>
@@ -148,48 +169,36 @@
 
 (function($) {
     $(function() {
-        var selectField = $('#id_cpp_fpp');
-        var oring = $('#id_pressure_oring');
-
-
-        function toggleVerified(value) {
-            if (value == 'fpp') {
-            	oring.parent().show();
-        	} else {
-        		oring.parent().hide();
-        	};
-        }
-
-        toggleVerified();
-
-
-        $('#id_fpp_cpp_info').hide();
-
-        $('#id_cpp_fpp_container')
-        .mouseover(function() {
-            $('#id_fpp_cpp_info').show();
-            clearTimeout(hoverTimeOut);
-        })
-        .mouseout(function() {
-            hoverTimeOut = setTimeout(function() {
-                $('#id_fpp_cpp_info').hide();
-            }, 500);
-        })
-
-        $('#id_vgp_info').hide();
-
-        $('#id_vgp_container')
-        .mouseover(function() {
-            $('#id_vgp_info').show();
-            clearTimeout(hoverTimeOut_vgp);
-        })
-        .mouseout(function() {
-            hoverTimeOut_vgp = setTimeout(function() {
-                $('#id_vgp_info').hide();
-            }, 500);
-        })
+    
+        $('#selectseaguard').click(function() {
+            $('#id_seaguard').prop('checked','true');
+        });
+        
+        $('#selectdirt').click(function() {
+            $('#id_dirtBarrier').prop('checked', 'true');
+        });
+        
+        $('#selectwire').click(function() {
+            $('#id_wireWinders').prop('checked', 'true');
+        });
+        
+        $('#selectnet').click(function() {
+            $('#id_netCutters').prop('checked', 'true');
+        });
+        
+        $('#selectair').click(function() {
+            $('#id_air').prop('checked', 'true');
+        });
         
         
+        $('#selectcathodic').click(function() {
+            $('#id_anode').prop('checked', 'true');
+        });
+        
+        
+        $('#selecthastelloy').click(function() {
+            $('#id_hastelloy').prop('checked', 'true');
+        });
     });
 })(jQuery);
 

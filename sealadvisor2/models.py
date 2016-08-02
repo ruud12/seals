@@ -45,7 +45,7 @@ class AftSealOptions(models.Model):
 
 
 	oring = models.BooleanField(default = False, verbose_name='O-ring between liner and shaft')
-	anode = models.BooleanField(default = False, verbose_name='Kathodic protection')
+	anode = models.BooleanField(default = False, verbose_name='Cathodic protection')
 	distanceRing = models.BooleanField(default = False, verbose_name='Distance ring')
 	dirtBarrier = models.BooleanField(default = False, verbose_name='Dirt barrier')
 	wireWinders = models.BooleanField(default = False, verbose_name='Wire winders')
