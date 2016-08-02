@@ -690,7 +690,8 @@ def CompanyDefaultsEdit(request, company_id):
 
 
 
-def Companies(request):
+def 
+Companies(request):
     companies = Company.objects.all()
     
     return render(request, 'sealadvisor2/companies.html', {'companies':companies,'title':'Companies'})
