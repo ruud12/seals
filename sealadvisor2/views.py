@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from sealadvisor2 import forms
 from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions
@@ -8,11 +9,12 @@ from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 
 def determine_aft_execution(aft):
-
     execution = ""
 
 #   if aft.linerCentering == 'shaft':
@@ -237,6 +239,12 @@ def salesType(request):
     if request.method == "POST":
         form = forms.supremeSalesTypeForm(request.POST)
         if form.is_valid():
+            
+            try:
+                company = Company.objects.get(name__iexact=form.cleaned_data['company'])
+            except ObjectDoesNotExist:
+            
+                company = Company.objects.create(name=form.cleaned_data["company"])
 
             return redirect('sealadvisor2:supreme')
 
