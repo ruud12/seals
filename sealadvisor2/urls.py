@@ -22,6 +22,8 @@ urlpatterns = [
 	url(r'^supreme/(?P<supreme_id>\d+)/overview/$', views.supremeOverview, name='supremeOverview'),
 	url(r'^addcompany/$', views.CompanyCreate.as_view(), name="createCompany"),
 	url(r'^updatecompany/(?P<pk>\d+)$', views.CompanyUpdate.as_view(success_url='/sealadvisor2/'), name="updateCompany"),
+	url(r'^companies/$', views.Companies, name='companies'),
+	url(r'^advises/$', views.SupremeAdvises, name='advises'),
 	#api urls
 	url(r'^get_companies/$', views.get_companies, name='get_companies'),
 	url(r'^companyEdit2/(?P<company_id>\d+)/$', views.CompanyDefaultsEdit, name='CompanyEdit2'),

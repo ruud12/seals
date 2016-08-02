@@ -652,7 +652,7 @@ def CompanyDefaultsEdit(request, company_id):
             form.save()
             aftform.save()
             fwdform.save()
-            return redirect('sealadvisor2:index')
+            return redirect('sealadvisor2:companies')
 
     else:
         form = forms.CompanyEditForm(prefix='company', initial = {'aft_defaults':company.aft_defaults.id, 'fwd_defaults': company.fwd_defaults.id, 'name': company.name })
@@ -673,7 +673,7 @@ def CompanyDefaultsEdit(request, company_id):
         aftform = forms.supremeAftForm(prefix='aft', initial=initial)
 
         if company.fwd_defaults:
-            initial={'ocr':company.fwd_defaults.ocr, 'fkm':company.fwd_defaults.fkm}
+            initial={'ocr':company.fwd_defaults.ocr, 'fkm':company.fwd_defaults.fkm, 'hml':company.fwd_defaults.hml, 'high_pressure':company.fwd_defaults.high_pressure}
         else:
             initial = {}
         
@@ -686,3 +686,15 @@ def CompanyDefaultsEdit(request, company_id):
 
 
     return render(request, 'sealadvisor2/company_edit.html', {'form':form, 'title':'Edit company defaults', 'cancel':'index','fwdform':fwdform, 'aftform':aftform, 'submit':'Save'})
+
+
+
+def Companies(request):
+    companies = Company.objects.all()
+    
+    return render(request, 'sealadvisor2/companies.html', {'companies':companies,'title':'Companies'})
+
+def SupremeAdvises(request):
+    advises = supremeAdvise.objects.all()
+    
+    return render(request, 'sealadvisor2/advises.html', {'advises':advises,'title':'Supreme advises'})

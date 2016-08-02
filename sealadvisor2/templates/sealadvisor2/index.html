@@ -8,32 +8,51 @@
 
 <div class='row'>
 	<div class='col s4'>
-		<div class='card teal lighten-4'>
-			<div class='card-content'>
-				<span class='card-title black-text'>Advises</span>
-                    {% for advise in advises %}
-                        <p><a href="{% url 'sealadvisor2:supremeOverview' advise.id %}">{{ advise.application }} (id #{{ advise.id }})</a></p>
-                    {% endfor %}
-            </div>
-        </div>
+		<div class='card small blue lighten-2'>
+			<a href="{% url 'sealadvisor2:supremeSalesType' %}">
+			<div class='card-image'>
+				<img src="{% static 'images/sta.png' %}">
+				<span class='card-title black-text'><b>Add Supreme advise</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Supreme seals are used for sterntubes, thruster and bulkhead seals</p>
+			</div>
+			</a>
+		</div>
+		<div class='card small blue lighten-2'>
+			<div class='card-image'>
+				<img src="{% static 'images/stern.jpg' %}">
+				<span class='card-title black-text'><b>Add Bearing advise</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Bearings</p>
+			</div>
+		</div>
 	</div>
 	<div class='col s4'>
-		<div class='card teal lighten-4'>
-			<div class='card-content'>
-                <div style='float:right;'>
-                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:createCompany' %}"><i class="material-icons">add</i></a>
-                </div>
-				<span class='card-title black-text'>Companies</span>
-                {% for company in companies %}
-                    <p><a href="{% url 'sealadvisor2:CompanyEdit2' company.id %}">{{ company }}</a></p>
-                {% endfor %}
-            </div>
-        </div>
-	</div>
-	<div class='col s4'>
-        
+		<div class='card small blue lighten-2'>
+			<a href=''>
+			<div class='card-image'>
+				<img src="{% static 'images/liquidyne.jpg' %}">
+				<span class='card-title black-text'><b>Add Liquidyne advise</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Liquidyne seals are used for pumps and cutter gear</p>
+			</div>
+			</a>
+		</div>
 		
-
+		<div class='card small blue lighten-2'>
+			<a href=''>
+			<div class='card-image'>
+				<img src="{% static 'images/other.jpg' %}">
+				<span class='card-title black-text'><b>Other</b></span>
+			</div>
+			<div class='card-content white-text'>
+				<p>Other</p>
+			</div>
+			</a>
+		</div>
 	</div>
 </div>
 {% endblock %}	 
