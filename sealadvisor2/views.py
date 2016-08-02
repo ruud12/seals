@@ -670,7 +670,8 @@ def CompanyDefaultsEdit(request, company_id):
         else:
             initial = {}
 
-        aftform = forms.supremeAftForm(prefix='aft', initial=initial)
+        aftform = forms.supreme
+        AftForm(prefix='aft', initial=initial)
 
         if company.fwd_defaults:
             initial={'ocr':company.fwd_defaults.ocr, 'fkm':company.fwd_defaults.fkm, 'hml':company.fwd_defaults.hml, 'high_pressure':company.fwd_defaults.high_pressure}
