@@ -6,13 +6,11 @@ from erp.models import Company
 import bisect, decimal
 from django.core.urlresolvers import reverse
 from django.contrib.staticfiles.templatetags.staticfiles import static
-
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.core.exceptions import ObjectDoesNotExist
-
-
-
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
+import json
 
 def determine_aft_execution(aft):
     execution = ""
@@ -20,25 +18,18 @@ def determine_aft_execution(aft):
 #   if aft.linerCentering == 'shaft':
 #       execution = execution + "A"
 
-
-
     if aft.hml:
         execution = execution + "C"
-
     if aft.distanceRing:
         execution = execution + "D"
-
     if aft.oring:
         execution = execution + "F"
-
     if aft.dirtBarrier:
         execution = execution + "L"
-
     if aft.anode:
         execution = execution + "P"
 
     execution = ''.join(sorted(execution))
-
     codes = (
         ("AA", "standard"),
         ("AB", "E"),
@@ -131,34 +122,17 @@ def determine_aft_execution(aft):
             break
         else:
             execution_code = "??"
-
     if not execution_code:
         execution_code = "??"
 
-
-
     return {"execution": execution, 'code': execution_code }
-
-
-
-
-
-
-
-
-
-
-
 
 def whichAirType(draught):
     return 'ventus' if draught > 4 else 'athmos'
 
-
 def findCorrectSize(shaft_diameter):
     # check for the closest liner value taking into account a 1 cm liner thickness
-
     available_sizes = [155,170,190,200,220,240,260,280,300,330,355,380,400,420,450,480,500,530,560,600,630,670,710,750,800,850]
-
 
     liners = (
         (155,46260651,158,104,213,128,13,8),
@@ -188,7 +162,6 @@ def findCorrectSize(shaft_diameter):
         (800,46260675,803,705,913,213,33,15),
         (850,46260676,853,745,963,213,33,15)
     )
-
 
     for x in range(0,len(liners)-1):
         if shaft_diameter > liners[x][3] and shaft_diameter <= liners[x+1][3]:
@@ -220,13 +193,6 @@ def getTabs(advise):
 
 
 
-
-
-
-
-
-
-
 def index(request):
     advises = supremeAdvise.objects.all()
     companies = Company.objects.all()
@@ -240,12 +206,6 @@ def salesType(request):
         form = forms.supremeSalesTypeForm(request.POST)
         if form.is_valid():
             
-            try:
-                company = Company.objects.get(name__iexact=form.cleaned_data['company'])
-            except ObjectDoesNotExist:
-            
-                company = Company.objects.create(name=form.cleaned_data["company"])
-
             return redirect('sealadvisor2:supreme')
 
     else:
@@ -262,6 +222,13 @@ def supreme(request):
 
             if newAdvise.application.key != 'sterntube':
                 newAdvise.aft_seal = True
+
+            try:
+                company = Company.objects.get(name__iexact=form.cleaned_data['company_autocomplete'])
+            except ObjectDoesNotExist:
+                company = Company.objects.create(name=form.cleaned_data["company_autocomplete"])
+
+            newAdvise.company = company
 
             newAdvise.save()
 
@@ -312,9 +279,9 @@ def supremeEdit(request, supreme_id):
 
     else:
         if supreme.typeApproval:
-            form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id,'linerCentering':supreme.linerCentering , 'number_of_shafts':supreme.number_of_shafts})
+            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id,'linerCentering':supreme.linerCentering , 'number_of_shafts':supreme.number_of_shafts})
         else:
-            form = forms.supremeWizard(initial={'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'linerCentering':supreme.linerCentering, 'number_of_shafts':supreme.number_of_shafts})
+            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'linerCentering':supreme.linerCentering, 'number_of_shafts':supreme.number_of_shafts})
 
 
     return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','extra':True, 'air':False})
@@ -505,11 +472,13 @@ def supremeOverview(request, supreme_id):
 
     if supreme.aft:
         size = supreme.aftSize
-    else:
+    elif supreme.fwd:
         size = supreme.fwdSize
+    else:
+        size=300
 
 
-    pv = (size / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
+    pv = decimal.Decimal(size / 1000) * decimal.Decimal(3.14) * (supreme.rpm / 60) * (supreme.draught_shaft / 10)
     air_type= 'Ventus' if supreme.draught_shaft >= 5 else 'Athmos'
 
     air = str('{type} system is used for this draft.').format(type=air_type)
@@ -584,7 +553,7 @@ def supremeOverview(request, supreme_id):
 
 
 
-from django.views.generic.edit import CreateView, UpdateView
+
 from erp.models import Company
 
 class CompanyCreate(CreateView):
@@ -611,9 +580,37 @@ class CompanyUpdate(UpdateView):
         context['title'] = "Edit company"
         context["cancel"] = "index"
         return context   
-    
+   
 
-import json
+class CompanyDelete(DeleteView):
+    model = Company
+    template_name = "sealadvisor2/simple_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(CompanyDelete, self).get_context_data(**kwargs)
+        context['submit'] = 'Yes, delete'
+        context['title'] = "Delete company?"
+        context["cancel"] = "index"
+        return context   
+   
+
+
+class AdviseDelete(DeleteView):
+    model = supremeAdvise
+    template_name = "sealadvisor2/simple_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AdviseDelete, self).get_context_data(**kwargs)
+        context['submit'] = 'Yes, delete'
+        context['title'] = "Delete advise?"
+        context["cancel"] = "index"
+        return context   
+
+
+
+
+
+
 
 
 def get_companies(request):
@@ -678,8 +675,7 @@ def CompanyDefaultsEdit(request, company_id):
         else:
             initial = {}
 
-        aftform = forms.supreme
-        AftForm(prefix='aft', initial=initial)
+        aftform = forms.supremeAftForm(prefix='aft', initial=initial)
 
         if company.fwd_defaults:
             initial={'ocr':company.fwd_defaults.ocr, 'fkm':company.fwd_defaults.fkm, 'hml':company.fwd_defaults.hml, 'high_pressure':company.fwd_defaults.high_pressure}

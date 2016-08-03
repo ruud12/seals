@@ -17,7 +17,7 @@
                 </div>
 				<span class='card-title black-text'>{{ title }}</span>
                 {% for company in companies %}
-                    <p><a href="{% url 'sealadvisor2:CompanyEdit2' company.id %}">{{ company }}</a></p>
+                    <p><a href="{% url 'sealadvisor2:CompanyEdit2' company.id %}">{{ company }}</a> - <a href="{% url 'sealadvisor2:deleteCompany' company.id %}">(delete)</a></p>
                 {% endfor %}
 			</div>
 		</div>

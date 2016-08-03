@@ -24,6 +24,10 @@
 
                     <tbody>
                         <tr>
+                            <td>Company</td>
+                            <td><a href="{% url 'sealadvisor2:CompanyEdit2' advise.company.id %}">{{ advise.company }}</a></td>
+                        </tr> 
+                        <tr>
                             <td>Application</td>
                             <td>{{ advise.application }}</td>
                         </tr> 

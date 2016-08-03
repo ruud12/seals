@@ -12,8 +12,8 @@ from sealadvisor2.models import AftSealOptions, FwdSealOptions
 class Company(models.Model):
 	name = models.CharField(max_length=100)
 	
-	aft_defaults = models.ForeignKey(AftSealOptions, null=True, blank=True)
-	fwd_defaults = models.ForeignKey(FwdSealOptions, null=True, blank=True)
+	aft_defaults = models.ForeignKey(AftSealOptions, null=True, blank=True, on_delete=models.CASCADE)
+	fwd_defaults = models.ForeignKey(FwdSealOptions, null=True, blank=True, on_delete=models.CASCADE)
 	
 
 	def __str__(self):

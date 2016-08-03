@@ -12,20 +12,20 @@ class supremeSalesTypeForm(forms.Form):
 
 	sales_type = forms.ChoiceField(widget=forms.RadioSelect, choices=CHOICES)
 	# company1 = forms.ModelChoiceField(queryset=Company.objects.all(), label='Customer', required=False)
-	company = forms.CharField(max_length=100)
+	# company = forms.CharField(max_length=100)
 
 
 	def clean_sales_type(self):
 
 		sales_type = self.cleaned_data['sales_type']
 
-		if sales_type == 'spares':
-			raise forms.ValidationError('No spare parts wizard yet')
+		if sales_type == 'spares' or sales_type == 'retrofit':
+			raise forms.ValidationError('No spare parts or retrofit wizard yet')
 
 		return sales_type
 
 	class Meta:
-		fields = ('sales_type', 'company')
+		fields = ('sales_type', )
 
 
 class supremeWizard(forms.ModelForm):
@@ -35,7 +35,7 @@ class supremeWizard(forms.ModelForm):
 	# 	self._fwd_seal = kwargs.pop('fwd_seal', None)
 	# 	super(supremeWizard, self).__init__(*args, **kwargs)
 
-
+	company_autocomplete = forms.CharField(max_length=100, label='Company')
 	error_css_class = 'error'
 
 
@@ -78,12 +78,6 @@ class supremeWizard(forms.ModelForm):
 
 		return aft_build_in_length
 
-
-
-
-
-
-
 	def clean_rpm(self):
 		rpm = self.cleaned_data['rpm']
 
@@ -100,7 +94,7 @@ class supremeWizard(forms.ModelForm):
 
 	class Meta:
 		model = supremeAdvise
-		fields = ('application','cpp_fpp','number_of_shafts', 'vgp', 'aft_seal','linerCentering', 'aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval','classCertificate')
+		fields = ('company_autocomplete', 'application','cpp_fpp','number_of_shafts', 'vgp', 'aft_seal','linerCentering', 'aftSize','aft_build_in_length','fwd_seal','fwdSize','rpm', 'draught_shaft','typeApproval','classCertificate')
 
 
 class supremeAftForm(forms.ModelForm):

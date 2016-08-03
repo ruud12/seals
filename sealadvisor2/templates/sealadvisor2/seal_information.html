@@ -237,4 +237,25 @@
 
 </script>
 
+<script type='text/javascript'>
+(function($) {
+    $(function() {
+        $("#id_company_autocomplete").autocomplete({
+            source: "{% url 'sealadvisor2:get_companies' %}",
+            selectFirst:true,
+            minLength: 1,
+        }).focus(function () {
+            $(this).autocomplete("search", "");
+        });
+
+
+
+        
+
+    });
+
+})(jQuery);
+
+</script>
+
 {% endblock %}	 
