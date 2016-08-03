@@ -1,0 +1,36 @@
+
+{% extends 'sealadvisor2/base.html' %}
+{% load static %}
+{% load material_form %} 			
+
+{% block content %}
+<h1>Type Approvals</h1>
+
+
+
+<div class='row'>
+	<div class='col s4'>
+		<div class='card teal lighten-4'>
+			<div class='card-content'>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:createTypeApproval' %}"><i class="material-icons">add</i></a>
+                </div>
+				<span class='card-title black-text'>Type approvals</span>
+                {% for approval in approvals %}
+                    <p><a href="{% url 'sealadvisor2:updateTypeApproval' approval.id %}">{{ approval }}</a> - <a href="{% url 'sealadvisor2:deleteTypeApproval' approval.id %}">(delete)</a></p>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class='col s8'>
+
+        
+
+	</div>
+
+</div>
+
+
+
+
+{% endblock %}	 

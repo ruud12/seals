@@ -110,7 +110,10 @@ class supremeAdvise(models.Model):
     rpm = models.DecimalField(max_digits=4, decimal_places=0, verbose_name = 'RPM')
     draught_shaft = models.DecimalField(max_digits=5, decimal_places=1, verbose_name='Draught to (aft) shaft centerline [m]')
 
-
+    CHOICES = (
+        ('shaft', 'Shaft centered'),
+        ('hub', 'Hub centered'),
+    )
     linerCentering = models.CharField(max_length=20, verbose_name='Liner centering')
 
     aft = models.ForeignKey(AftSealOptions, null=True, blank=True)

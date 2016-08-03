@@ -1,0 +1,36 @@
+
+{% extends 'sealadvisor2/base.html' %}
+{% load static %}
+{% load material_form %} 			
+
+{% block content %}
+<h1>Certificates</h1>
+
+
+
+<div class='row'>
+	<div class='col s4'>
+		<div class='card teal lighten-4'>
+			<div class='card-content'>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'sealadvisor2:createClass' %}"><i class="material-icons">add</i></a>
+                </div>
+				<span class='card-title black-text'>Certificates</span>
+                {% for certificate in certificates %}
+                    <p><a href="{% url 'sealadvisor2:updateClass' certificate.id %}">{{ certificate }}</a> - <a href="{% url 'sealadvisor2:deleteClass' certificate.id %}">(delete)</a></p>
+                {% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class='col s8'>
+
+        
+
+	</div>
+
+</div>
+
+
+
+
+{% endblock %}	 

@@ -1,7 +1,7 @@
 
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from sealadvisor2 import forms
-from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions
+from sealadvisor2.models import supremeAdvise, AftSealOptions, environmentalOptions, FwdSealOptions, Class, Certificate
 from erp.models import Company
 import bisect, decimal
 from django.core.urlresolvers import reverse
@@ -279,10 +279,11 @@ def supremeEdit(request, supreme_id):
 
     else:
         if supreme.typeApproval:
-            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id,'linerCentering':supreme.linerCentering , 'number_of_shafts':supreme.number_of_shafts})
+            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'typeApproval': supreme.typeApproval.id,'linerCentering':'Hub centered' , 'number_of_shafts':supreme.number_of_shafts})
         else:
-            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'linerCentering':supreme.linerCentering, 'number_of_shafts':supreme.number_of_shafts})
+            form = forms.supremeWizard(initial={'company_autocomplete': supreme.company.name, 'vgp': supreme.vgp, 'aft_build_in_length': supreme.aft_build_in_length, 'application': supreme.application.id, 'cpp_fpp': supreme.cpp_fpp, 'fwd_seal': supreme.fwd_seal, 'aft_seal': supreme.aft_seal, 'aftSize': supreme.aftSize, 'fwdSize': supreme.fwdSize, 'rpm': supreme.rpm, 'draught_shaft': supreme.draught_shaft, 'linerCentering':'Hub centered', 'number_of_shafts':supreme.number_of_shafts})
 
+    print(supreme.linerCentering)
 
     return render(request, 'sealadvisor2/add_supreme.html', {'form':form, 'title': "Edit Supreme advise", 'submit':'Save','extra':True, 'air':False})
 
@@ -359,9 +360,11 @@ def supremeAft(request, supreme_id):
     else:
         size = supreme.aftSize if supreme.aftSize else supreme.fwdSize
         if size > 600:
-            form = forms.supremeAftForm(initial={'oring': True})
+            initial={'oring': True}
         else:
-            form = forms.supremeAftForm()
+            initial = {}
+
+        form = forms.supremeAftForm(initial = initial)
 
     tabs = getTabs(supreme)
 
@@ -540,11 +543,6 @@ def supremeOverview(request, supreme_id):
         sealtype = '' 
 
 
-
-
-
-
-
     return render(request, 'sealadvisor2/supreme.html', {'type':sealtype, 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft, 'execution': execution, 'number': number })
 
 
@@ -592,7 +590,96 @@ class CompanyDelete(DeleteView):
         context['title'] = "Delete company?"
         context["cancel"] = "index"
         return context   
-   
+
+
+class TypeApprovalCreate(CreateView):
+    model = Class
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ['key', 'className', 'certificateNo'] 
+    
+    def get_context_data(self, **kwargs):
+        context = super(TypeApprovalCreate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Create new type approval"
+        context["cancel"] = "typeApprovalOverview"
+        return context
+    
+    
+class TypeApprovalUpdate(UpdateView):
+    model = Class
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ['key', 'className', 'certificateNo'] 
+
+    def get_context_data(self, **kwargs):
+        context = super(TypeApprovalUpdate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Edit type approval"
+        context["cancel"] = "typeApprovalOverview"
+        return context   
+
+class TypeApprovalDelete(DeleteView):
+    model = Class
+    template_name = "sealadvisor2/simple_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TypeApprovalDelete, self).get_context_data(**kwargs)
+        context['submit'] = 'Yes, delete'
+        context['title'] = "Delete type approval?"
+        context["cancel"] = "typeApprovalOverview"
+        return context   
+
+
+def TypeApprovalOverview(request):
+    approvals = Class.objects.all()
+
+    return render(request, 'sealadvisor2/typeapprovals.html', {'approvals': approvals})
+
+
+
+class ClassCreate(CreateView):
+    model = Certificate
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ['key', 'bureau'] 
+    
+    def get_context_data(self, **kwargs):
+        context = super(ClassCreate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Create new class"
+        context["cancel"] = "classOverview"
+        return context
+    
+    
+class ClassUpdate(UpdateView):
+    model = Certificate
+    template_name = "sealadvisor2/simple_form.html"
+    fields = ['key', 'bureau'] 
+
+    def get_context_data(self, **kwargs):
+        context = super(ClassUpdate, self).get_context_data(**kwargs)
+        context['submit'] = 'Save'
+        context['title'] = "Edit class"
+        context["cancel"] = "classOverview"
+        return context   
+
+class ClassDelete(DeleteView):
+    model = Certificate
+    template_name = "sealadvisor2/simple_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(ClassDelete, self).get_context_data(**kwargs)
+        context['submit'] = 'Yes, delete'
+        context['title'] = "Delete class?"
+        context["cancel"] = "classOverview"
+        return context   
+
+
+def ClassOverview(request):
+    certificates = Certificate.objects.all()
+
+    return render(request, 'sealadvisor2/certificates.html', {'certificates': certificates})
+
+
+
 
 
 class AdviseDelete(DeleteView):

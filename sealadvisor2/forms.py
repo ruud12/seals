@@ -73,8 +73,8 @@ class supremeWizard(forms.ModelForm):
 
 		if aft_seal:
 			if aft_build_in_length is not None:
-				if aft_build_in_length < 10 or aft_build_in_length > 1000:
-					raise forms.ValidationError('Built in length must be between 10 and 1000 mm')
+				if aft_build_in_length < 100 or aft_build_in_length > 1000:
+					raise forms.ValidationError('Built in length must be between 100 and 1000 mm')
 
 		return aft_build_in_length
 
@@ -90,7 +90,7 @@ class supremeWizard(forms.ModelForm):
 		('hub', 'Hub centered'),
 	)
 
-	linerCentering = forms.ChoiceField(choices=CHOICES, widget=forms.RadioSelect)
+	linerCentering = forms.ChoiceField(choices=CHOICES)
 
 	class Meta:
 		model = supremeAdvise
@@ -99,10 +99,7 @@ class supremeWizard(forms.ModelForm):
 
 class supremeAftForm(forms.ModelForm):
 
-	CHOICES = (
-		('shaft', 'Shaft centered'),
-		('hub', 'Hub centered'),
-	)
+
 
 
 
