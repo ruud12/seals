@@ -516,6 +516,7 @@ def supremeOverview(request, supreme_id):
         sizeaft = findCorrectSize(size)
         execution = determine_aft_execution(supreme.aft)
 
+
         if supreme.application.key == 'sterntube':
             number = "X01"
         elif supreme.application.key =='thruster':
@@ -544,6 +545,7 @@ def supremeOverview(request, supreme_id):
 
 
     return render(request, 'sealadvisor2/supreme.html', {'type':sealtype, 'advise': supreme, 'pv':round(pv,1), 'air':air, 'rubber': rubber, 'pv_fwd': round(pv_fwd,1),'rubber_fwd':rubber_fwd, 'sizeaft':sizeaft, 'execution': execution, 'number': number })
+
 
 
 
@@ -788,5 +790,6 @@ def Companies(request):
 
 def SupremeAdvises(request):
     advises = supremeAdvise.objects.all()
+
     
     return render(request, 'sealadvisor2/advises.html', {'advises':advises,'title':'Supreme advises'})

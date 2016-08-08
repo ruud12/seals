@@ -114,7 +114,7 @@ class supremeAdvise(models.Model):
         ('shaft', 'Shaft centered'),
         ('hub', 'Hub centered'),
     )
-    linerCentering = models.CharField(max_length=20, verbose_name='Liner centering')
+    linerCentering = models.CharField(choices=CHOICES, max_length=20, verbose_name='Liner centering')
 
     aft = models.ForeignKey(AftSealOptions, null=True, blank=True)
     fwd = models.ForeignKey(FwdSealOptions, null=True, blank=True)
