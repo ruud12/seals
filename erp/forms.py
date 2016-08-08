@@ -78,7 +78,7 @@ class addServiceReportForm(forms.ModelForm):
 
 	class Meta:
 		model = serviceReport
-		fields = ('date','mechanics','superintendant', 'parts_to_replace')
+		fields = ('date','location','reason', 'mechanics','superintendant', 'parts_to_replace')
 
 
 

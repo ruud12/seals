@@ -80,10 +80,14 @@ class Seal(models.Model):
 	company = models.ForeignKey(Company)
 	date_installed = models.DateField(verbose_name='Installed date')
 	date_removed = models.DateField(verbose_name='Removed date', blank=True, null=True)
+	
 
 
 	def __str__(self):
 		return self.x_number
+
+
+
 
 
 
@@ -113,12 +117,27 @@ class Mechanic(models.Model):
 
 	def __str__(self):
 		return str("{first_name} {last_name}").format(first_name=self.first_name, last_name=self.last_name)
+    
+    
+class Reason(models.Model):
+     name = models.CharField(max_length=100)
+     
+     def __str__(self):
+         return self.name
+  
+  
+  
 
 class serviceReport(models.Model):
 	seal = models.ForeignKey(Seal)
 	mechanics = models.ManyToManyField(Mechanic)
 	date = models.DateField()
 	superintendant = models.ForeignKey(contactPerson)
+	location = models.CharField(max_length=200)
+	ls_number = models.CharField(max_length=20)
+	
+	reason = models.ManyToManyField(Reason)
+	
 
 
 	parts_to_replace = models.ManyToManyField(sealComponent)
