@@ -307,7 +307,14 @@ def supremeFwd(request, supreme_id):
             # return redirect('sealadvisor2:supremeEnvironment', supreme_id)
 
     else:
-        form = forms.supremeFwdForm()
+        initial = {}
+
+        if supreme.company:
+            if supreme.company.fwd_defaults:
+                for key, value in supreme.company.fwd_defaults.__dict__.items():
+                    initial[key] = value
+
+        form = forms.supremeFwdForm(initial = initial)
 
 
 
@@ -364,11 +371,16 @@ def supremeAft(request, supreme_id):
         else:
             initial = {}
 
+        if supreme.company:
+            if supreme.company.aft_defaults:
+                for key, value in supreme.company.aft_defaults.__dict__.items():
+                    initial[key] = value
+
         form = forms.supremeAftForm(initial = initial)
 
     tabs = getTabs(supreme)
 
-    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Aft seal options','submit':'Next','air':False,'extra':False, 'tabs': tabs })
+    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Aft seal options/execution','submit':'Next','air':False,'extra':False, 'tabs': tabs })
 
 
 
@@ -391,7 +403,7 @@ def supremeAftEdit(request, supreme_id, aft_id):
     else:
         form = forms.supremeAftForm(initial={'anode': aft.anode, 'seaguard':aft.seaguard, 'oring': aft.oring, 'distanceRing':aft.distanceRing, 'dirtBarrier': aft.dirtBarrier,'wireWinders':aft.wireWinders,'netCutters': aft.netCutters, 'hastelloy': aft.hastelloy})
 
-    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Edit aft seal options','submit':'Save','air':False})
+    return render(request, 'sealadvisor2/aft.html', {'form':form, 'title': 'Edit aft seal options/execution','submit':'Save','air':False})
 
 
 
