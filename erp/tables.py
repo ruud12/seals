@@ -1,5 +1,5 @@
 import django_tables2 as tables 
-from erp.models import Seal, sealComponent, Part
+from erp.models import Seal, sealComponent, Part, Seal
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django_tables2.utils import A
@@ -29,3 +29,11 @@ class partsTable(tables.Table):
 		model = Part
 		attrs = {'class': 'bordered striped'}
 		fields = ('name','category','material','number','size','edit')
+
+
+class sealTable(tables.Table):
+    
+    class Meta:
+        model = Seal
+        attrs = {'class':'bordered striped'}
+        fields = ("x_number" ,"seal_type", "size", "company", "vessel", "date_installed")

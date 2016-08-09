@@ -10,6 +10,7 @@ app_name = 'erp'
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^allParts/$', views.viewAllParts, name='viewAllParts'),
+	url(r'^allSeals/$', views.viewSeals, name='viewSeals'),
 	url(r'^addPart/$', views.addPart, name='addPart'),
 	url(r'^editPart/(?P<part_id>\d+)/$', views.editPart, name='editPart'),
 	url(r'^addSeal/$', views.addSeal, name='addSeal'),

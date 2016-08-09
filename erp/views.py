@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect, render_to_response, HttpResponseRedirect
 from django.http import HttpResponse
 from reportlab.pdfgen import canvas
-from erp.tables import componentTable, partsTable
+from erp.tables import componentTable, partsTable, sealTable
 from datetime import datetime
 
 # Create your views here.
@@ -28,6 +28,14 @@ def viewAllParts(request):
 	table = partsTable(parts)
 
 	return render(request, 'erp/viewAllParts.html', {'table':table})
+
+
+def viewSeals(request):
+    seals = Seal.objects.all()
+    
+    table = sealTable(seals)
+    
+    return render(request, 'erp/viewSeals.html', {"table": table})
 
 
 def addPart(request):

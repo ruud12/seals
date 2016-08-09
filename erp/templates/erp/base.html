@@ -16,6 +16,20 @@
 	</head>
   
  	<body>
+ 	
+        <div id='background'></div>
+            
+        
+        <nav>
+            <div class="nav-wrapper blue lighten-4">
+            <a href="#" class="brand-logo"><img src="{% static 'images/logo-lagersmit.png' %}"></a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="{% url 'erp:index' %}">Home</a></li>
+                <li><a href="{% url 'sealadvisor2:companies' %}">Companies</a></li>
+                <li><a href="{% url 'erp:viewSeals' %}">Seals</a></li>
+            </ul>
+            </div>
+        </nav>
 
         <div class="content container">
                 {% block content %}
