@@ -37,3 +37,8 @@ nav ul a {
     font-family:"georgia";
     color:black;
 }
+
+img.opties {
+	width:100%;
+	padding-top:5%;
+}
