@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^sealadvisor2/', include('sealadvisor2.urls')),
     url(r'^erp/', include('erp.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
+    url(r'^isah/', include('isah.urls')),
 ]

@@ -1,0 +1,33 @@
+html {
+	font-family:sans-serif;
+}
+
+
+
+h1 {
+    font-size:3em;
+    font-family:'georgia';
+}
+
+span.card-title {
+    font-family:'georgia';
+}
+
+nav img {
+    height:60px;
+}
+
+nav ul a {
+    font-family:"georgia";
+    color:black;
+}
+
+
+
+div#background {
+	background-image: url("../images/sva-opacity.jpg");
+	width:100%;
+	height:100%;
+	position: fixed;
+	z-index:-1;
+}
