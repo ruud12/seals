@@ -1,4 +1,5 @@
 from django.db import models
+from sealadvisor2.models import AftSealOptions, FwdSealOptions
 
 # Create your models here.
 
@@ -9,6 +10,31 @@ from django.db import models
 # 2: Vessel (IMO): 
 # 3: Order (LS-number): 
 # 4: Company
+
+
+
+# Create your models here.
+
+
+
+
+
+class SealCompany(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Name")
+    aft_preferences = models.ForeignKey(AftSealOptions, on_delete=models.CASCADE)
+    fwd_preferences = models.ForeignKey(FwdSealOptions, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return self.name
+
+
+class SealVessel(models.Model):
+    name = models.CharField(max_length=100, verbose_name="Name")
+    company = models.ForeignKey(SealCompany, on_delete=models.CASCADE, verbose_name='Company')
+    imo_number = models.CharField(max_length=10, verbose_name="IMO number")
+
+    def __str__(self):
+        return self.name
 
 
 class SealType(models.Model):
@@ -27,12 +53,15 @@ class SealSize(models.Model):
 
 
 class Seal(models.Model):
-    seal_type = models.ForeignKey(SealType)
-    size = models.ForeignKey(SealSize)
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-    serial_number = models.CharField(max_length=15)
-    
+    seal_type = models.ForeignKey(SealType, verbose_name='Type')
+    size = models.ForeignKey(SealSize, verbose_name='Size')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Created')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Last updated')
+    serial_number = models.CharField(max_length=15, verbose_name= 'Serial number')
+    company = models.ForeignKey(SealCompany, on_delete=models.CASCADE, verbose_name='Company')
+    vessel = models.ForeignKey(SealVessel, on_delete=models.CASCADE, verbose_name='Vessel', null=True, blank=True)
+
+
     
     
     

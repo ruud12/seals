@@ -31,3 +31,15 @@ div#background {
 	position: fixed;
 	z-index:-1;
 }
+
+.search-seals .fieldWrapper {
+	line-height:1em;
+	width:10em;
+	float:left;
+	position:relative;
+	margin-right: 1em;
+}
+
+.search-seals .fieldWrapper .select-wrapper input.select-dropdown {
+	margin-top:0px;
+}

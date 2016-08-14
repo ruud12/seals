@@ -99,20 +99,19 @@ class supremeWizard(forms.ModelForm):
 
 class supremeAftForm(forms.ModelForm):
 
-
-
-
-
 	class Meta:
 		model = AftSealOptions
 		fields = ( 'seaguard', 'air', 'dirtBarrier','wireWinders','netCutters','oring', 'anode', 'hml', 'distanceRing','fkm','hastelloy')
-
 
 class supremeFwdForm(forms.ModelForm):
 	class Meta:
 		model = FwdSealOptions
 		fields = ('ocr', 'fkm','hml','high_pressure' )
 
+
+
+
+		
 
 class supremeEnvironmentForm(forms.ModelForm):
 	OIL_CHOICES = (

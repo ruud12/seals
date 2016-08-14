@@ -1,8 +1,15 @@
 from django import forms
-from isah.models import SealSize, SealType, Seal
+from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel
 
 
+class SealForm(forms.ModelForm):
 
+	size = forms.ModelChoiceField(SealSize.objects.order_by('size'), required=True)
+
+
+	class Meta:
+		model = Seal
+		fields = ('company', 'vessel', 'serial_number','seal_type','size')
 
 
 class SealSizeForm(forms.ModelForm):
@@ -12,7 +19,7 @@ class SealSizeForm(forms.ModelForm):
 
 		if self.instance.id:
 			# if editing this form an instance id exist, so exlude the current instance:
-			if SealSize.objects.filter(size = size).exclude(pk=self.instance.id).count > 0: # check if other objects with the same value exist
+			if SealSize.objects.filter(size = size).exclude(pk=self.instance.id).count() > 0: # check if other objects with the same value exist
 				raise forms.ValidationError('Size does already exist, try a different size')
 
 		else:
@@ -49,3 +56,18 @@ class SealTypeForm(forms.ModelForm):
 		model = SealType
 		fields = ('name','description')
 
+
+
+
+class SealCompanyForm(forms.ModelForm):
+
+	class Meta:
+		model = SealCompany
+		fields = ('name', )
+
+
+class SealVesselForm(forms.ModelForm):
+
+	class Meta:
+		model = SealVessel
+		fields = ('name','company','imo_number')

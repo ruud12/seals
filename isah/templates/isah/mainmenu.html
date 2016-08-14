@@ -5,8 +5,11 @@
     <a href="#" class="brand-logo"><img src="{% static 'images/logo-lagersmit.png' %}"></a>
     <ul id="nav-mobile" class="right hide-on-med-and-down">
         <li><a href="{% url 'isah:index' %}">Home</a></li>
+        <li><a href="{% url 'isah:SealOverview' %}">Seals</a></li>
         <li><a href="{% url 'isah:SealTypeOverview' %}">Seal types</a></li>
         <li><a href="{% url 'isah:SealSizeOverview' %}">Seal sizes</a></li>
+        <li><a href="{% url 'isah:SealCompanyOverview' %}">Companies</a></li>
+        <li><a href="{% url 'isah:SealVesselOverview' %}">Vessels</a></li>
     </ul>
     </div>
 </nav>
