@@ -1,41 +1,60 @@
 {% extends 'isah/base.html' %}
 {% load static %}
-{% load material_form %} 
 
 
 {% block content %}
-<h1>{{ title }}</h1>
+<h1>{{ company }}</h1>
 <div class='row'>
-    <form method="POST" class="post-form">
     <div class='col s6'>
         <div class='card teal lighten-4'>
             <div class='card-content'>
                 <span class='card-title black-text'>Company information</span>
-                    {% csrf_token %}
-                    {% form form=form %} {% endform %}
-                    <br>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealCompanyEditForm' company.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td>{{ company.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Address</td><td>{{ company.street_and_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Postal code</td><td>{{ company.postal_code }}</td>
+                        </tr>
+                        <tr>
+                            <td>Province</td><td>{{ company.province }}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td><td> {{ company.city }}</td>
+                        </tr>
+                    </tbody>
+                </table>    
             </div>
         </div>
         <div class='card teal lighten-4'>
             <div class='card-content'>
-                <span class='card-title black-text'>Forward seal defaults</span>
-                    {% form form=fwdform %} {% endform %}
+                <span class='card-title black-text'>Vessels</span>
+                {% for vessel in vessels %}
+                    <p>{{ vessel.name }} (IMO: {{ vessel.imo_number }})</p>
+                {% endfor %}
+
             </div>
         </div>
     </div>
     <div class='col s6'>
         <div class='card teal lighten-4'>
             <div class='card-content'>
-                <span class='card-title black-text'>Aft seal defaults</span>
-                    {% form form=aftform %} {% endform %}
+                <span class='card-title black-text'>Seals</span>
+                {% for seal in seals %}
+                    <p><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a> (Vessel: {{ seal.vessel.name }})</p>
+                {% endfor %}
             </div>
         </div>
 
     </div>
 </div>
-<button type="submit" class="save btn btn-default">{{ submit }}</button>
-<a href="{% url 'isah:'|add:cancel %}" class='btn waves-effect waves-light'>Cancel</a>
-</form>
 
 {% endblock %}
 

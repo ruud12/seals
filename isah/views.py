@@ -179,41 +179,19 @@ def SealCompanyOverview(request):
     return render(request, 'isah/simple_table.html', {'table': table, 'title': 'Companies', 'add_form': 'SealCompanyCreateForm'})
 
 
+
+def SealCompanyDetail(request, pk):
+    company = get_object_or_404(SealCompany, pk=pk)
+    vessels = SealVessel.objects.filter(company__id = pk)
+    seals = Seal.objects.filter(company__id = pk)
+
+    return render(request, 'isah/company.html', {'company': company, 'vessels' : vessels, 'seals':seals })
+
+
+
+
+
 def SealCompanyCreate(request):
-    if request.method == "POST":
-        form = forms.SealCompanyForm(request.POST)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('isah:SealCompanyOverview')
-
-    else:
-        form = forms.SealCompanyForm()
-
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new company','submit':'Create'})
-    
-
-def SealCompanyEdit(request, pk):
-    company = SealCompany.objects.get(pk=pk)
-
-    if request.method == "POST":
-        form = forms.SealCompanyForm(request.POST, instance = company)
-
-        if form.is_valid():
-            form.save()
-
-            return redirect('isah:SealCompanyOverview')
-    else:
-        form = forms.SealCompanyForm(initial={})
-
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit company','submit':'Save'})
-
-
-
-
-
-def SealCompanyCreate2(request):
 
     if request.method == "POST":
         form = forms.SealCompanyForm(request.POST, prefix='company') # instance=company,
@@ -240,10 +218,10 @@ def SealCompanyCreate2(request):
         aftform = sealadvisor2forms.supremeAftForm(prefix='aft') # , initial=initial
         fwdform = sealadvisor2forms.supremeFwdForm(prefix='fwd') # , initial=initial
 
-    return render(request, 'isah/company.html', {'form':form, 'title':'Create company', 'cancel':'index','fwdform':fwdform, 'aftform':aftform, 'submit':'Create'})
+    return render(request, 'isah/company_edit.html', {'form':form, 'title':'Create company', 'cancel':'index','fwdform':fwdform, 'aftform':aftform, 'submit':'Create'})
 
 
-def SealCompanyEdit2(request, pk):
+def SealCompanyEdit(request, pk):
     company = get_object_or_404(SealCompany, pk=pk)
     aft_preferences = get_object_or_404(AftSealOptions, pk=company.aft_preferences.id)
     fwd_preferences = get_object_or_404(FwdSealOptions, pk=company.fwd_preferences.id)
@@ -258,10 +236,10 @@ def SealCompanyEdit2(request, pk):
             aftform.save()
             fwdform.save()
 
-            return redirect('isah:SealCompanyOverview')
+            return redirect(request.GET.get('next', 'isah:SealCompanyOverview'))
 
     else:
-        form = forms.SealCompanyForm(prefix='company', initial = {'aft_preferences':company.aft_preferences.id, 'fwd_preferences': company.fwd_preferences.id, 'name': company.name })
+        form = forms.SealCompanyForm(prefix='company', initial = {'aft_preferences':company.aft_preferences.id, 'fwd_preferences': company.fwd_preferences.id, 'name': company.name, 'street_and_number':company.street_and_number,'postal_code':company.postal_code,'province':company.province, 'city':company.city })
 
         initial = {
             'anode': company.aft_preferences.anode, 
@@ -288,7 +266,7 @@ def SealCompanyEdit2(request, pk):
 
 
 
-    return render(request, 'isah/company.html', {'form':form, 'title':'Edit company', 'cancel':'SealCompanyOverview','fwdform':fwdform, 'aftform':aftform, 'submit':'Save'})
+    return render(request, 'isah/company_edit.html', {'form':form, 'title':'Edit company', 'cancel':request.GET.get('next', reverse('isah:SealCompanyOverview')),'fwdform':fwdform, 'aftform':aftform, 'submit':'Save'})
 
 
 def SealVesselOverview(request):

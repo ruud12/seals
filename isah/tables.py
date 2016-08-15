@@ -19,12 +19,13 @@ class sealTable(tables.Table):
 
 
     serial_number = tables.LinkColumn('isah:SealDetail', args=[A('pk')])
+    company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
 
     delete = tables.LinkColumn('isah:SealDeleteForm', args=[A('pk')], empty_values=())
     
     class Meta:
         model = Seal
-        attrs = {'class':'bordered striped'}
+        attrs = {'class':'bordered striped white'}
         fields = ("serial_number", "seal_type", "size","company", "vessel", "created", "updated")
 
 
@@ -43,7 +44,7 @@ class sealTypeTable(tables.Table):
 
     class Meta:
         model = SealType 
-        attrs = {'class':'bordered striped'}
+        attrs = {'class':'bordered striped white'}
         fields = ("name","description")
 
 
@@ -61,7 +62,7 @@ class sealSizeTable(tables.Table):
 
     class Meta:
         model = SealSize 
-        attrs = {'class':'bordered striped'}
+        attrs = {'class':'bordered striped white'}
         fields = ("size", )
 
 class sealCompanyTable(tables.Table):
@@ -76,10 +77,12 @@ class sealCompanyTable(tables.Table):
 
     delete = tables.LinkColumn('isah:SealCompanyDeleteForm', args=[A('pk')], empty_values=())
 
+    name = tables.LinkColumn('isah:SealCompanyDetail', args=[A('pk')])
+
     class Meta:
         model = SealCompany 
-        attrs = {'class':'bordered striped'}
-        fields = ("name",)
+        attrs = {'class':'bordered striped white'}
+        fields = ("name","city","province")
 
 
 
@@ -95,7 +98,9 @@ class sealVesselTable(tables.Table):
 
     delete = tables.LinkColumn('isah:SealVesselDeleteForm', args=[A('pk')], empty_values=())
 
+    company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
+
     class Meta:
         model = SealVessel
-        attrs = {'class':'bordered striped'}
+        attrs = {'class':'bordered striped white'}
         fields = ("name",'company','imo_number')

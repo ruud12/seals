@@ -62,7 +62,8 @@ class SealCompanyForm(forms.ModelForm):
 
 	class Meta:
 		model = SealCompany
-		fields = ('name', )
+		fields = ('name', 'street_and_number', 'postal_code','city', 'province' )
+
 
 
 class SealVesselForm(forms.ModelForm):
