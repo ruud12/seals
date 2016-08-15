@@ -1,11 +1,9 @@
 from django import forms
 from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel
 
-
 class SealForm(forms.ModelForm):
 
 	size = forms.ModelChoiceField(SealSize.objects.order_by('size'), required=True)
-
 
 	class Meta:
 		model = Seal
@@ -60,6 +58,7 @@ class SealTypeForm(forms.ModelForm):
 
 
 class SealCompanyForm(forms.ModelForm):
+
 
 	class Meta:
 		model = SealCompany

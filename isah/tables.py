@@ -17,6 +17,9 @@ class sealTable(tables.Table):
     def render_delete(self, record):
         return mark_safe('<a href='+reverse("isah:SealDeleteForm", args=[record.pk])+'>Delete</a>')
 
+
+    serial_number = tables.LinkColumn('isah:SealDetail', args=[A('pk')])
+
     delete = tables.LinkColumn('isah:SealDeleteForm', args=[A('pk')], empty_values=())
     
     class Meta:

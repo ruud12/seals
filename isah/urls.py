@@ -7,6 +7,7 @@ app_name='isah'
 urlpatterns = [
 	url(r'^$', views.index, name='index'),
 	url(r'^seals/$', views.sealOverview, name='SealOverview'),
+	url(r'^seals/(?P<pk>\d+)/$', views.SealDetail, name='SealDetail'),
 	url(r'^seals/add/$', views.SealCreate, name="SealCreateForm"),
 	url(r'^seals/(?P<pk>\d+)/edit/$', views.SealEdit, name='SealEditForm'),
 	url(r'^seals/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=Seal, template_name='isah/delete.html', success_url='/isah/seals/',extra_context={'title':'Delete seal ', 'submit':'Delete', 'cancel':'SealOverview'}), name='SealDeleteForm'),

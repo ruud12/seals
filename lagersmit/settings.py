@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'jquery_ui',
     'ajax_select',
     'isah',
+    'address',
 ]
 
 MIDDLEWARE_CLASSES = [

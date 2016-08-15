@@ -1,5 +1,6 @@
 from django.db import models
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
+from address.models import AddressField
 
 # Create your models here.
 
@@ -21,8 +22,13 @@ from sealadvisor2.models import AftSealOptions, FwdSealOptions
 
 class SealCompany(models.Model):
     name = models.CharField(max_length=100, verbose_name="Name")
+
+    # preferences for a company regarding the seal advisor
     aft_preferences = models.ForeignKey(AftSealOptions, on_delete=models.CASCADE)
     fwd_preferences = models.ForeignKey(FwdSealOptions, on_delete=models.CASCADE)
+
+
+
     
     def __str__(self):
         return self.name

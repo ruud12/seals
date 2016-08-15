@@ -43,6 +43,13 @@ def sealOverview(request):
     return render(request, 'isah/simple_table.html', {'filters':filters, 'title':'Seals',"table": table, 'add_form':'SealCreateForm'})
 
 
+def SealDetail(request, pk):
+    seal = get_object_or_404(Seal, pk=pk)
+
+    return render(request, 'isah/seal.html', {'seal': seal})
+
+
+
 def SealCreate(request):
     if request.method == "POST":
         form = forms.SealForm(request.POST)
@@ -69,7 +76,8 @@ def SealEdit(request, pk):
         if form.is_valid():
             form.save()
 
-            return redirect('isah:SealOverview')
+            # if from the seal edit page, redirect to that page, otherwise redirect to the seal overview page
+            return redirect(request.GET.get('next', 'isah:SealOverview')) 
     else:
         initial={'seal_type':seal.seal_type, 'size': seal.size, 'serial_number': seal.serial_number, 'company': seal.company.id }
 
@@ -79,7 +87,8 @@ def SealEdit(request, pk):
 
         form = forms.SealForm(initial = initial)
 
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit seal','submit':'Save'})
+    # if from the seal edit page, redirect to that page, otherwise redirect to the seal overview page
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit seal','submit':'Save', 'cancel': request.GET.get('next', reverse('isah:SealOverview'))})
 
 
 

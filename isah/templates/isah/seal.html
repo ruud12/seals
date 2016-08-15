@@ -1,0 +1,86 @@
+
+{% extends 'isah/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Seal {{ seal.serial_number }}</h1>
+
+<div class='row'>
+	<div class='col s6'>
+		<div class='card teal lighten-4'>
+			<div class='card-content'>
+				<span class='card-title black-text'>Seal information</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealEditForm' seal.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+
+
+                    <tbody>
+                        <tr>
+                            <td>Serial number</td><td>{{ seal.serial_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Seal type</td><td>{{ seal.seal_type }}</td>
+                        </tr>
+                        <tr>
+                            <td>Size</td><td>{{ seal.size }}</td>
+                        </tr>
+                        <tr>
+                            <td>Created</td><td>{{ seal.created }}</td>
+                        </tr>
+                        <tr>
+                            <td>Last updated</td><td> {{ seal.updated }}</td>
+                        </tr>
+                        <tr>
+                            <td>Company</td><td>{{ seal.company }}</td>
+                        </tr>
+                        <tr>
+                            <td>Vessel</td><td>{{ seal.vessel }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+				
+			</div>
+		</div>
+	</div>
+	<div class='col s6'>
+        {% if seal.company %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Company</span>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td>{{ seal.company.name }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+
+        {% if seal.vessel %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Vessel</span>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+
+
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td>{{ seal.vessel.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>IMO</td><td>{{ seal.vessel.imo_number }}</td>
+                        </tr>                      
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+        {% endif %}
+	</div>
+
+</div>
+{% endblock %}	 
