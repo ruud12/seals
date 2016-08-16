@@ -151,7 +151,8 @@ class ContactPersonTable(tables.Table):
     first_name = tables.LinkColumn('isah:ContactPersonDetail', args=[A('pk')])
     last_name = tables.LinkColumn('isah:ContactPersonDetail', args=[A('pk')])
 
-
+    company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
+    
 
     class Meta:
         model = ContactPerson
