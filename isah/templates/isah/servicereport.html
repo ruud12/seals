@@ -1,0 +1,101 @@
+{% extends 'isah/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h1>Service report #{{ servicereport.id }}</h1>
+<div class='row'>
+    <div class='col s6'>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Service report information</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:ServiceReportEditForm' servicereport.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>LS order no.</td><td><a href="{% url 'isah:ServiceReportDetail' servicereport.id %}">{{ servicereport.ls }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Date from</td><td>{{ servicereport.date_from }}</td>
+                        </tr>
+                        <tr>
+                            <td>Date to</td><td>{{ servicereport.date_to }}</td>
+                        </tr>
+                        <tr>
+                            <td>Superintendant</td><td>{{ servicereport.superintendant }}</td>
+                        </tr>
+                        <tr>
+                            <td>Location</td><td>{{ servicereport.location }}</td>
+                        </tr>
+                        <tr>
+                            <td>Related seals</td><td>{% for seal in servicereport.ls.seals.all %}{{ seal.serial_number }}, {% endfor %}</td>
+                        </tr>
+                    </tbody>
+                </table>    
+            </div>
+        </div>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Company information</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealCompanyEditForm' servicereport.ls.company.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td><a href="{% url 'isah:SealCompanyDetail' servicereport.ls.company.id %}">{{ servicereport.ls.company.name }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td><td>{{ servicereport.ls.company.street_and_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Postal code</td><td>{{ servicereport.ls.company.postal_code }}</td>
+                        </tr>
+                        <tr>
+                            <td>Province</td><td>{{ servicereport.ls.company.province }}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td><td> {{ servicereport.ls.company.city }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class='col s6'>
+        {% for seal in servicereport.ls.seals.all %}
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>{{ seal.serial_number }}</span>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Serial number</td><td><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Seal type</td><td>{{ seal.seal_type }}</td>
+                        </tr>
+                        <tr>
+                            <td>Size</td><td>{{ seal.size }}</td>
+                        </tr>
+                        <tr>
+                            <td>Created</td><td>{{ seal.created }}</td>
+                        </tr>
+                        <tr>
+                            <td>Last updated</td><td> {{ seal.updated }}</td>
+                        </tr>
+                        <tr>
+                            <td>Vessel</td><td><a href="{% url 'isah:SealVesselDetail' seal.vessel.id %}">{{ seal.vessel }}</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+

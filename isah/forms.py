@@ -76,7 +76,7 @@ class LSForm(forms.ModelForm):
 
 	class Meta:
 		model = LS
-		fields = ('LS_number','description','seals')
+		fields = ('LS_number','description','company', 'seals')
 
 
 class ContactPersonForm(forms.ModelForm):

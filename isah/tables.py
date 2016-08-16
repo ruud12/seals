@@ -131,7 +131,7 @@ class LSTable(tables.Table):
     class Meta:
         model = LS
         attrs = {'class':'bordered striped white'}
-        fields = ("LS_number",'seals','description')
+        fields = ("LS_number",'company', 'seals','description')
 
 
 
@@ -172,10 +172,13 @@ class ServiceReportTable(tables.Table):
 
     delete = tables.LinkColumn('isah:ServiceReportDeleteForm', args=[A('pk')], empty_values=())
 
+    ls = tables.LinkColumn('isah:LSDetail', args=[A('ls.id')])
+    id = tables.LinkColumn('isah:ServiceReportDetail', args=[A('pk')])
 
+    superintendant = tables.LinkColumn('isah:ContactPersonDetail', args=[A('pk')], verbose_name = 'Superintendant')
     
 
     class Meta:
-        model = ContactPerson
+        model = ServiceReport
         attrs = {'class':'bordered striped white'}
-        fields = ('ls', 'date_from', 'date_to', 'location', 'superintendant')
+        fields = ('id', 'ls', 'date_from', 'date_to', 'location', 'superintendant')

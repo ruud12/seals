@@ -351,7 +351,7 @@ def LSEdit(request, pk):
 
             return redirect(request.GET.get('next', 'isah:LSOverview'))
     else:
-        form = forms.LSForm(initial={'LS_number': ls.LS_number, 'description': ls.description, 'seals': [seal.pk for seal in ls.seals.all()]})
+        form = forms.LSForm(initial={'company': ls.company.id, 'LS_number': ls.LS_number, 'description': ls.description, 'seals': [seal.pk for seal in ls.seals.all()]})
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit LS number','submit':'Save'})
 
@@ -452,9 +452,9 @@ def ServiceReportEdit(request, pk):
 
 
 def ServiceReportDetail(request, pk):
-    ServiceReport = get_object_or_404(ServiceReport, pk=pk)
+    servicereport = get_object_or_404(ServiceReport, pk=pk)
 
-    return render(request, 'isah/ServiceReport.html', {'servicereport': ServiceReport })
+    return render(request, 'isah/servicereport.html', {'servicereport': servicereport })
 
 
 import csv

@@ -92,6 +92,7 @@ class Seal(models.Model):
 class LS(models.Model):
     LS_number = models.CharField(max_length=10, verbose_name='LS number')
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Description')
+    company = models.ForeignKey(SealCompany, verbose_name='Company')
     seals = models.ManyToManyField(Seal, verbose_name='Related seals')
 
     def __str__(self):
