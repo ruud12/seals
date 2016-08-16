@@ -76,4 +76,10 @@ class Seal(models.Model):
     
     
     
-    
+class LS(models.Model):
+    LS_number = models.CharField(max_length=10, verbose_name='LS number')
+    description = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Description')
+    seals = models.ManyToManyField(Seal, verbose_name='Related seals')
+
+    def __str__(self):
+        return self.LS_number
