@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from isah import views
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS
 
 app_name='isah'
 
@@ -25,7 +25,13 @@ urlpatterns = [
 	url(r'^companies/(?P<pk>\d+)/edit/$', views.SealCompanyEdit, name='SealCompanyEditForm'),
 	url(r'^companies/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=SealCompany, template_name='isah/delete.html', success_url='/isah/companies/',extra_context={'title':'Delete company', 'submit':'Delete', 'cancel':'SealCompanyOverview'}), name='SealCompanyDeleteForm'),
 	url(r'^vessels/$', views.SealVesselOverview, name='SealVesselOverview'),
+	url(r'^vessels/(?P<pk>\d+)/$', views.SealVesselDetail, name='SealVesselDetail'),
 	url(r'^vessels/add/$', views.SealVesselCreate, name='SealVesselCreateForm'),
 	url(r'^vessels/(?P<pk>\d+)/edit/$', views.SealVesselEdit, name='SealVesselEditForm'),
 	url(r'^vessels/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=SealVessel, template_name='isah/delete.html', success_url='/isah/vessels/',extra_context={'title':'Delete vessel', 'submit':'Delete', 'cancel':'SealVesselOverview'}), name='SealVesselDeleteForm'),
+	url(r'^ls/$', views.LSOverview, name='LSOverview'),
+	url(r'^ls/(?P<pk>\d+)/$', views.LSDetail, name='LSDetail'),
+	url(r'^ls/add/$', views.LSCreate, name='LSCreateForm'),
+	url(r'^ls/(?P<pk>\d+)/edit/$', views.LSEdit, name='LSEditForm'),
+	url(r'^ls/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=LS, template_name='isah/delete.html', success_url='/isah/ls/',extra_context={'title':'LS number', 'submit':'Delete', 'cancel':'SealVesselOverview'}), name='LSDeleteForm'),
 ]

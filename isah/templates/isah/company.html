@@ -37,7 +37,7 @@
             <div class='card-content'>
                 <span class='card-title black-text'>Vessels</span>
                 {% for vessel in vessels %}
-                    <p>{{ vessel.name }} (IMO: {{ vessel.imo_number }})</p>
+                    <p><a href="{% url 'isah:SealVesselDetail' vessel.id %}">{{ vessel.name }}</a> (IMO: {{ vessel.imo_number }})</p>
                 {% endfor %}
 
             </div>

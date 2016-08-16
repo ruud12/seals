@@ -1,9 +1,9 @@
 import django_tables2 as tables 
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django_tables2.utils import A
-
+from django.shortcuts import get_object_or_404
 
 
 
@@ -20,8 +20,10 @@ class sealTable(tables.Table):
 
     serial_number = tables.LinkColumn('isah:SealDetail', args=[A('pk')])
     company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
+    vessel = tables.LinkColumn('isah:SealVesselDetail', args=[A('vessel.id')])
 
     delete = tables.LinkColumn('isah:SealDeleteForm', args=[A('pk')], empty_values=())
+
     
     class Meta:
         model = Seal
@@ -99,8 +101,34 @@ class sealVesselTable(tables.Table):
     delete = tables.LinkColumn('isah:SealVesselDeleteForm', args=[A('pk')], empty_values=())
 
     company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
+    name = tables.LinkColumn('isah:SealVesselDetail', args=[A('pk')])
 
     class Meta:
         model = SealVessel
         attrs = {'class':'bordered striped white'}
         fields = ("name",'company','imo_number')
+
+
+class LSTable(tables.Table):
+
+    def render_edit(self, record):
+        return mark_safe('<a href='+reverse("isah:LSEditForm", args=[record.pk])+'>Edit</a>')
+
+    edit = tables.LinkColumn('isah:LSEditForm', args=[A('pk')], empty_values=())
+
+    def render_delete(self, record):
+        return mark_safe('<a href='+reverse("isah:LSDeleteForm", args=[record.pk])+'>Delete</a>')
+
+    delete = tables.LinkColumn('isah:LSDeleteForm', args=[A('pk')], empty_values=())
+
+    LS_number = tables.LinkColumn('isah:LSDetail', args=[A('pk')])
+
+    def render_seals(self, record):
+        if record.seals is not None:
+            return mark_safe(', '.join(['<a href="'+reverse('isah:SealDetail', args=[seal.id])+'">'+seal.serial_number+'</a>' for seal in record.seals.all()]))
+        return '-'
+
+    class Meta:
+        model = LS
+        attrs = {'class':'bordered striped white'}
+        fields = ("LS_number",'seals','description')

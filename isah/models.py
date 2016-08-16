@@ -72,6 +72,9 @@ class Seal(models.Model):
     company = models.ForeignKey(SealCompany, on_delete=models.CASCADE, verbose_name='Company')
     vessel = models.ForeignKey(SealVessel, on_delete=models.CASCADE, verbose_name='Vessel', null=True, blank=True)
 
+    def __str__(self):
+        return self.serial_number
+
 
     
     

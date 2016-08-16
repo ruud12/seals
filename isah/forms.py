@@ -1,5 +1,5 @@
 from django import forms
-from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel
+from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel, LS
 
 class SealForm(forms.ModelForm):
 
@@ -59,7 +59,6 @@ class SealTypeForm(forms.ModelForm):
 
 class SealCompanyForm(forms.ModelForm):
 
-
 	class Meta:
 		model = SealCompany
 		fields = ('name', 'street_and_number', 'postal_code','city', 'province' )
@@ -71,3 +70,10 @@ class SealVesselForm(forms.ModelForm):
 	class Meta:
 		model = SealVessel
 		fields = ('name','company','imo_number')
+
+
+class LSForm(forms.ModelForm):
+
+	class Meta:
+		model = LS
+		fields = ('LS_number','description','seals')

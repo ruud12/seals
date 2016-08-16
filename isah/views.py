@@ -5,8 +5,8 @@ from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import RequestConfig
-from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable
-from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel
+from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable
+from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS
 from isah import forms
 from sealadvisor2 import forms as sealadvisor2forms
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
@@ -277,6 +277,13 @@ def SealVesselOverview(request):
     return render(request, 'isah/simple_table.html', {'title':'Vessels', 'table':table, 'add_form': 'SealVesselCreateForm'})
 
 
+def SealVesselDetail(request, pk):
+    vessel = get_object_or_404(SealVessel, pk=pk)
+    seals = Seal.objects.filter(vessel__id = pk)
+
+    return render(request, 'isah/vessel.html', {'vessel' : vessel, 'seals':seals })
+
+
 
 def SealVesselCreate(request):
     if request.method == "POST":
@@ -307,3 +314,50 @@ def SealVesselEdit(request, pk):
         form = forms.SealVesselForm(initial={'name':vessel.name, 'imo_number': vessel.imo_number, 'company': vessel.company.id})
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit vessel','submit':'Save'})
+
+
+def LSOverview(request):
+    ls_numbers = LS.objects.order_by('LS_number')
+
+    table = LSTable(ls_numbers)
+
+    return render(request, 'isah/simple_table.html', {'title':'LS numbers', 'table':table, 'add_form': 'LSCreateForm'})
+
+
+
+def LSCreate(request):
+    if request.method == "POST":
+        form = forms.LSForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('isah:LSOverview')
+
+    else:
+        form = forms.LSForm()
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new LS number','submit':'Create'})
+    
+
+def LSEdit(request, pk):
+    ls = LS.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = forms.LSForm(request.POST, instance = ls)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('isah:LSOverview')
+    else:
+        form = forms.LSForm(initial={'LS_number': ls.LS_number, 'description': ls.description, 'seals': [seal.pk for seal in ls.seals.all()]})
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit LS number','submit':'Save'})
+
+
+def LSDetail(request, pk):
+    ls = get_object_or_404(LS, pk=pk)
+    seals = ls.seals.all()
+
+    return render(request, 'isah/ls.html', {'ls' : ls, 'seals':seals })

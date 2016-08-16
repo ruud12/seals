@@ -1,0 +1,69 @@
+{% extends 'isah/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<h1>{{ vessel }}</h1>
+<div class='row'>
+    <div class='col s6'>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Vessel information</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealVesselEditForm' vessel.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td>{{ vessel.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>IMO</td><td>{{ vessel.imo_number }}</td>
+                        </tr>
+                    </tbody>
+                </table>    
+            </div>
+        </div>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Company information</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealCompanyEditForm' vessel.company.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
+                <table class='teal lighten-5' style='font-size:0.8em;'>
+                    <tbody>
+                        <tr>
+                            <td>Name</td><td><a href="{% url 'isah:SealCompanyDetail' vessel.company.id %}">{{ vessel.company.name }}</a></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td><td>{{ vessel.company.street_and_number }}</td>
+                        </tr>
+                        <tr>
+                            <td>Postal code</td><td>{{ vessel.company.postal_code }}</td>
+                        </tr>
+                        <tr>
+                            <td>Province</td><td>{{ vessel.company.province }}</td>
+                        </tr>
+                        <tr>
+                            <td>City</td><td> {{ vessel.company.city }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class='col s6'>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Seals</span>
+                {% for seal in seals %}
+                    <p><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a></p>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
+
