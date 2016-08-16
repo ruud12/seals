@@ -48,6 +48,14 @@ class SealVessel(models.Model):
         return self.name
 
 
+class ContactPerson(models.Model):
+    company = models.ForeignKey(SealCompany, verbose_name='Company')
+    first_name = models.CharField(max_length=100, verbose_name='First name')
+    last_name = models.CharField(max_length=100, verbose_name='Last name')
+    email = models.EmailField()
+
+
+
 class SealType(models.Model):
     name = models.CharField(max_length=10, help_text="Type such as 'STA'")
     description = models.CharField(max_length=200)
@@ -86,3 +94,6 @@ class LS(models.Model):
 
     def __str__(self):
         return self.LS_number
+
+
+
