@@ -1,5 +1,5 @@
 import django_tables2 as tables 
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
 from django.utils.safestring import mark_safe
 from django.core.urlresolvers import reverse
 from django_tables2.utils import A
@@ -134,7 +134,7 @@ class LSTable(tables.Table):
         fields = ("LS_number",'seals','description')
 
 
-        
+
 
 class ContactPersonTable(tables.Table):
 
@@ -152,9 +152,30 @@ class ContactPersonTable(tables.Table):
     last_name = tables.LinkColumn('isah:ContactPersonDetail', args=[A('pk')])
 
     company = tables.LinkColumn('isah:SealCompanyDetail', args=[A('company.id')])
-    
+
 
     class Meta:
         model = ContactPerson
         attrs = {'class':'bordered striped white'}
         fields = ('first_name', 'last_name', 'email', 'company')
+
+
+class ServiceReportTable(tables.Table):
+
+    def render_edit(self, record):
+        return mark_safe('<a href='+reverse("isah:ServiceReportEditForm", args=[record.pk])+'>Edit</a>')
+
+    edit = tables.LinkColumn('isah:ServiceReportEditForm', args=[A('pk')], empty_values=())
+
+    def render_delete(self, record):
+        return mark_safe('<a href='+reverse("isah:ServiceReportDeleteForm", args=[record.pk])+'>Delete</a>')
+
+    delete = tables.LinkColumn('isah:ServiceReportDeleteForm', args=[A('pk')], empty_values=())
+
+
+    
+
+    class Meta:
+        model = ContactPerson
+        attrs = {'class':'bordered striped white'}
+        fields = ('ls', 'date_from', 'date_to', 'location', 'superintendant')

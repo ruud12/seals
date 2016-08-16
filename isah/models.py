@@ -99,10 +99,8 @@ class LS(models.Model):
 
 
 class ServiceReport(models.Model):
-    company = models.ForeignKey(SealCompany, verbose_name='Company')
     ls = models.ForeignKey(LS, verbose_name='LS order no.')
     superintendant = models.ForeignKey(ContactPerson, verbose_name='Contact person')
-    vessel = models.ForeignKey(SealVessel, verbose_name='Vessel')
     date_from = models.DateField(verbose_name='Start date')
     date_to = models.DateField(verbose_name='End date')
     location = models.CharField(max_length=200, verbose_name='Location')

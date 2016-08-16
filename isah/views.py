@@ -5,8 +5,8 @@ from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import RequestConfig
-from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable, ContactPersonTable
-from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS, ContactPerson
+from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable, ContactPersonTable, ServiceReportTable
+from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
 from isah import forms
 from sealadvisor2 import forms as sealadvisor2forms
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
@@ -409,6 +409,52 @@ def ContactPersonDetail(request, pk):
     return render(request, 'isah/contactperson.html', {'contactperson': contactperson })
 
 
+
+
+def ServiceReportOverview(request):
+    service_reports = ServiceReport.objects.order_by('ls')
+
+    table = ServiceReportTable(service_reports)
+
+    return render(request, 'isah/simple_table.html', {'title':'Service reports', 'table':table, 'add_form': 'ServiceReportCreateForm'})
+
+
+
+def ServiceReportCreate(request):
+    if request.method == "POST":
+        form = forms.ServiceReportForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('isah:ServiceReportOverview')
+
+    else:
+        form = forms.ServiceReportForm()
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new Service report','submit':'Create'})
+    
+
+def ServiceReportEdit(request, pk):
+    servicereport = ServiceReport.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = forms.ServiceReportForm(request.POST, instance = servicereport)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(request.GET.get('next', 'isah:ServiceReportOverview'))
+    else:
+        form = forms.ServiceReportForm(initial={'ls': servicereport.ls.id, 'date_from': servicereport.date_from, 'date_to': servicereport.date_to, 'superintendant': servicereport.superintendant,'location':servicereport.location })
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit Service Report','submit':'Save'})
+
+
+def ServiceReportDetail(request, pk):
+    ServiceReport = get_object_or_404(ServiceReport, pk=pk)
+
+    return render(request, 'isah/ServiceReport.html', {'servicereport': ServiceReport })
 
 
 import csv

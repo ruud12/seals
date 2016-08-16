@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from isah import views
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
 
 app_name='isah'
 
@@ -37,7 +37,12 @@ urlpatterns = [
 	url(r'^importcsv/$', views.importcsv, name='importcsv'),
 	url(r'^contacts/$', views.ContactPersonOverview, name='ContactPersonOverview'),
 	url(r'^contacts/(?P<pk>\d+)/$', views.ContactPersonDetail, name='ContactPersonDetail'),
-	url(r'^contact/add/$', views.ContactPersonCreate, name='ContactPersonCreateForm'),
+	url(r'^contacts/add/$', views.ContactPersonCreate, name='ContactPersonCreateForm'),
 	url(r'^contacts/(?P<pk>\d+)/edit/$', views.ContactPersonEdit, name='ContactPersonEditForm'),
 	url(r'^contacts/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=ContactPerson, template_name='isah/delete.html', success_url='/isah/contacts/',extra_context={'title':'Contact person', 'submit':'Delete', 'cancel':'ContactPersonOverview'}), name='ContactPersonDeleteForm'),
+	url(r'^servicereport/$', views.ServiceReportOverview, name='ServiceReportOverview'),
+	url(r'^servicereport/(?P<pk>\d+)/$', views.ServiceReportDetail, name='ServiceReportDetail'),
+	url(r'^servicereport/add/$', views.ServiceReportCreate, name='ServiceReportCreateForm'),
+	url(r'^servicereport/(?P<pk>\d+)/edit/$', views.ServiceReportEdit, name='ServiceReportEditForm'),
+	url(r'^servicereport/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=ServiceReport, template_name='isah/delete.html', success_url='/isah/contacts/',extra_context={'title':'Service report', 'submit':'Delete', 'cancel':'ServiceReportOverview'}), name='ServiceReportDeleteForm'),
 ]

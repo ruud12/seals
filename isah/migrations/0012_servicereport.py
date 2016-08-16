@@ -20,10 +20,8 @@ class Migration(migrations.Migration):
                 ('date_from', models.DateField(verbose_name='Start date')),
                 ('date_to', models.DateField(verbose_name='End date')),
                 ('location', models.CharField(max_length=200, verbose_name='Location')),
-                ('company', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='isah.SealCompany', verbose_name='Company')),
                 ('ls', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='isah.LS', verbose_name='LS order no.')),
                 ('superintendant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='isah.ContactPerson', verbose_name='Contact person')),
-                ('vessel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='isah.SealVessel', verbose_name='Vessel')),
             ],
         ),
     ]
