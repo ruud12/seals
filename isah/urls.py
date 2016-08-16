@@ -34,4 +34,5 @@ urlpatterns = [
 	url(r'^ls/add/$', views.LSCreate, name='LSCreateForm'),
 	url(r'^ls/(?P<pk>\d+)/edit/$', views.LSEdit, name='LSEditForm'),
 	url(r'^ls/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=LS, template_name='isah/delete.html', success_url='/isah/ls/',extra_context={'title':'LS number', 'submit':'Delete', 'cancel':'SealVesselOverview'}), name='LSDeleteForm'),
+	url(r'^importcsv/$', views.importcsv, name='importcsv'),
 ]

@@ -361,3 +361,15 @@ def LSDetail(request, pk):
     seals = ls.seals.all()
 
     return render(request, 'isah/ls.html', {'ls' : ls, 'seals':seals })
+
+import csv
+
+def importcsv(request):
+    with open("testdata_namaak_isah.csv") as f:
+        reader = csv.reader(f)
+        for row in reader:
+            created = SealCompany.objects.get_or_create(
+                name=row[3],
+            )
+            # creates a tuple of the new object or
+            # current object and a boolean of if it was created
