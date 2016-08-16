@@ -5,8 +5,8 @@ from django.http import HttpResponse, Http404
 from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import RequestConfig
-from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable
-from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS
+from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable, ContactPersonTable
+from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS, ContactPerson
 from isah import forms
 from sealadvisor2 import forms as sealadvisor2forms
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
@@ -308,8 +308,8 @@ def SealVesselEdit(request, pk):
 
         if form.is_valid():
             form.save()
-
-            return redirect('isah:SealVesselOverview')
+            
+            return redirect(request.GET.get('next', 'isah:SealVesselOverview'))
     else:
         form = forms.SealVesselForm(initial={'name':vessel.name, 'imo_number': vessel.imo_number, 'company': vessel.company.id})
 
@@ -349,7 +349,7 @@ def LSEdit(request, pk):
         if form.is_valid():
             form.save()
 
-            return redirect('isah:LSOverview')
+            return redirect(request.GET.get('next', 'isah:LSOverview'))
     else:
         form = forms.LSForm(initial={'LS_number': ls.LS_number, 'description': ls.description, 'seals': [seal.pk for seal in ls.seals.all()]})
 
@@ -361,6 +361,55 @@ def LSDetail(request, pk):
     seals = ls.seals.all()
 
     return render(request, 'isah/ls.html', {'ls' : ls, 'seals':seals })
+
+
+def ContactPersonOverview(request):
+    contact_persons = ContactPerson.objects.order_by('company', 'last_name','first_name')
+
+    table = ContactPersonTable(contact_persons)
+
+    return render(request, 'isah/simple_table.html', {'title':'Contact Persons', 'table':table, 'add_form': 'ContactPersonCreateForm'})
+
+
+
+def ContactPersonCreate(request):
+    if request.method == "POST":
+        form = forms.ContactPersonForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect('isah:ContactPersonOverview')
+
+    else:
+        form = forms.ContactPersonForm()
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new Contact Person','submit':'Create'})
+    
+
+def ContactPersonEdit(request, pk):
+    contact_person = ContactPerson.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = forms.ContactPersonForm(request.POST, instance = contact_person)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(request.GET.get('next', 'isah:ContactPersonOverview'))
+    else:
+        form = forms.ContactPersonForm(initial={'first_name':contact_person.first_name, 'last_name':contact_person.last_name, 'email': contact_person.email, 'company': contact_person.company.id })
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit Contact Person','submit':'Save'})
+
+
+def ContactPersonDetail(request, pk):
+    contactperson = get_object_or_404(ContactPerson, pk=pk)
+
+    return render(request, 'isah/contactperson.html', {'contactperson': contactperson })
+
+
+
 
 import csv
 

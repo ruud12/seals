@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from isah import views
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson
 
 app_name='isah'
 
@@ -35,4 +35,9 @@ urlpatterns = [
 	url(r'^ls/(?P<pk>\d+)/edit/$', views.LSEdit, name='LSEditForm'),
 	url(r'^ls/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=LS, template_name='isah/delete.html', success_url='/isah/ls/',extra_context={'title':'LS number', 'submit':'Delete', 'cancel':'SealVesselOverview'}), name='LSDeleteForm'),
 	url(r'^importcsv/$', views.importcsv, name='importcsv'),
+	url(r'^contacts/$', views.ContactPersonOverview, name='ContactPersonOverview'),
+	url(r'^contacts/(?P<pk>\d+)/$', views.ContactPersonDetail, name='ContactPersonDetail'),
+	url(r'^contact/add/$', views.ContactPersonCreate, name='ContactPersonCreateForm'),
+	url(r'^contacts/(?P<pk>\d+)/edit/$', views.ContactPersonEdit, name='ContactPersonEditForm'),
+	url(r'^contacts/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=ContactPerson, template_name='isah/delete.html', success_url='/isah/contacts/',extra_context={'title':'Contact person', 'submit':'Delete', 'cancel':'ContactPersonOverview'}), name='ContactPersonDeleteForm'),
 ]
