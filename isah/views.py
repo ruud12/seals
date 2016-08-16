@@ -365,11 +365,15 @@ def LSDetail(request, pk):
 import csv
 
 def importcsv(request):
-    with open("testdata_namaak_isah.csv") as f:
+    with open("1.csv") as f:
         reader = csv.reader(f)
         for row in reader:
+            aft = AftSealOptions.objects.create()
+            fwd = FwdSealOptions.objects.create()
             created = SealCompany.objects.get_or_create(
                 name=row[3],
+                aft_preferences = aft,
+                fwd_preferences = fwd,
             )
             # creates a tuple of the new object or
             # current object and a boolean of if it was created
