@@ -420,7 +420,7 @@ def ServiceReportOverview(request):
 
 
 
-def ServiceReportCreate(request):
+def ServiceReportCreate(request, pk= None):
     if request.method == "POST":
         form = forms.ServiceReportForm(request.POST)
 
@@ -430,7 +430,10 @@ def ServiceReportCreate(request):
             return redirect('isah:ServiceReportDetail', report.id)
 
     else:
-        form = forms.ServiceReportForm()
+        if pk is not None:
+            form = forms.ServiceReportForm(initial = {'ls': pk})
+        else:
+            form = forms.ServiceReportForm()
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new Service report','submit':'Create'})
     
