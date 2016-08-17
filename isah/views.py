@@ -11,7 +11,7 @@ from isah import forms
 from sealadvisor2 import forms as sealadvisor2forms
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
 from isah.filters import SealFilter
-
+from isah.printing import MyPrint
 
 # Create your views here.
 
@@ -55,12 +55,12 @@ def SealCreate(request):
         form = forms.SealForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            seal = form.save()
 
-            return redirect('isah:SealOverview')
+            return redirect('isah:SealDetail', seal.id)
 
     else:
-        form = forms.SealForm()
+        form = forms.SealForm(initial = {'side': 'N/A'})
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new seal','submit':'Create'})
 
@@ -79,7 +79,7 @@ def SealEdit(request, pk):
             # if from the seal edit page, redirect to that page, otherwise redirect to the seal overview page
             return redirect(request.GET.get('next', 'isah:SealOverview')) 
     else:
-        initial={'seal_type':seal.seal_type, 'size': seal.size, 'serial_number': seal.serial_number, 'company': seal.company.id }
+        initial={'seal_type':seal.seal_type, 'size': seal.size, 'serial_number': seal.serial_number, 'company': seal.company.id, 'side': seal.side }
 
         if seal.vessel:
             initial['vessel'] = seal.vessel.id 
@@ -211,7 +211,7 @@ def SealCompanyCreate(request):
             aftform.save()
             fwdform.save()
 
-            return redirect('isah:SealCompanyOverview')
+            return redirect('isah:SealCompanyDetail', company.id)
 
     else:
         form = forms.SealCompanyForm(prefix='company')  # initial = {'aft_preferences':company.aft_preferences.id, 'fwd_preferences': company.fwd_preferences.id, 'name': company.name }
@@ -290,9 +290,9 @@ def SealVesselCreate(request):
         form = forms.SealVesselForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            vessel = form.save()
 
-            return redirect('isah:SealVesselOverview')
+            return redirect('isah:SealVesselDetail', vessel.id)
 
     else:
         form = forms.SealVesselForm()
@@ -330,9 +330,9 @@ def LSCreate(request):
         form = forms.LSForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            ls = form.save()
 
-            return redirect('isah:LSOverview')
+            return redirect('isah:LSDetail', ls.id)
 
     else:
         form = forms.LSForm()
@@ -377,9 +377,9 @@ def ContactPersonCreate(request):
         form = forms.ContactPersonForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            person = form.save()
 
-            return redirect('isah:ContactPersonOverview')
+            return redirect('isah:ContactPersonDetail', person.id)
 
     else:
         form = forms.ContactPersonForm()
@@ -425,9 +425,9 @@ def ServiceReportCreate(request):
         form = forms.ServiceReportForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            report = form.save()
 
-            return redirect('isah:ServiceReportOverview')
+            return redirect('isah:ServiceReportDetail', report.id)
 
     else:
         form = forms.ServiceReportForm()
@@ -446,7 +446,7 @@ def ServiceReportEdit(request, pk):
 
             return redirect(request.GET.get('next', 'isah:ServiceReportOverview'))
     else:
-        form = forms.ServiceReportForm(initial={'ls': servicereport.ls.id, 'date_from': servicereport.date_from, 'date_to': servicereport.date_to, 'superintendant': servicereport.superintendant,'location':servicereport.location })
+        form = forms.ServiceReportForm(initial={'remarks':servicereport.remarks, 'ls': servicereport.ls.id, 'date_from': servicereport.date_from, 'date_to': servicereport.date_to, 'superintendant': servicereport.superintendant,'location':servicereport.location })
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit Service Report','submit':'Save'})
 
@@ -472,3 +472,25 @@ def importcsv(request):
             )
             # creates a tuple of the new object or
             # current object and a boolean of if it was created
+
+
+
+def exportReportAsPDF(request, pk):
+    from reportlab.pdfgen import canvas
+    from isah.printing import MyPrint
+    from io import BytesIO
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="reports.pdf"'
+
+    buffer = BytesIO()
+
+    report = get_object_or_404(ServiceReport, pk=pk)
+
+    report = MyPrint(buffer, 'A4', report)
+
+    pdf = report.export_report()
+
+    response.write(pdf)
+
+    return response

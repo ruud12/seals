@@ -3,7 +3,7 @@
 
 
 {% block content %}
-<h1>Service report #{{ servicereport.id }}</h1>
+<h1>Service report #{{ servicereport.id }} (<a href="{% url 'isah:exportReportAsPDF' servicereport.id %}">Download</a>)</h1>
 <div class='row'>
     <div class='col s6'>
         <div class='card teal lighten-4'>
@@ -31,6 +31,9 @@
                         </tr>
                         <tr>
                             <td>Related seals</td><td>{% for seal in servicereport.ls.seals.all %}{{ seal.serial_number }}, {% endfor %}</td>
+                        </tr>
+                        <tr>
+                            <td>Remarks</td><td>{{ servicereport.remarks }}</td>
                         </tr>
                     </tbody>
                 </table>    
@@ -68,7 +71,10 @@
         {% for seal in servicereport.ls.seals.all %}
         <div class='card teal lighten-4'>
             <div class='card-content'>
-                <span class='card-title black-text'>{{ seal.serial_number }}</span>
+                <span class='card-title black-text'>{{ seal.serial_number }} {% if "X" in seal.serial_number or 'x' in seal.serial_number %} (Aft seal) {% else %} (Fwd seal) {% endif %}</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:SealEditForm' seal.id %}?next={{request.path}}"><i class="material-icons">edit</i></a>
+                </div>
                 <table class='teal lighten-5' style='font-size:0.8em;'>
                     <tbody>
                             <td>Serial number</td><td><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a>{% if "X" in seal.serial_number or 'x' in seal.serial_number %} (Aft seal) {% else %} (Fwd seal) {% endif %}</td>
@@ -84,6 +90,15 @@
                         </tr>
                         <tr>
                             <td>Last updated</td><td> {{ seal.updated }}</td>
+                        </tr>
+                        <tr>
+                            <td>Vessel</td><td>
+                                {% if seal.vessel %}
+                                    <a href="{% url 'isah:SealVesselDetail' seal.vessel.id %}">{{ seal.vessel }}</a>
+                                {% else %}
+                                    No vessel listed
+                                {% endif %}
+                            </td>
                         </tr>
                     </tbody>
                 </table>

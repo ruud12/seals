@@ -88,6 +88,8 @@ class ContactPersonForm(forms.ModelForm):
 
 class ServiceReportForm(forms.ModelForm):
 
+	remarks = forms.CharField(widget=forms.Textarea)
+
 	class Meta:
 		model = ServiceReport
-		fields = ('ls', 'date_from', 'date_to', 'superintendant', 'location')
+		fields = ('ls', 'date_from', 'date_to', 'superintendant', 'location', 'remarks')

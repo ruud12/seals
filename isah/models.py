@@ -76,6 +76,14 @@ class SealSize(models.Model):
 class Seal(models.Model):
     seal_type = models.ForeignKey(SealType, verbose_name='Type')
     size = models.ForeignKey(SealSize, verbose_name='Size')
+
+    CHOICES = (
+        ('N/A', 'Not applicable'),
+        ('PS', 'Port side'),
+        ('SB', 'Starboard')
+    )
+
+    side = models.CharField(max_length=10, choices=CHOICES, verbose_name='Side', help_text='At which side is the seal installed or leave blank in case of a single propellor')
     created = models.DateTimeField(auto_now_add=True, verbose_name='Created')
     updated = models.DateTimeField(auto_now=True, verbose_name='Last updated')
     serial_number = models.CharField(max_length=15, verbose_name= 'Serial number')
@@ -105,3 +113,4 @@ class ServiceReport(models.Model):
     date_from = models.DateField(verbose_name='Start date')
     date_to = models.DateField(verbose_name='End date')
     location = models.CharField(max_length=200, verbose_name='Location')
+    remarks = models.CharField(max_length=2000, verbose_name='Remarks', blank=True)
