@@ -83,7 +83,7 @@ class ContactPersonForm(forms.ModelForm):
 
 	class Meta:
 		model = ContactPerson
-		fields = ('company', 'first_name', 'last_name', 'email')
+		fields = ('company', 'first_name', 'last_name', 'email', 'position')
 
 
 class ServiceReportForm(forms.ModelForm):

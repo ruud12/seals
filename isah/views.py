@@ -398,7 +398,7 @@ def ContactPersonEdit(request, pk):
 
             return redirect(request.GET.get('next', 'isah:ContactPersonOverview'))
     else:
-        form = forms.ContactPersonForm(initial={'first_name':contact_person.first_name, 'last_name':contact_person.last_name, 'email': contact_person.email, 'company': contact_person.company.id })
+        form = forms.ContactPersonForm(initial={'position':contact_person.position, 'first_name':contact_person.first_name, 'last_name':contact_person.last_name, 'email': contact_person.email, 'company': contact_person.company.id })
 
     return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit Contact Person','submit':'Save'})
 

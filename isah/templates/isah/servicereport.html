@@ -71,8 +71,7 @@
                 <span class='card-title black-text'>{{ seal.serial_number }}</span>
                 <table class='teal lighten-5' style='font-size:0.8em;'>
                     <tbody>
-                        <tr>
-                            <td>Serial number</td><td><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a></td>
+                            <td>Serial number</td><td><a href="{% url 'isah:SealDetail' seal.id %}">{{ seal.serial_number }}</a>{% if "X" in seal.serial_number or 'x' in seal.serial_number %} (Aft seal) {% else %} (Fwd seal) {% endif %}</td>
                         </tr>
                         <tr>
                             <td>Seal type</td><td>{{ seal.seal_type }}</td>
@@ -85,9 +84,6 @@
                         </tr>
                         <tr>
                             <td>Last updated</td><td> {{ seal.updated }}</td>
-                        </tr>
-                        <tr>
-                            <td>Vessel</td><td><a href="{% url 'isah:SealVesselDetail' seal.vessel.id %}">{{ seal.vessel }}</a></td>
                         </tr>
                     </tbody>
                 </table>
