@@ -44,6 +44,7 @@ urlpatterns = [
 	url(r'^servicereport/(?P<pk>\d+)/$', views.ServiceReportDetail, name='ServiceReportDetail'),
 	url(r'^servicereport/add/(?P<pk>\d+)/$', views.ServiceReportCreate, name='ServiceReportLSCreateForm'),
 	url(r'^servicereport/add/$', views.ServiceReportCreate, name='ServiceReportCreateForm'),
+	url(r'^servicereport/add/select_ls_and_seals/$', views.LSSelectSeals, name='LSSelectSealsForm'),
 	url(r'^servicereport/(?P<pk>\d+)/edit/$', views.ServiceReportEdit, name='ServiceReportEditForm'),
 	url(r'^servicereport/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=ServiceReport, template_name='isah/delete.html', success_url='/isah/contacts/',extra_context={'title':'Service report', 'submit':'Delete', 'cancel':'ServiceReportOverview'}), name='ServiceReportDeleteForm'),
 	url(r'^servicereport/(?P<pk>\d+)/export/$', views.exportReportAsPDF, name='exportReportAsPDF'),

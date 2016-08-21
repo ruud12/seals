@@ -419,6 +419,26 @@ def ServiceReportOverview(request):
     return render(request, 'isah/simple_table.html', {'title':'Service reports', 'table':table, 'add_form': 'ServiceReportCreateForm'})
 
 
+def LSSelectSeals(request):
+    if request.method == "POST":
+        form = forms.LSSelectSealsForm(request.POST)
+
+        if form.is_valid():
+            ls = LS.objects.get(pk=form.cleaned_data['ls'])
+            for id in form.cleaned_data['seals']:
+                seal = get_object_or_404(Seal, pk=id)
+                ls.seals.add(seal)
+
+            ls.save()
+
+            return redirect('isah:ServiceReportCreateForm')
+
+    else:
+        form = forms.LSSelectSealsForm()
+
+    return render(request, 'isah/simple_form.html', {'form': form, 'title':'Select related seals', 'submit':'Next'})
+
+
 
 def ServiceReportCreate(request, pk= None):
     if request.method == "POST":
@@ -431,7 +451,11 @@ def ServiceReportCreate(request, pk= None):
 
     else:
         if pk is not None:
-            form = forms.ServiceReportForm(initial = {'ls': pk})
+            ls = get_object_or_404(LS, pk = pk)
+            if ls.seals:
+                form = forms.ServiceReportForm(initial = {'ls': pk})
+            else:
+                form = forms.LSSelectSealsForm(initial = {'ls': pk})
         else:
             form = forms.ServiceReportForm()
 

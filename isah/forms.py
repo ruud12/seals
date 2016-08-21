@@ -93,3 +93,27 @@ class ServiceReportForm(forms.ModelForm):
 	class Meta:
 		model = ServiceReport
 		fields = ('ls', 'date_from', 'date_to', 'superintendant', 'location', 'remarks')
+
+
+class LSSelectSealsForm(forms.Form):
+
+	CHOICES = [[seal.id, seal.serial_number] for seal in Seal.objects.all()]
+	seals = forms.MultipleChoiceField(choices=CHOICES, required=True, label='Serviced seals')
+
+
+	CHOICES = [[ls.id, ls.LS_number] for ls in LS.objects.all()]
+	CHOICES.insert(0,["-", "---Select---"])
+
+	ls = forms.ChoiceField(choices=CHOICES, required=True, label='LS order no.')
+
+	def clean_ls(self):
+		ls = self.cleaned_data['ls']
+
+		if not ls.isdigit():
+			raise forms.ValidationError("Select a LS order no.")
+
+		return ls
+
+
+	class Meta:
+		fields = ('seals', 'ls')
