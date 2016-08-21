@@ -416,27 +416,66 @@ def ServiceReportOverview(request):
 
     table = ServiceReportTable(service_reports)
 
-    return render(request, 'isah/simple_table.html', {'title':'Service reports', 'table':table, 'add_form': 'ServiceReportCreateForm'})
+    return render(request, 'isah/simple_table.html', {'title':'Service reports', 'table':table, 'add_form': 'ServiceReportSelectLSForm'})
 
 
-def LSSelectSeals(request):
+
+
+# create service reports:
+# 1. select ls order no.
+# 2. fill in general info related to the company, start date, end date and location
+# 3. select seals serviced
+# 4. fill in info related to each serviced seal
+# 5. show overview of the report
+
+
+def ServiceReportSelectLS(request):
     if request.method == "POST":
-        form = forms.LSSelectSealsForm(request.POST)
+        form = forms.ServiceReportSelectLSForm(request.POST)
 
         if form.is_valid():
-            ls = LS.objects.get(pk=form.cleaned_data['ls'])
-            for id in form.cleaned_data['seals']:
-                seal = get_object_or_404(Seal, pk=id)
-                ls.seals.add(seal)
-
-            ls.save()
-
-            return redirect('isah:ServiceReportCreateForm')
+            return redirect('isah:ServiceReportGeneralInfoForm', form.cleaned_data['ls'])
 
     else:
-        form = forms.LSSelectSealsForm()
+        form = forms.ServiceReportSelectLSForm()
 
-    return render(request, 'isah/simple_form.html', {'form': form, 'title':'Select related seals', 'submit':'Next'})
+    return render(request, 'isah/simple_form.html', {'form': form, 'title':'Select LS order no.', 'submit':'Next'})
+
+
+def ServiceReportGeneralInfo(request, pk):
+    ls = get_object_or_404(LS, pk=pk)
+
+    if request.method == "POST":
+        form = forms.ServiceReportGeneralInfoForm(request.POST)
+
+        if form.is_valid():
+            report = form.save(commit = False)
+            report.ls = ls
+            report.save()
+
+            return redirect('isah:ServiceReportDetail', report.id)
+
+    else:
+        form = forms.ServiceReportGeneralInfoForm()
+
+
+    return render(request, 'isah/simple_form.html', {'form': form, 'title': 'General information for ' + ls.LS_number + " ("+ ls.company.name + ")", 'submit': 'Next'})
+
+
+def ServiceReportSelectSeals(request, pk):
+    servicereport = ServiceReport.objects.get(pk=pk)
+
+    if request.method == "POST":
+        form = forms.ServiceReportSelectSealsForm(request.POST, instance = servicereport.ls)
+
+        if form.is_valid():
+            form.save()
+
+            return redirect(request.GET.get('next', 'isah:ServiceReportDetail'), servicereport.id)
+    else:
+        form = forms.ServiceReportSelectSealsForm()
+
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Add seals for ' + servicereport.ls.LS_number,'submit':'Save'})
 
 
 
@@ -466,16 +505,16 @@ def ServiceReportEdit(request, pk):
     servicereport = ServiceReport.objects.get(pk=pk)
 
     if request.method == "POST":
-        form = forms.ServiceReportForm(request.POST, instance = servicereport)
+        form = forms.ServiceReportGeneralInfoForm(request.POST, instance = servicereport)
 
         if form.is_valid():
             form.save()
 
             return redirect(request.GET.get('next', 'isah:ServiceReportOverview'))
     else:
-        form = forms.ServiceReportForm(initial={'remarks':servicereport.remarks, 'ls': servicereport.ls.id, 'date_from': servicereport.date_from, 'date_to': servicereport.date_to, 'superintendant': servicereport.superintendant,'location':servicereport.location })
+        form = forms.ServiceReportGeneralInfoForm(initial={'vessel': servicereport.vessel, 'remarks':servicereport.remarks, 'date_from': servicereport.date_from, 'date_to': servicereport.date_to, 'superintendant': servicereport.superintendant,'location':servicereport.location })
 
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit Service Report','submit':'Save'})
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit general information','submit':'Save'})
 
 
 def ServiceReportDetail(request, pk):

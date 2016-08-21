@@ -27,10 +27,10 @@
                             <td>Superintendant</td><td>{{ servicereport.superintendant }}</td>
                         </tr>
                         <tr>
-                            <td>Location</td><td>{{ servicereport.location }}</td>
+                            <td>Vessel</td><td>{{ servicereport.vessel }}</td>
                         </tr>
                         <tr>
-                            <td>Related seals</td><td>{% for seal in servicereport.ls.seals.all %}{{ seal.serial_number }}, {% endfor %}</td>
+                            <td>Location</td><td>{{ servicereport.location }}</td>
                         </tr>
                         <tr>
                             <td>Remarks</td><td>{{ servicereport.remarks }}</td>
@@ -68,6 +68,14 @@
         </div>
     </div>
     <div class='col s6'>
+        <div class='card teal lighten-4'>
+            <div class='card-content'>
+                <span class='card-title black-text'>Add seal</span>
+                <div style='float:right;'>
+                    <a class="btn-floating waves-effect waves-light blue" href="{% url 'isah:ServiceReportSelectSealsForm' servicereport.id %}?next={{request.path}}"><i class="material-icons">add</i></a>
+                </div>
+            </div>
+        </div>
         {% for seal in servicereport.ls.seals.all %}
         <div class='card teal lighten-4'>
             <div class='card-content'>
@@ -95,6 +103,9 @@
                             <td>Vessel</td><td>
                                 {% if seal.vessel %}
                                     <a href="{% url 'isah:SealVesselDetail' seal.vessel.id %}">{{ seal.vessel }}</a>
+                                    {% if seal.vessel != servicereport.vessel %}
+                                        <b> > Different vessel from the vessel listed in the service report general information. Change this seal to vessel {{ servicereport.vessel }}?</b>
+                                    {% endif %}
                                 {% else %}
                                     No vessel listed
                                 {% endif %}
