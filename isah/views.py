@@ -112,7 +112,7 @@ def SealSizeCreate(request):
     else:
         form = forms.SealSizeForm()
 
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new size','submit':'Create'})
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Create new size','submit':'Create', 'cancel': reverse('isah:SealSizeOverview')})
     
 
 def SealSizeEdit(request, pk):
@@ -128,7 +128,7 @@ def SealSizeEdit(request, pk):
     else:
         form = forms.SealSizeForm(initial={'size':size.size})
 
-    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit size','submit':'Save'})
+    return render(request, 'isah/simple_form.html', {'form':form, 'title':'Edit size','submit':'Save', 'cancel': reverse('isah:SealSizeOverview')})
 
 
 def SealTypeOverview(request):
