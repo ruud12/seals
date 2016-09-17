@@ -1,5 +1,5 @@
 from django import forms
-from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
+from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel, LS, ContactPerson, ServiceReport, SealPart
 
 
 class SealForm(forms.ModelForm):
@@ -131,4 +131,8 @@ class ServiceReportSelectSealsForm(forms.ModelForm):
         fields = ('seals', )
 
 
+class SealAddPartForm(forms.ModelForm):
 
+    class Meta:
+        model = SealPart
+        fields = ('number_of_parts','part','status')

@@ -6,7 +6,7 @@ from django.template import RequestContext
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import RequestConfig
 from isah.tables import sealTable, sealTypeTable, sealSizeTable, sealCompanyTable, sealVesselTable, LSTable, ContactPersonTable, ServiceReportTable
-from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
+from isah.models import Seal, SealSize, SealType, SealCompany, SealVessel, LS, ContactPerson, ServiceReport, SealPart
 from isah import forms
 from sealadvisor2 import forms as sealadvisor2forms
 from sealadvisor2.models import AftSealOptions, FwdSealOptions
@@ -45,17 +45,52 @@ def sealOverview(request):
 
 def SealDetail(request, pk):
     seal = get_object_or_404(Seal, pk=pk)
+    as_installed_parts = SealPart.objects.filter(seal = seal.id, status = 'as_installed')
+    as_maintained_parts = SealPart.objects.filter(seal = seal.id, status = 'as_maintained')
 
-    return render(request, 'isah/seal.html', {'seal': seal})
+    return render(request, 'isah/seal.html', {'seal': seal, 'as_maintained_parts': as_maintained_parts, 'as_installed_parts': as_installed_parts})
 
 
-def SealAddParts(request, pk):
+def SealAddPart(request, pk):
+    # get the related seal object
     seal = get_object_or_404(Seal, pk = pk)
 
+    if request.method == 'POST':
+        form = forms.SealAddPartForm(request.POST)
 
-    return render(request, 'isah/simple_form.html', {'seal':seal})
+        if form.is_valid():
+            # set the related seal in the part object
+            part = form.save(commit=False)
+            part.seal = seal
+            part.save()
 
+            # return to seal detail page
+            return redirect('isah:SealDetail', seal.id)
 
+    else:
+        form = forms.SealAddPartForm()
+
+    return render(request, 'isah/simple_form.html', {'submit': 'Add part','title': 'Add part to seal', 'form': form, 'cancel': request.GET.get('next', reverse('isah:SealDetail', kwargs={'pk':seal.id}))})
+
+def SealPartEdit(request, pk, part_id):
+    # get the related seal object
+    seal = get_object_or_404(Seal, pk = pk)
+    part = get_object_or_404(SealPart, pk=part_id)
+
+    if request.method == 'POST':
+        form = forms.SealAddPartForm(request.POST, instance = part)
+
+        if form.is_valid():
+            form.save()
+
+            # return to seal detail page
+            return redirect(request.GET.get('next', 'isah:SealCompanyOverview'))
+            return redirect('isah:SealDetail', seal.id)
+
+    else:
+        form = forms.SealAddPartForm(initial = {'status':part.status, 'number_of_parts': part.number_of_parts, 'part': part.part})
+
+    return render(request, 'isah/simple_form.html', {'submit': 'Save','title': 'Edit part', 'form': form, 'cancel': request.GET.get('next', reverse('isah:SealDetail', kwargs = {'pk':seal.id}))})
 
 def SealCreate(request):
 

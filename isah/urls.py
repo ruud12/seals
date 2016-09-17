@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from isah import views
-from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
+from isah.models import Seal, SealType, SealSize, SealCompany, SealVessel, LS, ContactPerson, ServiceReport, SealPart
 
 app_name='isah'
 
@@ -11,7 +11,9 @@ urlpatterns = [
 	url(r'^seals/add/$', views.SealCreate, name="SealCreateForm"),
 	url(r'^seals/(?P<pk>\d+)/edit/$', views.SealEdit, name='SealEditForm'),
 	url(r'^seals/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=Seal, template_name='isah/delete.html', success_url='/isah/seals/',extra_context={'title':'Delete seal ', 'submit':'Delete', 'cancel':'SealOverview'}), name='SealDeleteForm'),
-        url('r^seals/(?P<pk>\d+)/addparts/$', views.SealAddParts, name='SealAddPartsForm'),
+        url(r'^seals/(?P<pk>\d+)/addpart/$', views.SealAddPart, name='SealAddPartForm'),
+	url(r'^seals/(?P<pk>\d+)/part/(?P<part_id>\d+)/edit/$', views.SealPartEdit, name='SealPartEditForm'),
+	url(r'^seals/(?P<pk>\d+)/part/(?P<part_id>\d+)/delete/$', views.Delete.as_view(model=SealPart, template_name='isah/delete.html', success_url='/isah/seals/',extra_context={'title':'Delete seal part', 'submit':'Delete', 'cancel':'SealOverview'}), name='SealPartDeleteForm'),
 	url(r'^seals/sizes/$', views.SealSizeOverview, name='SealSizeOverview'),
 	url(r'^seals/sizes/add/$', views.SealSizeCreate, name='SealSizeCreateForm'),
 	url(r'^seals/sizes/(?P<pk>\d+)/edit/$', views.SealSizeEdit, name='SealSizeEditForm'),
