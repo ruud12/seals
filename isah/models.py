@@ -94,6 +94,12 @@ class Seal(models.Model):
         return self.serial_number
 
 
+
+class SealPart(models.Model):
+    name = models.CharField(max_length=100, help_text="Part name")
+    applicable_sizes = models.ManyToManyField(SealSize, verbose_name='Applicable sizes')
+
+
     
     
     
