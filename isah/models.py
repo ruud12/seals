@@ -72,6 +72,14 @@ class SealSize(models.Model):
         return str(self.size)
     
 
+class SealPart(models.Model):
+    name = models.CharField(max_length=100, help_text="Part name")
+    applicable_sizes = models.ManyToManyField(SealSize, verbose_name='Applicable sizes')
+
+    def __str__(self):
+        return self.name
+
+
 
 class Seal(models.Model):
     seal_type = models.ForeignKey(SealType, verbose_name='Type')
@@ -90,14 +98,13 @@ class Seal(models.Model):
     company = models.ForeignKey(SealCompany, on_delete=models.CASCADE, verbose_name='Company')
     vessel = models.ForeignKey(SealVessel, on_delete=models.CASCADE, verbose_name='Vessel', null=True, blank=True)
 
+    # parts list
+    parts = models.ManyToManyField(SealPart, verbose_name = 'Parts')
+
     def __str__(self):
         return self.serial_number
 
 
-
-class SealPart(models.Model):
-    name = models.CharField(max_length=100, help_text="Part name")
-    applicable_sizes = models.ManyToManyField(SealSize, verbose_name='Applicable sizes')
 
 
     
@@ -107,7 +114,7 @@ class LS(models.Model):
     LS_number = models.CharField(max_length=10, verbose_name='LS number')
     description = models.CharField(max_length=1000, null=True, blank=True, verbose_name='Description')
     company = models.ForeignKey(SealCompany, verbose_name='Company')
-    seals = models.ManyToManyField(Seal, verbose_name='Related seals', null=True, blank=True)
+    seals = models.ManyToManyField(Seal, verbose_name='Related seals', blank=True)
 
     def __str__(self):
         return self.LS_number
