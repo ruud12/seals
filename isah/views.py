@@ -49,7 +49,6 @@ def SealDetail(request, pk):
     return render(request, 'isah/seal.html', {'seal': seal})
 
 
-class ExtraContext 
 
 
 def SealCreate(request):
