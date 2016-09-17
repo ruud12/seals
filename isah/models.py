@@ -71,10 +71,14 @@ class SealSize(models.Model):
     def __str__(self):
         return str(self.size)
     
-
-class SealPart(models.Model):
+class Part(models.Model):
     name = models.CharField(max_length=100, help_text="Part name")
     applicable_sizes = models.ManyToManyField(SealSize, verbose_name='Applicable sizes')
+
+
+class SealPart(models.Model):
+    number_of_parts = models.IntegerField(verbose_name = "Number of this part in the seal")
+    part = models.ForeignKey(Part, verbose_name = 'Part')
 
     def __str__(self):
         return self.name

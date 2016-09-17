@@ -7,7 +7,7 @@ class SealForm(forms.ModelForm):
 
     class Meta:
         model = Seal
-        fields = ('company', 'vessel', 'serial_number','seal_type','size')
+        fields = ('company', 'vessel', 'serial_number','seal_type','size', 'parts')
 
 
 class SealSizeForm(forms.ModelForm):
