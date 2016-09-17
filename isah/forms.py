@@ -1,16 +1,17 @@
 from django import forms
 from isah.models import SealSize, SealType, Seal, SealCompany, SealVessel, LS, ContactPerson, ServiceReport
 
-class SealForm(forms.ModelForm):
 
+class SealForm(forms.ModelForm):
     size = forms.ModelChoiceField(SealSize.objects.order_by('size'), required=True)
 
     class Meta:
         model = Seal
-        fields = ('company', 'vessel', 'serial_number','seal_type','size', 'parts')
+        fields = ('company', 'vessel', 'serial_number','seal_type','size')
 
 
 class SealSizeForm(forms.ModelForm):
+
 
     def clean_size(self):
         size = self.cleaned_data['size']
@@ -128,3 +129,6 @@ class ServiceReportSelectSealsForm(forms.ModelForm):
     class Meta:
         model = LS
         fields = ('seals', )
+
+
+

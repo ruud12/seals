@@ -75,13 +75,18 @@ class Part(models.Model):
     name = models.CharField(max_length=100, help_text="Part name")
     applicable_sizes = models.ManyToManyField(SealSize, verbose_name='Applicable sizes')
 
+    def __str__(self):
+        return self.name
+
 
 class SealPart(models.Model):
     number_of_parts = models.IntegerField(verbose_name = "Number of this part in the seal")
     part = models.ForeignKey(Part, verbose_name = 'Part')
 
     def __str__(self):
-        return self.name
+        return str("{number}x {part}").format(number = self.number_of_parts, part = self.part)
+
+
 
 
 
@@ -103,7 +108,7 @@ class Seal(models.Model):
     vessel = models.ForeignKey(SealVessel, on_delete=models.CASCADE, verbose_name='Vessel', null=True, blank=True)
 
     # parts list
-    parts = models.ManyToManyField(SealPart, verbose_name = 'Parts')
+    as_installed_parts = models.ManyToManyField(SealPart, verbose_name = 'As installed parts')
 
     def __str__(self):
         return self.serial_number

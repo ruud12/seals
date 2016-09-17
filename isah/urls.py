@@ -11,6 +11,7 @@ urlpatterns = [
 	url(r'^seals/add/$', views.SealCreate, name="SealCreateForm"),
 	url(r'^seals/(?P<pk>\d+)/edit/$', views.SealEdit, name='SealEditForm'),
 	url(r'^seals/(?P<pk>\d+)/delete/$', views.Delete.as_view(model=Seal, template_name='isah/delete.html', success_url='/isah/seals/',extra_context={'title':'Delete seal ', 'submit':'Delete', 'cancel':'SealOverview'}), name='SealDeleteForm'),
+        url('r^seals/(?P<pk>\d+)/addparts/$', views.SealAddParts, name='SealAddPartsForm'),
 	url(r'^seals/sizes/$', views.SealSizeOverview, name='SealSizeOverview'),
 	url(r'^seals/sizes/add/$', views.SealSizeCreate, name='SealSizeCreateForm'),
 	url(r'^seals/sizes/(?P<pk>\d+)/edit/$', views.SealSizeEdit, name='SealSizeEditForm'),

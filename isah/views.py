@@ -49,6 +49,12 @@ def SealDetail(request, pk):
     return render(request, 'isah/seal.html', {'seal': seal})
 
 
+def SealAddParts(request, pk):
+    seal = get_object_or_404(Seal, pk = pk)
+
+
+    return render(request, 'isah/simple_form.html', {'seal':seal})
+
 
 
 def SealCreate(request):
@@ -100,6 +106,8 @@ def SealSizeOverview(request):
     table = sealSizeTable(sizes)
 
     return render(request, 'isah/simple_table.html', {'table': table, 'title': 'Seal sizes', 'add_form': 'SealSizeCreateForm'})
+
+
 
 
 def SealSizeCreate(request):
