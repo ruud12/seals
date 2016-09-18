@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^erp/', include('erp.urls')),
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^isah/', include('isah.urls')),
+    url(r'^servicerapportage/', include('servicerapportage.urls')),
 ]

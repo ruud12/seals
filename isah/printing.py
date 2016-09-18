@@ -55,13 +55,16 @@ class MyPrint:
 
         for seal in report.ls.seals.all():
             elements.append(Paragraph(seal.serial_number, styles['Heading2']))
+            vessel_name = "no vessel listed" if seal.vessel is None else seal.vessel.name
+            imo = "no vessel listed" if seal.vessel is None else seal.vessel.imo_number
+
             data= [
                 ['Serial number seal', seal.serial_number],
                 ['Type', seal.seal_type.name],
                 ['Size', str(seal.size)],
                 ['Side', seal.side],
-                ['Vessel', str(seal.vessel.name)],
-                ['IMO', seal.vessel.imo_number]
+                ['Vessel', vessel_name],
+                ['IMO', imo]
             ]
 
             t=Table(data, hAlign='LEFT') #,2*[3*inch], 3*[0.4*inch])
