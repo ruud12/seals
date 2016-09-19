@@ -18,6 +18,13 @@ from django.contrib import admin
 from ajax_select import urls as ajax_select_urls
 
 
+from tastypie.api import Api
+from angular.api import JobResource
+
+
+job_resource = JobResource()
+
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^sealadvisor2/', include('sealadvisor2.urls')),
@@ -25,4 +32,5 @@ urlpatterns = [
     url(r'^ajax_select/', include(ajax_select_urls)),
     url(r'^isah/', include('isah.urls')),
     url(r'^servicerapportage/', include('servicerapportage.urls')),
+    url(r'^api/', include(job_resource.urls)),
 ]

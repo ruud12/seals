@@ -55,6 +55,8 @@ INSTALLED_APPS = [
     'ajax_select',
     'isah',
     'servicerapportage',
+    'angular',
+    'tastypie',
 ]
 
 MIDDLEWARE_CLASSES = [
