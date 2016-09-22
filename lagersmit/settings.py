@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CRISPY_TEMPLATE_PACK = 'materialize'
 
 # Application definition
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'django_tables2',
     'django_filters',
     'crispy_forms',
+    'crispy_forms_materialize',
     'formtools',
     'material',
     'material.frontend',
