@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-CRISPY_TEMPLATE_PACK = 'materialize'
+CRISPY_TEMPLATE_PACK = 'materialize_css_forms'
 
 # Application definition
 
@@ -155,3 +155,4 @@ PROJECT_DIR=os.path.dirname(__file__)
 STATIC_ROOT = os.path.join('sealadvisor2','static/')
 STATIC_URL = '/static/'
 
+CRISPY_TEMPLATE_PACK = 'materialize'
